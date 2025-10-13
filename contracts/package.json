@@ -1,0 +1,39 @@
+{
+    "name": "contracts-tests",
+    "version": "1.0.0",
+    "description": "Run unit tests on this project.",
+    "type": "module",
+    "private": true,
+    "scripts": {
+        "test": "vitest run",
+        "test:report": "vitest run -- --coverage --costs",
+        "test:watch": "chokidar \"tests/**/*.ts\" \"contracts/**/*.clar\" -c \"npm run test:report\"",
+        "deploy": "tsx scripts/deploy.ts",
+        "deploy:simnet": "clarinet deployments generate --simnet --low-cost && clarinet deployments apply --simnet && npm run extract-addresses simnet",
+        "deploy:devnet": "clarinet deployments generate --devnet --low-cost && clarinet deployments apply --devnet && npm run extract-addresses devnet",
+        "deploy:testnet": "clarinet deployments generate --testnet --low-cost && clarinet deployments apply --testnet && npm run extract-addresses testnet",
+        "deploy:mainnet": "clarinet deployments generate --mainnet --high-cost && clarinet deployments apply --mainnet && npm run extract-addresses mainnet",
+        "generate:simnet": "clarinet deployments generate --simnet --low-cost",
+        "generate:devnet": "clarinet deployments generate --devnet --low-cost",
+        "generate:testnet": "clarinet deployments generate --testnet --low-cost",
+        "generate:mainnet": "clarinet deployments generate --mainnet --high-cost",
+        "apply:simnet": "clarinet deployments apply --simnet",
+        "apply:devnet": "clarinet deployments apply --devnet",
+        "apply:testnet": "clarinet deployments apply --testnet",
+        "apply:mainnet": "clarinet deployments apply --mainnet",
+        "extract-addresses": "tsx scripts/extract-addresses.ts",
+        "update-env": "npm run extract-addresses"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@hirosystems/clarinet-sdk": "^3.6.0",
+        "@types/node": "^24.4.0",
+        "@stacks/transactions": "^7.2.0",
+        "chokidar-cli": "^3.0.0",
+        "tsx": "^4.7.0",
+        "typescript": "^5.3.0",
+        "vitest": "^3.2.4",
+        "vitest-environment-clarinet": "^2.3.0"
+    }
+}

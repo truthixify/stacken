@@ -1,0 +1,32 @@
+---
+id: 0
+name: Testnet deployment
+network: testnet
+stacks-node: "https://api.testnet.hiro.so"
+bitcoin-node: "http://blockstack:blockstacksystem@bitcoind.testnet.stacks.co:18332"
+plan:
+  batches:
+    - id: 0
+      transactions:
+        - contract-publish:
+            contract-name: points
+            expected-sender: ST14TMYTEG8QQ4M5SZF7S94JW6F0BRMJTJJ87A79Z
+            cost: 56950
+            path: contracts/points.clar
+            anchor-block-only: true
+            clarity-version: 3
+        - contract-publish:
+            contract-name: campaign-manager
+            expected-sender: ST14TMYTEG8QQ4M5SZF7S94JW6F0BRMJTJJ87A79Z
+            cost: 197980
+            path: contracts/campaign-manager.clar
+            anchor-block-only: true
+            clarity-version: 3
+        - contract-publish:
+            contract-name: mock-token
+            expected-sender: ST14TMYTEG8QQ4M5SZF7S94JW6F0BRMJTJJ87A79Z
+            cost: 7660
+            path: contracts/mock-token.clar
+            anchor-block-only: true
+            clarity-version: 3
+      epoch: "3.2"
