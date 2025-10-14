@@ -3,6 +3,10 @@ import dbConnect from '../../../../lib/mongodb';
 import Campaign from '../../../../models/Campaign';
 import Submission from '../../../../models/Submission';
 import User from '../../../../models/User';
+import { getSession } from '../../../../common/session-helpers';
+
+// Admin addresses - in production, this should be in environment variables
+const ADMIN_ADDRESSES = process.env.ADMIN_ADDRESSES?.split(',') || [];
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
@@ -15,6 +19,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { id } = req.query;
     const { userAddress, page = 1, limit = 20, status } = req.query;
 
+    // Get session for authentication
+    const session = await getSession(req);
+    const authenticatedAddress = session?.stxAddress;
+
     // Check if campaign exists
     const campaign = await Campaign.findById(id);
     if (!campaign) {
@@ -25,21 +33,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const query: any = { campaignId: id };
     if (status) query.status = status;
 
-    // Check if user is the campaign creator
-    const isCreator = userAddress && campaign.creatorAddress === userAddress;
+    // Determine user permissions
+    const isAdmin = authenticatedAddress && ADMIN_ADDRESSES.includes(authenticatedAddress);
+    const isCreator = authenticatedAddress && campaign.creatorAddress === authenticatedAddress;
+    const isRegularUser = authenticatedAddress && !isAdmin && !isCreator;
 
-    // Only creators can see all submissions
-    // Regular users can only see their own submissions
-    if (!isCreator) {
-      if (userAddress) {
-        query.userAddress = userAddress; // Only show user's own submissions
-      } else {
-        // Anonymous users can't see any submissions
-        return res
-          .status(403)
-          .json({ message: 'Access denied. Only campaign creators can view all submissions.' });
-      }
+    // Authorization logic:
+    // - Admin: Can view all submissions across the platform
+    // - Creator: Can view all submissions for their own campaigns
+    // - Regular User: Can only view their own submissions
+    // - Anonymous: Cannot view any submissions
+
+    if (!authenticatedAddress) {
+      return res.status(401).json({ message: 'Authentication required' });
     }
+
+    if (isRegularUser) {
+      // Regular users can only see their own submissions
+      query.userAddress = authenticatedAddress;
+    }
+    // Admins and creators can see all submissions (no additional query filter needed)
 
     const skip = (Number(page) - 1) * Number(limit);
 
@@ -89,7 +102,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         total,
         pages: Math.ceil(total / Number(limit)),
       },
-      isCreator,
+      permissions: {
+        isAdmin,
+        isCreator,
+        canViewAll: isAdmin || isCreator,
+      },
     });
   } catch (error) {
     console.error('Error fetching submissions:', error);

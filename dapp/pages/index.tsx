@@ -44,7 +44,8 @@ const HomePage = () => {
     {
       icon: <Users className="h-8 w-8 text-orange-600" />,
       title: 'Builder Community',
-      description: 'Join thousands of creators, developers, and innovators earning rewards for great work.',
+      description:
+        'Join thousands of creators, developers, and innovators earning rewards for great work.',
     },
     {
       icon: <Zap className="h-8 w-8 text-orange-600" />,
@@ -84,7 +85,8 @@ const HomePage = () => {
               </h1>
 
               <p className="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed">
-                Launch bounty missions, showcase your skills, and earn crypto rewards on the most trusted blockchain — all powered by Stacks.
+                Launch bounty missions, showcase your skills, and earn crypto rewards on the most
+                trusted blockchain — all powered by Stacks.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -135,15 +137,21 @@ const HomePage = () => {
         <section className="py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Why Builders Choose Stacken</h2>
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+                Why Builders Choose Stacken
+              </h2>
               <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Every mission is a chance to showcase your skills, earn crypto, and build something amazing with the community.
+                Every mission is a chance to showcase your skills, earn crypto, and build something
+                amazing with the community.
               </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {features.map((feature, index) => (
-                <Card key={index} className="bg-gradient-to-r from-gray-500/10 to-gray-700/20 rounded-2xl p-2 border border-gray-600/20">
+                <Card
+                  key={index}
+                  className="bg-gradient-to-r from-gray-500/10 to-gray-700/20 rounded-2xl p-2 border border-gray-600/20"
+                >
                   <CardHeader className="text-center">
                     <div className="flex justify-center mb-4">{feature.icon}</div>
                     <CardTitle className="text-white text-xl">{feature.title}</CardTitle>
@@ -207,9 +215,12 @@ const HomePage = () => {
                         3
                       </div>
                       <div>
-                        <h4 className="text-xl font-semibold text-white mb-2">Get Paid in Crypto</h4>
+                        <h4 className="text-xl font-semibold text-white mb-2">
+                          Get Paid in Crypto
+                        </h4>
                         <p className="text-gray-400">
-                          Submit amazing work, get approved, and watch crypto rewards hit your wallet.
+                          Submit amazing work, get approved, and watch crypto rewards hit your
+                          wallet.
                         </p>
                       </div>
                     </div>
@@ -228,7 +239,8 @@ const HomePage = () => {
                 Ready to Build Something Amazing?
               </h3>
               <p className="text-xl text-gray-400 mb-8">
-                Join thousands of builders earning crypto for their skills. Launch bounties, tackle challenges, and get rewarded.
+                Join thousands of builders earning crypto for their skills. Launch bounties, tackle
+                challenges, and get rewarded.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button

@@ -35,11 +35,48 @@ async function getCampaigns(req: NextApiRequest, res: NextApiResponse) {
 
     const skip = (Number(page) - 1) * Number(limit);
 
-    const campaigns = await Campaign.find(query)
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(Number(limit))
-      .lean();
+    // Use aggregation to include creator info
+    const campaigns = await Campaign.aggregate([
+      { $match: query },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'creatorAddress',
+          foreignField: 'stacksAddress',
+          as: 'creator',
+        },
+      },
+      {
+        $addFields: {
+          creator: { $arrayElemAt: ['$creator', 0] },
+        },
+      },
+      {
+        $project: {
+          // Include all campaign fields
+          title: 1,
+          summary: 1,
+          description: 1,
+          category: 1,
+          status: 1,
+          totalParticipants: 1,
+          totalPoints: 1,
+          startTime: 1,
+          endTime: 1,
+          creatorAddress: 1,
+          imageUrl: 1,
+          tags: 1,
+          createdAt: 1,
+          // Include only necessary creator fields
+          'creator.username': 1,
+          'creator.displayName': 1,
+          'creator.avatar': 1,
+        },
+      },
+      { $sort: { createdAt: -1 } },
+      { $skip: skip },
+      { $limit: Number(limit) },
+    ]);
 
     const total = await Campaign.countDocuments(query);
 

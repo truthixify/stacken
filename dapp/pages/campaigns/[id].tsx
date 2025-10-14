@@ -16,6 +16,10 @@ import {
   Heart,
   MessageCircle,
 } from 'lucide-react';
+import LikeButton from '../../components/LikeButton';
+import ShareButton from '../../components/ShareButton';
+import UserAvatar from '../../components/UserAvatar';
+import { createExcerpt } from '../../lib/textUtils';
 
 import type { NextPage, GetServerSidePropsContext } from 'next';
 
@@ -30,6 +34,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 interface Campaign {
   _id: string;
   title: string;
+  summary?: string;
   description: string;
   details?: string;
   category: string;
@@ -40,6 +45,11 @@ interface Campaign {
   startTime: string;
   endTime: string;
   creatorAddress: string;
+  creator?: {
+    username?: string;
+    displayName?: string;
+    avatar?: string;
+  };
   imageUrl?: string;
   tags: string[];
   taskLinks?: Array<{
@@ -138,7 +148,9 @@ const CampaignDetail: NextPage = () => {
         });
       } else {
         const error = await response.json();
-        toast.error(error.message || 'Oops, something went wrong. Let\'s try that again.', { id: loadingToast });
+        toast.error(error.message || "Oops, something went wrong. Let's try that again.", {
+          id: loadingToast,
+        });
       }
     } catch (error) {
       console.error('Error completing activity:', error);
@@ -213,18 +225,18 @@ const CampaignDetail: NextPage = () => {
 
   if (!campaign) {
     return (
-      <Layout title="Campaign Not Found">
+      <Layout title="Mission Not Found">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-200 mb-4">Campaign Not Found</h1>
+            <h1 className="text-2xl font-bold text-gray-200 mb-4">Mission Not Found</h1>
             <p className="text-gray-200 mb-8">
-              The campaign you're looking for doesn't exist or has been removed.
+              The mission you're looking for doesn't exist or has been removed.
             </p>
             <button
               onClick={() => router.push('/campaigns')}
               className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
             >
-              Browse Campaigns
+              Discover Missions
             </button>
           </div>
         </div>
@@ -273,15 +285,24 @@ const CampaignDetail: NextPage = () => {
                         onClick={() => router.push(`/campaigns/${id}/edit`)}
                         className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors text-sm font-medium"
                       >
-                        Edit Campaign
+                        Edit Mission
                       </button>
                     )}
-                    <button className="p-2 text-gray-400 hover:text-red-500 transition-colors">
-                      <Heart size={20} />
-                    </button>
-                    <button className="p-2 text-gray-400 hover:text-blue-500 transition-colors">
-                      <Share2 size={20} />
-                    </button>
+                    <LikeButton targetType="CAMPAIGN" targetId={campaign._id} className="p-2" />
+                    <ShareButton
+                      title={campaign.title}
+                      text={
+                        campaign.summary ||
+                        createExcerpt(campaign.description || campaign.details || '', 100)
+                      }
+                      url={
+                        typeof window !== 'undefined'
+                          ? `${window.location.origin}/campaigns/${campaign._id}`
+                          : ''
+                      }
+                      className="p-2"
+                      showDropdown={true}
+                    />
                   </div>
                 </div>
 
@@ -456,9 +477,35 @@ const CampaignDetail: NextPage = () => {
 
           {/* Sidebar */}
           <div className="space-y-6">
-            {/* Campaign Stats */}
+            {/* Creator Info */}
             <div className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-6">
-              <h3 className="text-lg font-semibold text-gray-200 mb-4">Campaign Stats</h3>
+              <h3 className="text-lg font-semibold text-gray-200 mb-4">Mission Creator</h3>
+
+              <div className="flex items-center space-x-3">
+                <UserAvatar
+                  userAddress={campaign.creatorAddress}
+                  avatar={campaign.creator?.avatar}
+                  displayName={campaign.creator?.displayName || campaign.creator?.username}
+                  size={48}
+                />
+                <div>
+                  <p className="font-medium text-gray-200">
+                    {campaign.creator?.displayName ||
+                      campaign.creator?.username ||
+                      `${campaign.creatorAddress.slice(0, 6)}...${campaign.creatorAddress.slice(
+                        -4
+                      )}`}
+                  </p>
+                  <p className="text-sm text-gray-400">
+                    {campaign.creatorAddress.slice(0, 8)}...{campaign.creatorAddress.slice(-6)}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Mission Stats */}
+            <div className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-6">
+              <h3 className="text-lg font-semibold text-gray-200 mb-4">Mission Stats</h3>
 
               <div className="space-y-4">
                 <div className="flex justify-between items-center">
@@ -478,7 +525,7 @@ const CampaignDetail: NextPage = () => {
                   </span>
                 </div>
                 <div className="flex justify-between items-center">
-                  <span className="text-gray-200">Campaign Type</span>
+                  <span className="text-gray-200">Mission Type</span>
                   <span className="font-semibold">{campaign.campaignType}</span>
                 </div>
               </div>
@@ -527,31 +574,10 @@ const CampaignDetail: NextPage = () => {
               </div>
             )}
 
-            {/* Creator Info */}
-            <div className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-6">
-              <h3 className="text-lg font-semibold text-gray-200 mb-4">Campaign Creator</h3>
-
-              <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-primary-100 rounded-full flex items-center justify-center">
-                  <span className="text-primary-600 font-semibold">
-                    {campaign.creatorAddress.slice(0, 2).toUpperCase()}
-                  </span>
-                </div>
-                <div>
-                  <p className="font-medium text-gray-200">
-                    {campaign.creatorAddress.slice(0, 8)}...{campaign.creatorAddress.slice(-6)}
-                  </p>
-                  <p className="text-sm text-gray-200">Campaign Creator</p>
-                </div>
-              </div>
-            </div>
-
             {/* Participate CTA */}
             {isSignedIn && stxAddress !== campaign.creatorAddress && (
               <div className="bg-primary-50 border border-primary-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-primary-900 mb-2">
-                  Ready to Build?
-                </h3>
+                <h3 className="text-lg font-semibold text-primary-900 mb-2">Ready to Build?</h3>
                 <p className="text-primary-700 mb-4">
                   Submit your work and claim up to {campaign.totalPoints} reward points!
                 </p>

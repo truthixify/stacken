@@ -21,7 +21,8 @@ const About: NextPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6">Building the Future Together</h1>
           <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
-            Where builders meet bounties. Create missions, reward amazing work, and grow your community on Stacks blockchain.
+            Where builders meet bounties. Create missions, reward amazing work, and grow your
+            community on Stacks blockchain.
           </p>
         </div>
       </section>
@@ -32,12 +33,13 @@ const About: NextPage = () => {
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-200 mb-6">Why We're Here</h2>
             <p className="text-lg text-gray-200 mb-8">
-              Great work deserves great rewards. We're building a platform where creators launch bounty missions, 
-              builders showcase their skills, and everyone gets rewarded fairly through transparent smart contracts.
+              Great work deserves great rewards. We're building a platform where creators launch
+              bounty missions, builders showcase their skills, and everyone gets rewarded fairly
+              through transparent smart contracts.
             </p>
             <p className="text-lg text-gray-200">
-              Powered by Stacks blockchain, we bring Bitcoin's security together with smart contract flexibility 
-              to create the most trusted bounty platform in Web3.
+              Powered by Stacks blockchain, we bring Bitcoin's security together with smart contract
+              flexibility to create the most trusted bounty platform in Web3.
             </p>
           </div>
         </div>
@@ -51,7 +53,8 @@ const About: NextPage = () => {
               Built on Bitcoin's Foundation
             </h2>
             <p className="text-xl text-gray-200 max-w-2xl mx-auto">
-              Stacks brings smart contracts to Bitcoin — giving you the security you trust with the flexibility you need
+              Stacks brings smart contracts to Bitcoin — giving you the security you trust with the
+              flexibility you need
             </p>
           </div>
 
@@ -62,7 +65,8 @@ const About: NextPage = () => {
               </div>
               <h3 className="text-xl font-semibold text-gray-200 mb-2">Unbreakable Security</h3>
               <p className="text-gray-200">
-                Your bounties are protected by Bitcoin's battle-tested security — the most secure blockchain ever built
+                Your bounties are protected by Bitcoin's battle-tested security — the most secure
+                blockchain ever built
               </p>
             </div>
 
@@ -72,7 +76,8 @@ const About: NextPage = () => {
               </div>
               <h3 className="text-xl font-semibold text-gray-200 mb-2">Lightning Fast</h3>
               <p className="text-gray-200">
-                Quick transactions, low fees — focus on building instead of waiting for confirmations
+                Quick transactions, low fees — focus on building instead of waiting for
+                confirmations
               </p>
             </div>
 
@@ -82,7 +87,8 @@ const About: NextPage = () => {
               </div>
               <h3 className="text-xl font-semibold text-gray-200 mb-2">Builder-First</h3>
               <p className="text-gray-200">
-                Clarity smart contracts are readable, predictable, and designed for developers who ship
+                Clarity smart contracts are readable, predictable, and designed for developers who
+                ship
               </p>
             </div>
 
@@ -92,7 +98,8 @@ const About: NextPage = () => {
               </div>
               <h3 className="text-xl font-semibold text-gray-200 mb-2">You Own It All</h3>
               <p className="text-gray-200">
-                Your wallet, your rewards, your choice — no middlemen, no gatekeepers, just pure ownership
+                Your wallet, your rewards, your choice — no middlemen, no gatekeepers, just pure
+                ownership
               </p>
             </div>
           </div>
@@ -103,7 +110,9 @@ const About: NextPage = () => {
       <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-200 mb-4">Ready to Start Building?</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-200 mb-4">
+              Ready to Start Building?
+            </h2>
             <p className="text-xl text-gray-200 max-w-2xl mx-auto">
               Three simple steps to launch bounties and start earning rewards
             </p>
@@ -116,7 +125,8 @@ const About: NextPage = () => {
               </div>
               <h3 className="text-xl font-semibold text-gray-200 mb-2">Launch Your Mission</h3>
               <p className="text-gray-200">
-                Create bounty challenges with custom tasks, reward pools, and smart contract rules that work for you
+                Create bounty challenges with custom tasks, reward pools, and smart contract rules
+                that work for you
               </p>
             </div>
 
@@ -126,7 +136,8 @@ const About: NextPage = () => {
               </div>
               <h3 className="text-xl font-semibold text-gray-200 mb-2">Builders Join In</h3>
               <p className="text-gray-200">
-                Talented creators tackle your challenges — from code contributions to content creation and beyond
+                Talented creators tackle your challenges — from code contributions to content
+                creation and beyond
               </p>
             </div>
 
@@ -136,7 +147,8 @@ const About: NextPage = () => {
               </div>
               <h3 className="text-xl font-semibold text-gray-200 mb-2">Everyone Gets Paid</h3>
               <p className="text-gray-200">
-                Smart contracts automatically distribute crypto rewards to winners — transparent, fair, and instant
+                Smart contracts automatically distribute crypto rewards to winners — transparent,
+                fair, and instant
               </p>
             </div>
           </div>
@@ -151,17 +163,15 @@ const About: NextPage = () => {
               Built by Builders, for Builders
             </h2>
             <p className="text-xl text-gray-200 max-w-2xl mx-auto">
-              We're developers who got tired of unfair reward systems. So we built something better — 
-              open source, community-driven, and completely transparent.
+              We're developers who got tired of unfair reward systems. So we built something better
+              — open source, community-driven, and completely transparent.
             </p>
           </div>
 
           <div className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-8 text-center">
-            <h3 className="text-2xl font-bold text-gray-200 mb-4">
-              Open Source & Proud of It
-            </h3>
+            <h3 className="text-2xl font-bold text-gray-200 mb-4">Open Source & Proud of It</h3>
             <p className="text-gray-200 mb-6">
-              Every line of code is public on GitHub. Want to contribute? Found a bug? Have an idea? 
+              Every line of code is public on GitHub. Want to contribute? Found a bug? Have an idea?
               Jump in — this platform belongs to the community.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">

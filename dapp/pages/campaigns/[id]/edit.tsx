@@ -285,12 +285,12 @@ const EditCampaign: NextPage = () => {
       <Layout title="Loading...">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="animate-pulse">
-            <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
-            <div className="h-4 bg-gray-200 rounded w-2/3 mb-8"></div>
+            <div className="h-8 bg-gray-700/20 rounded w-1/3 mb-4"></div>
+            <div className="h-4 bg-gray-700/20 rounded w-2/3 mb-8"></div>
             <div className="space-y-6">
-              <div className="h-32 bg-gray-200 rounded"></div>
-              <div className="h-32 bg-gray-200 rounded"></div>
-              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-700/20 rounded"></div>
+              <div className="h-32 bg-gray-700/20 rounded"></div>
+              <div className="h-32 bg-gray-700/20 rounded"></div>
             </div>
           </div>
         </div>
@@ -299,38 +299,38 @@ const EditCampaign: NextPage = () => {
   }
 
   return (
-    <Layout title="Edit Campaign - Stacken Rewards">
+    <Layout title="Edit Mission - Stacken">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
           <div className="flex items-center mb-4">
             <button
               onClick={() => router.push(`/campaigns/${id}`)}
-              className="mr-4 p-2 text-gray-600 hover:text-gray-900 transition-colors"
+              className="mr-4 p-2 text-gray-200 hover:text-gray-300 transition-colors"
             >
               <ArrowLeft size={20} />
             </button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Edit Campaign</h1>
-              <p className="text-gray-600">Update your campaign details and settings</p>
+              <h1 className="text-3xl font-bold text-gray-200">Edit Mission</h1>
+              <p className="text-gray-200">Update your mission details and settings</p>
             </div>
           </div>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Campaign Information</h2>
+          <div className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-6">
+            <h2 className="text-xl font-semibold text-gray-200 mb-6">Mission Information</h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Campaign Title *
+                <label className="block text-sm font-medium text-gray-200 mb-2">
+                  Mission Title *
                 </label>
                 <input
                   type="text"
                   {...register('title', { required: 'Title is required' })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  placeholder="Enter campaign title"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
+                  placeholder="Enter mission title"
                 />
                 {errors.title && (
                   <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
@@ -338,10 +338,10 @@ const EditCampaign: NextPage = () => {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Campaign Description & Instructions *
+                <label className="block text-sm font-medium text-gray-200 mb-2">
+                  Mission Description & Instructions *
                 </label>
-                <div className="border border-gray-300 rounded-lg">
+                <div className="border border-gray-600/20 rounded-lg">
                   <ReactQuill
                     value={details}
                     onChange={value => {
@@ -369,16 +369,17 @@ const EditCampaign: NextPage = () => {
                       'code-block',
                     ]}
                     placeholder="Describe your campaign, provide detailed instructions, requirements, and guidelines for participants."
+                    className="text-gray-500"
                     style={{ minHeight: '250px' }}
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
+                <label className="block text-sm font-medium text-gray-200 mb-2">Category *</label>
                 <select
                   {...register('category', { required: 'Category is required' })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
                 >
                   <option value="">Select category</option>
                   {categories.map(category => (
@@ -393,13 +394,13 @@ const EditCampaign: NextPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-200 mb-2">
                   Total Points Pool *
                 </label>
                 <input
                   type="number"
                   {...register('totalPoints', { required: 'Total points is required', min: 1 })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
                   placeholder="1000"
                 />
                 {errors.totalPoints && (
@@ -408,8 +409,8 @@ const EditCampaign: NextPage = () => {
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Campaign Image
+                <label className="block text-sm font-medium text-gray-200 mb-2">
+                  Mission Image
                 </label>
                 <div className="flex items-center space-x-4">
                   <div className="flex-1">
@@ -422,10 +423,10 @@ const EditCampaign: NextPage = () => {
                     />
                     <label
                       htmlFor="image-upload"
-                      className="flex items-center justify-center w-full px-4 py-2 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-primary-500 transition-colors"
+                      className="flex items-center justify-center w-full px-4 py-2 border-2 border-dashed border-gray-600/20 rounded-lg cursor-pointer hover:border-primary-500 transition-colors"
                     >
                       <Upload className="mr-2 h-5 w-5 text-gray-400" />
-                      <span className="text-gray-600">
+                      <span className="text-gray-500">
                         {imageFile ? imageFile.name : 'Click to upload new image'}
                       </span>
                     </label>
@@ -435,7 +436,7 @@ const EditCampaign: NextPage = () => {
                       <img
                         src={imagePreview}
                         alt="Preview"
-                        className="w-20 h-20 object-cover rounded-lg border border-gray-300"
+                        className="w-20 h-20 object-cover rounded-lg border border-gray-600/20"
                       />
                     </div>
                   )}
@@ -443,11 +444,11 @@ const EditCampaign: NextPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Start Date *</label>
+                <label className="block text-sm font-medium text-gray-200 mb-2">Start Date *</label>
                 <input
                   type="datetime-local"
                   {...register('startTime', { required: 'Start time is required' })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
                 />
                 {errors.startTime && (
                   <p className="text-red-500 text-sm mt-1">{errors.startTime.message}</p>
@@ -455,11 +456,11 @@ const EditCampaign: NextPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">End Date *</label>
+                <label className="block text-sm font-medium text-gray-200 mb-2">End Date *</label>
                 <input
                   type="datetime-local"
                   {...register('endTime', { required: 'End time is required' })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
                 />
                 {errors.endTime && (
                   <p className="text-red-500 text-sm mt-1">{errors.endTime.message}</p>
@@ -468,7 +469,7 @@ const EditCampaign: NextPage = () => {
 
               {/* Tags */}
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                <label className="block text-sm font-medium text-gray-200 mb-2">Tags</label>
                 <div className="flex flex-wrap gap-2 mb-2">
                   {tags.map((tag, index) => (
                     <span
@@ -492,7 +493,7 @@ const EditCampaign: NextPage = () => {
                     value={newTag}
                     onChange={e => setNewTag(e.target.value)}
                     onKeyPress={e => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="flex-1 px-3 py-2 border border-gray-600/20 rounded-l-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
                     placeholder="Add a tag"
                   />
                   <button
@@ -512,7 +513,7 @@ const EditCampaign: NextPage = () => {
             <button
               type="button"
               onClick={() => router.push(`/campaigns/${id}`)}
-              className="border border-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+              className="border border-gray-600/20 text-gray-200 px-6 py-2 rounded-lg hover:bg-gray-600/20 transition-colors"
             >
               Cancel
             </button>
@@ -522,7 +523,7 @@ const EditCampaign: NextPage = () => {
               className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50 inline-flex items-center"
             >
               <Save className="mr-2" size={16} />
-              {loading ? 'Updating...' : 'Update Campaign'}
+              {loading ? 'Updating...' : 'Update Mission'}
             </button>
           </div>
         </form>

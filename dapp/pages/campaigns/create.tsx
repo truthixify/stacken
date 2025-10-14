@@ -281,7 +281,7 @@ const CreateCampaign: NextPage = () => {
         try {
           imageUrl = await uploadImage(imageFile);
         } catch (error) {
-          toast.error('Image upload failed — let\'s try that again', { id: loadingToast });
+          toast.error("Image upload failed — let's try that again", { id: loadingToast });
           setLoading(false);
           return;
         }
@@ -384,19 +384,21 @@ const CreateCampaign: NextPage = () => {
                 const result = await response.json();
                 campaignId = result.campaign._id;
 
-                toast.success('Mission launched! Your bounty is live and ready for builders.', { id: loadingToast });
+                toast.success('Mission launched! Your bounty is live and ready for builders.', {
+                  id: loadingToast,
+                });
                 router.push(`/campaigns/${campaignId}`);
               } catch (dbError: any) {
                 console.error('Database save error:', dbError);
                 // More user-friendly error message
                 if (dbError.message?.includes('duplicate key')) {
-                  toast.error('Campaign created successfully on blockchain! Redirecting...', {
+                  toast.error('Mission created successfully on blockchain! Redirecting...', {
                     id: loadingToast,
                   });
                   // Still redirect to campaigns page since blockchain transaction succeeded
                   setTimeout(() => router.push('/campaigns'), 2000);
                 } else {
-                  toast.error('Campaign published successfully! You can find it in your profile.', {
+                  toast.error('Mission published successfully! You can find it in your profile.', {
                     id: loadingToast,
                   });
                   setTimeout(() => router.push('/campaigns'), 2000);
@@ -407,7 +409,9 @@ const CreateCampaign: NextPage = () => {
             },
             onCancel: () => {
               console.log('Transaction cancelled');
-              toast.error('Transaction cancelled — no worries, try again when ready', { id: loadingToast });
+              toast.error('Transaction cancelled — no worries, try again when ready', {
+                id: loadingToast,
+              });
               setLoading(false);
             },
           });
@@ -423,7 +427,7 @@ const CreateCampaign: NextPage = () => {
         }
       } catch (contractError) {
         console.error('Contract call error:', contractError);
-        toast.error('Failed to publish to blockchain. Campaign saved as draft.', {
+        toast.error('Failed to publish to blockchain. Mission saved as draft.', {
           id: loadingToast,
         });
         router.push(`/campaigns/${campaignId}`);
@@ -431,7 +435,7 @@ const CreateCampaign: NextPage = () => {
     } catch (error) {
       console.error('Error creating campaign:', error);
       toast.error(
-        error instanceof Error ? error.message : 'Failed to create campaign. Please try again.',
+        error instanceof Error ? error.message : 'Failed to create mission. Please try again.',
         { id: loadingToast }
       );
     } finally {
@@ -455,7 +459,9 @@ const CreateCampaign: NextPage = () => {
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-200 mb-2">Launch Your Bounty Mission</h1>
-          <p className="text-gray-200">Create challenges, set rewards, and watch builders create amazing work</p>
+          <p className="text-gray-200">
+            Create challenges, set rewards, and watch builders create amazing work
+          </p>
         </div>
 
         {/* Progress Steps */}
@@ -565,7 +571,7 @@ const CreateCampaign: NextPage = () => {
                         'link',
                         'code-block',
                       ]}
-                      placeholder="Describe your campaign, provide detailed instructions, requirements, and guidelines for participants. You can format text, add links, and create lists."
+                      placeholder="Describe your mission, provide detailed instructions, requirements, and guidelines for builders. You can format text, add links, and create lists."
                       style={{
                         minHeight: '250px',
                         height: '250px',
@@ -575,12 +581,15 @@ const CreateCampaign: NextPage = () => {
                   </div>
 
                   <p className="text-sm text-gray-400 mt-1">
-                    Spell out exactly what builders need to deliver, how you'll judge submissions, and any special requirements.
+                    Spell out exactly what builders need to deliver, how you'll judge submissions,
+                    and any special requirements.
                   </p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-200 mb-2">Mission Type *</label>
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
+                    Mission Type *
+                  </label>
                   <select
                     {...register('category', { required: 'Category is required' })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500 text-gray-500"
@@ -607,7 +616,9 @@ const CreateCampaign: NextPage = () => {
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
                     placeholder="SP1ABC...XYZ.token-name (or leave empty for STX rewards)"
                   />
-                  <p className="text-sm text-gray-400 mt-1">Want to pay in your own token? Add the contract address here</p>
+                  <p className="text-sm text-gray-400 mt-1">
+                    Want to pay in your own token? Add the contract address here
+                  </p>
                 </div>
 
                 <div>
@@ -870,15 +881,15 @@ const CreateCampaign: NextPage = () => {
                     </div>
                   )}
                   <p className="text-sm text-gray-400 mt-2">
-                    Add relevant links for your campaign (GitHub repos for code contributions,
-                    Twitter for social campaigns, etc.)
+                    Add relevant links for your mission (GitHub repos for code contributions,
+                    Twitter for social missions, etc.)
                   </p>
                 </div>
 
                 {/* Social Links */}
                 <div>
                   <label className="block text-sm font-medium text-gray-200 mb-3">
-                    Campaign Social Links (Optional)
+                    Mission Social Links (Optional)
                   </label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
@@ -889,7 +900,7 @@ const CreateCampaign: NextPage = () => {
                         type="url"
                         {...register('socialLinks.twitter')}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
-                        placeholder="https://twitter.com/yourcampaign"
+                        placeholder="https://twitter.com/yourmission"
                       />
                     </div>
 
@@ -901,7 +912,7 @@ const CreateCampaign: NextPage = () => {
                         type="url"
                         {...register('socialLinks.discord')}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
-                        placeholder="https://discord.gg/yourcampaign"
+                        placeholder="https://discord.gg/yourmission"
                       />
                     </div>
 
@@ -925,12 +936,12 @@ const CreateCampaign: NextPage = () => {
                         type="url"
                         {...register('socialLinks.telegram')}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
-                        placeholder="https://t.me/yourcampaign"
+                        placeholder="https://t.me/yourmission"
                       />
                     </div>
                   </div>
                   <p className="text-sm text-gray-400 mt-2">
-                    Add social media links for your campaign to help participants connect and stay
+                    Add social media links for your mission to help builders connect and stay
                     updated
                   </p>
                 </div>
@@ -1211,7 +1222,9 @@ const CreateCampaign: NextPage = () => {
 
                 {rewardDistribution.type === 'LINEAR' && (
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <h4 className="font-medium text-orange-700 mb-2">Linear Distribution Preview</h4>
+                    <h4 className="font-medium text-orange-700 mb-2">
+                      Linear Distribution Preview
+                    </h4>
                     <p className="text-sm text-orange-700">
                       Each of the top {rewardDistribution.maxWinners || 1} performers will receive{' '}
                       {Math.floor(
@@ -1285,11 +1298,11 @@ const CreateCampaign: NextPage = () => {
           {/* Step 3: Review */}
           {currentStep === 3 && (
             <div className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-6">
-              <h2 className="text-xl font-semibold text-gray-200 mb-6">Review Campaign</h2>
+              <h2 className="text-xl font-semibold text-gray-200 mb-6">Review Mission</h2>
 
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-medium text-gray-200 mb-2">Campaign Details</h3>
+                  <h3 className="text-lg font-medium text-gray-200 mb-2">Mission Details</h3>
                   <div className="bg-gray-700/20 rounded-lg p-4 space-y-2">
                     <p>
                       <strong>Title:</strong> {watch('title')}
@@ -1327,7 +1340,7 @@ const CreateCampaign: NextPage = () => {
                 {details && (
                   <div>
                     <h3 className="text-lg font-medium text-gray-200 mb-2">
-                      Campaign Description & Instructions
+                      Mission Description & Instructions
                     </h3>
                     <div className="bg-gray-700/20 rounded-lg p-4">
                       <div
@@ -1422,7 +1435,7 @@ const CreateCampaign: NextPage = () => {
                   disabled={loading}
                   className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors disabled:opacity-50"
                 >
-                  {loading ? 'Creating...' : 'Create Campaign'}
+                  {loading ? 'Launching...' : 'Launch Mission'}
                 </button>
               </div>
             </div>

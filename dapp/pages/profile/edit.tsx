@@ -4,6 +4,7 @@ import { useAuth, useAccount } from '@micro-stacks/react';
 import Layout from '../../components/Layout';
 import { getDehydratedStateFromSession } from '../../common/session-helpers';
 import { Save, User, Upload, ArrowLeft } from 'lucide-react';
+import UserAvatar from '../../components/UserAvatar';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
@@ -237,9 +238,13 @@ const EditProfile: NextPage = () => {
                     className="w-24 h-24 rounded-full object-cover border-4 border-gray-600/20"
                   />
                 ) : (
-                  <div className="w-24 h-24 rounded-full bg-gray-700/20 flex items-center justify-center">
-                    <User className="text-gray-400" size={32} />
-                  </div>
+                  <UserAvatar
+                    userAddress={stxAddress || ''}
+                    avatar={undefined}
+                    displayName=""
+                    size={96}
+                    className=""
+                  />
                 )}
               </div>
               <div className="flex-1">
@@ -278,7 +283,7 @@ const EditProfile: NextPage = () => {
                         'Username can only contain letters, numbers, hyphens, and underscores',
                     },
                   })}
-                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
                   placeholder="your_username"
                 />
                 {errors.username && (
@@ -292,7 +297,7 @@ const EditProfile: NextPage = () => {
                 <input
                   type="text"
                   {...register('displayName')}
-                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
                   placeholder="Your Display Name"
                 />
                 <p className="text-sm text-gray-400 mt-1">How others will see your name</p>
@@ -308,7 +313,7 @@ const EditProfile: NextPage = () => {
                       message: 'Invalid email address',
                     },
                   })}
-                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent  text-gray-500"
                   placeholder="your@email.com"
                 />
                 {errors.email && (
@@ -344,7 +349,7 @@ const EditProfile: NextPage = () => {
                 <input
                   type="url"
                   {...register('socialLinks.twitter')}
-                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
                   placeholder="https://twitter.com/yourusername"
                 />
               </div>
@@ -354,7 +359,7 @@ const EditProfile: NextPage = () => {
                 <input
                   type="url"
                   {...register('socialLinks.github')}
-                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
                   placeholder="https://github.com/yourusername"
                 />
               </div>
@@ -364,7 +369,7 @@ const EditProfile: NextPage = () => {
                 <input
                   type="text"
                   {...register('socialLinks.discord')}
-                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
                   placeholder="yourusername#1234"
                 />
               </div>
@@ -374,7 +379,7 @@ const EditProfile: NextPage = () => {
                 <input
                   type="url"
                   {...register('socialLinks.website')}
-                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
                   placeholder="https://yourwebsite.com"
                 />
               </div>
@@ -384,7 +389,7 @@ const EditProfile: NextPage = () => {
                 <input
                   type="text"
                   {...register('socialLinks.telegram')}
-                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
                   placeholder="@yourusername"
                 />
               </div>

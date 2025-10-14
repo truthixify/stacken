@@ -13,22 +13,18 @@ const Footer: React.FC = () => {
           {/* Brand + Description */}
           <div className="col-span-1 lg:col-span-2 space-y-4">
             <Link href="/" className="flex items-center gap-2">
-          <div className="flex items-center gap-2">
-            <div className="relative w-8 h-8">
-              <Image
-                src={Logo}
-                alt="Stacken Logo"
-                className="object-contain"
-                priority
-              />
-            </div>
-            <span className="text-white text-base font-bold leading-tight cursor-pointer">
-              Stacken
-            </span>
-          </div>
-        </Link>
+              <div className="flex items-center gap-2">
+                <div className="relative w-8 h-8">
+                  <Image src={Logo} alt="Stacken Logo" className="object-contain" priority />
+                </div>
+                <span className="text-white text-base font-bold leading-tight cursor-pointer">
+                  Stacken
+                </span>
+              </div>
+            </Link>
             <p className="text-gray-400 max-w-lg">
-              Where builders meet bounties. Create missions, reward amazing work, and grow your community with transparent, blockchain-powered incentives.
+              Where builders meet bounties. Create missions, reward amazing work, and grow your
+              community with transparent, blockchain-powered incentives.
             </p>
             <div className="flex items-center gap-4 pt-2">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
@@ -48,7 +44,10 @@ const Footer: React.FC = () => {
             <h3 className="text-lg font-semibold mb-4">Start Building</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/campaigns" className="text-gray-400 hover:text-white transition-colors">
+                <Link
+                  href="/campaigns"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
                   Find Your Mission
                 </Link>
               </li>

@@ -4,9 +4,9 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X, LogOut } from 'lucide-react';
-import Avatar from 'boring-avatars';
 import { useAuth, useAccount } from '@micro-stacks/react';
 import useUserInfo from '../hooks/useUserInfo';
+import UserAvatar from './UserAvatar';
 import Logo from '../assets/stacken.svg';
 
 const truncateAddress = (address: string) =>
@@ -25,15 +25,14 @@ const Navbar: React.FC = () => {
 
   const handleConnect = () => {
     openAuthRequest({
-      onFinish: (payload) => console.log('Auth finished:', payload),
+      onFinish: payload => console.log('Auth finished:', payload),
       onCancel: () => console.log('Auth cancelled'),
     });
   };
 
   const handleSignOut = () => signOut();
 
-  const userLabel =
-    displayName || (stxAddress ? truncateAddress(stxAddress) : 'Wallet');
+  const userLabel = displayName || (stxAddress ? truncateAddress(stxAddress) : 'Wallet');
 
   return (
     <nav className="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-6xl px-4 py-4 rounded-2xl border border-[#FFCBAD40] bg-white/5 backdrop-blur-md shadow-[0_0_40px_rgba(255,255,255,0.25)_inset]">
@@ -42,12 +41,7 @@ const Navbar: React.FC = () => {
         <Link href="/" className="flex items-center gap-2">
           <div className="flex items-center gap-2">
             <div className="relative w-8 h-8">
-              <Image
-                src={Logo}
-                alt="Stacken Logo"
-                className="object-contain"
-                priority
-              />
+              <Image src={Logo} alt="Stacken Logo" className="object-contain" priority />
             </div>
             <span className="text-white text-base font-bold leading-tight cursor-pointer">
               Stacken
@@ -57,11 +51,20 @@ const Navbar: React.FC = () => {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-10">
-          <Link href="/campaigns" className="text-white text-sm font-medium hover:text-orange-400 transition">
+          <Link
+            href="/campaigns"
+            className="text-white text-sm font-medium hover:text-orange-400 transition"
+          >
             Discover Missions
           </Link>
-          <Link href="/leaderboard" className="text-white text-sm font-medium hover:text-orange-400 transition">
+          <Link
+            href="/leaderboard"
+            className="text-white text-sm font-medium hover:text-orange-400 transition"
+          >
             Top Builders
+          </Link>
+          <Link href="/about" className="text-gray-400 hover:text-white transition-colors">
+            Our Story
           </Link>
         </div>
 
@@ -71,28 +74,16 @@ const Navbar: React.FC = () => {
             <div className="relative">
               {/* Avatar + Dropdown Toggle */}
               <button
-                onClick={() => setIsDropdownOpen((prev) => !prev)}
+                onClick={() => setIsDropdownOpen(prev => !prev)}
                 className="flex items-center gap-2 px-3 py-2 rounded-lg hover:none transition"
               >
-                <div className="w-8 h-8 rounded-full overflow-hidden border border-gray-700">
-                  {userInfo?.avatar ? (
-                    <img
-                      src={userInfo.avatar}
-                      alt={displayName}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <Avatar
-                      size={32}
-                      name={stxAddress || displayName || 'anon'}
-                      variant="beam"
-                      colors={['#EA580C', '#FDBA74', '#F97316', '#FB923C', '#FED7AA']}
-                    />
-                  )}
-                </div>
-                <span className="hidden md:block text-white text-sm font-medium">
-                  {userLabel}
-                </span>
+                <UserAvatar
+                  userAddress={stxAddress || ''}
+                  avatar={userInfo?.avatar}
+                  displayName={displayName}
+                  size={32}
+                />
+                <span className="hidden md:block text-white text-sm font-medium">{userLabel}</span>
               </button>
 
               {/* Dropdown */}
@@ -104,11 +95,11 @@ const Navbar: React.FC = () => {
                 <div className="py-2">
                   <Link href={`/profile/${stxAddress || 'me'}`} className="block">
                     <div className="flex items-center gap-2 px-4 py-2 text-sm text-white/90 hover:none rounded-lg transition cursor-pointer">
-                      <Avatar
+                      <UserAvatar
+                        userAddress={stxAddress || ''}
+                        avatar={userInfo?.avatar}
+                        displayName={displayName}
                         size={24}
-                        name={stxAddress || displayName || 'anon'}
-                        variant="beam"
-                        colors={['#EA580C', '#FDBA74', '#F97316', '#FB923C', '#FED7AA']}
                       />
                       <span>My Profile</span>
                     </div>
@@ -142,7 +133,7 @@ const Navbar: React.FC = () => {
 
           {/* Mobile Menu Toggle */}
           <button
-            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            onClick={() => setIsMobileMenuOpen(prev => !prev)}
             className="md:hidden p-2 text-gray-300 hover:text-orange-400"
             aria-label="Toggle menu"
           >
@@ -166,6 +157,9 @@ const Navbar: React.FC = () => {
               className="text-white text-sm font-medium px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-orange-400 transition"
             >
               Top Builders
+            </Link>
+            <Link href="/about" className="text-gray-400 hover:text-white transition-colors">
+              Our Story
             </Link>
           </div>
         </div>

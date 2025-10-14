@@ -48,6 +48,9 @@ export interface IUser extends Document {
   createdCampaigns: string[];
   wonCampaigns: string[];
 
+  // Role and permissions
+  role: 'USER' | 'ADMIN';
+
   // Settings
   settings: {
     emailNotifications: boolean;
@@ -63,7 +66,7 @@ export interface IUser extends Document {
 
 const UserSchema = new Schema<IUser>(
   {
-    stacksAddress: { type: String, required: true, unique: true, index: true },
+    stacksAddress: { type: String, required: true, unique: true },
 
     username: { type: String, unique: true, sparse: true, maxlength: 50 },
     displayName: { type: String, maxlength: 100 },
@@ -104,6 +107,8 @@ const UserSchema = new Schema<IUser>(
     createdCampaigns: [{ type: Schema.Types.ObjectId, ref: 'Campaign' }],
     wonCampaigns: [{ type: Schema.Types.ObjectId, ref: 'Campaign' }],
 
+    role: { type: String, enum: ['USER', 'ADMIN'], default: 'USER' },
+
     settings: {
       emailNotifications: { type: Boolean, default: true },
       publicProfile: { type: Boolean, default: true },
@@ -117,8 +122,7 @@ const UserSchema = new Schema<IUser>(
   }
 );
 
-// Indexes
-UserSchema.index({ username: 1 });
+// Additional indexes (stacksAddress and username already have unique indexes)
 UserSchema.index({ totalPoints: -1 });
 UserSchema.index({ lastActiveAt: -1 });
 

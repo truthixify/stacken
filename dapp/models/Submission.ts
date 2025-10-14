@@ -31,8 +31,8 @@ export interface ISubmission extends Document {
 
 const SubmissionSchema = new Schema<ISubmission>(
   {
-    campaignId: { type: Schema.Types.ObjectId, ref: 'Campaign', required: true, index: true },
-    userAddress: { type: String, required: true, index: true },
+    campaignId: { type: Schema.Types.ObjectId, ref: 'Campaign', required: true },
+    userAddress: { type: String, required: true },
 
     submissionType: {
       type: String,
@@ -67,11 +67,10 @@ const SubmissionSchema = new Schema<ISubmission>(
 );
 
 // Indexes
-SubmissionSchema.index({ campaignId: 1, userAddress: 1 });
 SubmissionSchema.index({ status: 1 });
 SubmissionSchema.index({ submittedAt: -1 });
 
-// Ensure one submission per user per campaign
+// Ensure one submission per user per campaign (unique compound index)
 SubmissionSchema.index({ campaignId: 1, userAddress: 1 }, { unique: true });
 
 export default mongoose.models.Submission ||

@@ -20,55 +20,52 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 async function getUser(req: NextApiRequest, res: NextApiResponse, address: string) {
   try {
-    let user = await User.findOne({ stacksAddress: address })
-      .populate('participatedCampaigns', 'title status createdAt')
-      .populate('createdCampaigns', 'title status totalParticipants createdAt')
-      .lean();
+    if (!address) {
+      return res.status(400).json({ message: 'Missing address parameter' });
+    }
 
+    console.log('Fetching user for address:', address);
+
+    let user = await User.findOne({ stacksAddress: address }).lean();
+
+    // Create user if not found
     if (!user) {
-      // Create user if doesn't exist
+      console.log('User not found, creating new one...');
       const newUser = new User({
         stacksAddress: address,
         lastActiveAt: new Date(),
       });
       await newUser.save();
-
-      user = await User.findById(newUser._id)
-        .populate('participatedCampaigns', 'title status createdAt')
-        .populate('createdCampaigns', 'title status totalParticipants createdAt')
-        .lean();
+      user = newUser.toObject();
     }
 
-    if (!user) {
-      return res.status(500).json({ message: 'Failed to create or fetch user' });
-    }
-
-    // Get user recent submissions instead of activities
+    // Get recent submissions (safe — no population issues)
     const recentSubmissions = await Submission.find({ userAddress: address })
-      .populate('campaignId', 'title')
+      .select('campaignId submittedAt')
       .sort({ submittedAt: -1 })
       .limit(10)
       .lean();
 
-    // Get user statistics
+    // Compute stats safely
     const stats = {
-      totalCampaignsCreated: (user as any).createdCampaigns?.length || 0,
-      totalCampaignsParticipated: (user as any).participatedCampaigns?.length || 0,
-      totalPoints: (user as any).totalPoints || 0,
+      totalCampaignsCreated: Array.isArray(user.createdCampaigns)
+        ? user.createdCampaigns.length
+        : 0,
+      totalCampaignsParticipated: Array.isArray(user.participatedCampaigns)
+        ? user.participatedCampaigns.length
+        : 0,
+      totalPoints: user.totalPoints || 0,
       totalSubmissions: recentSubmissions.length,
-      achievements: (user as any).achievements || [],
+      achievements: user.achievements || [],
     };
 
-    res.status(200).json({
-      user: {
-        ...user,
-        stats,
-      },
+    return res.status(200).json({
+      user: { ...user, stats },
       recentSubmissions,
     });
-  } catch (error) {
-    console.error('Error fetching user:', error);
-    res.status(500).json({ message: 'Internal server error' });
+  } catch (error: any) {
+    console.error('Error fetching user:', error?.message || error);
+    return res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 }
 

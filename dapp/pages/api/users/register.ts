@@ -12,12 +12,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const { stacksAddress } = req.body;
 
-    if (!stacksAddress) {
-      return res.status(400).json({ message: 'Stacks address is required' });
+    if (!stacksAddress || typeof stacksAddress !== 'string' || stacksAddress.trim() === '') {
+      return res.status(400).json({ message: 'Valid Stacks address is required' });
     }
 
+    // Normalize the address
+    const normalizedAddress = stacksAddress.trim();
+
     // Check if user already exists
-    let user = await User.findOne({ stacksAddress });
+    let user = await User.findOne({ stacksAddress: normalizedAddress });
 
     if (user) {
       // User exists, just update last active time
@@ -28,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Create new user
     user = new User({
-      stacksAddress,
+      stacksAddress: normalizedAddress,
       totalPoints: 0,
       achievements: [],
       participatedCampaigns: [],
@@ -36,6 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       wonCampaigns: [],
       socialLinks: {},
       socialConnections: {},
+      role: 'USER',
       settings: {
         emailNotifications: true,
         publicProfile: true,
@@ -55,13 +59,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Handle duplicate key errors
     if (error.code === 11000) {
-      // User already exists, fetch and return
-      try {
-        const user = await User.findOne({ stacksAddress: req.body.stacksAddress });
-        return res.status(200).json({ user, message: 'User already registered' });
-      } catch (fetchError) {
-        return res.status(500).json({ message: 'Error fetching existing user' });
+      // Check which field caused the duplicate
+      if (error.keyPattern?.stacksAddress) {
+        // Stacks address duplicate - fetch and return existing user
+        try {
+          const user = await User.findOne({ stacksAddress: req.body.stacksAddress });
+          if (user) {
+            return res.status(200).json({ user, message: 'User already registered' });
+          }
+        } catch (fetchError) {
+          console.error('Error fetching existing user:', fetchError);
+        }
       }
+
+      // For other duplicate key errors or if fetch failed
+      return res.status(409).json({
+        message: 'User with this information already exists',
+        error: 'DUPLICATE_USER',
+      });
     }
 
     res.status(500).json({ message: 'Internal server error' });

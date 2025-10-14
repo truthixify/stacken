@@ -94,12 +94,12 @@ const SubmitToCampaign: NextPage = () => {
         const data = await response.json();
         setCampaign(data.campaign);
       } else {
-        toast.error('This mission doesn\'t exist or has ended');
+        toast.error("This mission doesn't exist or has ended");
         router.push('/campaigns');
       }
     } catch (error) {
       console.error('Error fetching campaign:', error);
-      toast.error('Couldn\'t load this mission — let\'s try again');
+      toast.error("Couldn't load this mission — let's try again");
     } finally {
       setLoading(false);
     }
@@ -158,7 +158,9 @@ const SubmitToCampaign: NextPage = () => {
         setHasSubmitted(true);
       } else {
         const error = await response.json();
-        toast.error(error.message || 'Submission failed — let\'s try that again', { id: loadingToast });
+        toast.error(error.message || "Submission failed — let's try that again", {
+          id: loadingToast,
+        });
       }
     } catch (error) {
       console.error('Error submitting:', error);
@@ -198,7 +200,9 @@ const SubmitToCampaign: NextPage = () => {
       <Layout title="Ready to Claim Your Reward?">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-200 mb-4">Link Your Stacks Wallet to Begin</h1>
+            <h1 className="text-2xl font-bold text-gray-200 mb-4">
+              Link Your Stacks Wallet to Begin
+            </h1>
             <p className="text-gray-200 mb-8">
               Connect your wallet to submit your work and claim your crypto rewards.
             </p>
@@ -232,9 +236,12 @@ const SubmitToCampaign: NextPage = () => {
       <Layout title="Mission Not Found">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-200 mb-4">Oops, This Mission Doesn't Exist</h1>
+            <h1 className="text-2xl font-bold text-gray-200 mb-4">
+              Oops, This Mission Doesn't Exist
+            </h1>
             <p className="text-gray-200 mb-8">
-              This bounty might have ended or been removed. Let's find you another mission to tackle.
+              This bounty might have ended or been removed. Let's find you another mission to
+              tackle.
             </p>
             <button
               onClick={() => router.push('/campaigns')}
@@ -256,7 +263,8 @@ const SubmitToCampaign: NextPage = () => {
             <CheckCircle className="mx-auto h-16 w-16 text-green-500 mb-4" />
             <h1 className="text-2xl font-bold text-gray-200 mb-4">Nice Work — You're All Set!</h1>
             <p className="text-gray-200 mb-8">
-              Your submission is live and under review. The mission creator will evaluate your work and distribute rewards soon.
+              Your submission is live and under review. The mission creator will evaluate your work
+              and distribute rewards soon.
             </p>
             <div className="flex space-x-4 justify-center">
               <button

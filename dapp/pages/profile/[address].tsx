@@ -13,6 +13,7 @@ import {
   Activity,
   TrendingUp,
 } from 'lucide-react';
+import UserAvatar from '../../components/UserAvatar';
 
 import type { NextPage, GetServerSidePropsContext } from 'next';
 
@@ -118,10 +119,10 @@ const ProfilePage: NextPage = () => {
           <div className="animate-pulse">
             <div className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-6 mb-6">
               <div className="flex items-center space-x-4">
-                <div className="w-20 h-20 bg-gray-200 rounded-full"></div>
+                <div className="w-20 h-20 bg-gray-700/20 rounded-full animate-pulse"></div>
                 <div className="flex-1">
-                  <div className="h-6 bg-gray-200 rounded w-1/3 mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                  <div className="h-6 bg-gray-700/20 rounded w-1/3 mb-2 animate-pulse"></div>
+                  <div className="h-4 bg-gray-700/20 rounded w-1/2 animate-pulse"></div>
                 </div>
               </div>
             </div>
@@ -162,17 +163,12 @@ const ProfilePage: NextPage = () => {
           <div className="flex items-start justify-between">
             <div className="flex items-center space-x-4">
               <div className="relative">
-                {profile.avatar ? (
-                  <img
-                    src={profile.avatar}
-                    alt={profile.displayName || profile.username || 'User'}
-                    className="w-20 h-20 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center">
-                    <User className="text-primary-600" size={32} />
-                  </div>
-                )}
+                <UserAvatar
+                  userAddress={profile.stacksAddress}
+                  avatar={profile.avatar}
+                  displayName={profile.displayName || profile.username}
+                  size={80}
+                />
               </div>
 
               <div className="flex-1">
@@ -275,7 +271,7 @@ const ProfilePage: NextPage = () => {
                 <Activity className="text-green-600" size={24} />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-200">Campaigns Joined</p>
+                <p className="text-sm font-medium text-gray-200">Missions Joined</p>
                 <p className="text-2xl font-bold text-gray-200">
                   {profile.stats?.totalCampaignsParticipated || 0}
                 </p>
@@ -289,7 +285,7 @@ const ProfilePage: NextPage = () => {
                 <Star className="text-purple-600" size={24} />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-200">Campaigns Created</p>
+                <p className="text-sm font-medium text-gray-200">Missions Created</p>
                 <p className="text-2xl font-bold text-gray-200">
                   {profile.stats?.totalCampaignsCreated || 0}
                 </p>

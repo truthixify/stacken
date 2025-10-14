@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
 import { getDehydratedStateFromSession } from '../common/session-helpers';
-import { Trophy, Medal, Award, TrendingUp, Users, Calendar, Star, Crown } from 'lucide-react';
+import { Trophy, Medal, Award, TrendingUp, Users, Star, Crown } from 'lucide-react';
+import UserAvatar from '../components/UserAvatar';
 
 import type { NextPage, GetServerSidePropsContext } from 'next';
 
@@ -216,21 +217,12 @@ const Leaderboard: NextPage = () => {
                     <div className="flex-shrink-0">{getRankIcon(user.rank)}</div>
 
                     <div className="flex-shrink-0">
-                      {user.avatar ? (
-                        <img
-                          src={user.avatar}
-                          alt={user.displayName || user.username || 'User'}
-                          className="w-16 h-16 rounded-full object-cover border-4 border-white shadow-lg"
-                        />
-                      ) : (
-                        <div className="w-16 h-16 rounded-full bg-primary-100 flex items-center justify-center border-4 border-white shadow-lg">
-                          <span className="text-primary-600 font-bold text-lg">
-                            {(user.displayName || user.username || user.stacksAddress)
-                              .charAt(0)
-                              .toUpperCase()}
-                          </span>
-                        </div>
-                      )}
+                      <UserAvatar
+                        userAddress={user.stacksAddress}
+                        avatar={user.avatar}
+                        displayName={user.displayName || user.username}
+                        size={64}
+                      />
                     </div>
 
                     <div className="flex-1 min-w-0">
@@ -279,21 +271,12 @@ const Leaderboard: NextPage = () => {
                     </div>
 
                     <div className="flex-shrink-0">
-                      {user.avatar ? (
-                        <img
-                          src={user.avatar}
-                          alt={user.displayName || user.username || 'User'}
-                          className="w-12 h-12 rounded-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center">
-                          <span className="text-primary-600 font-semibold">
-                            {(user.displayName || user.username || user.stacksAddress)
-                              .charAt(0)
-                              .toUpperCase()}
-                          </span>
-                        </div>
-                      )}
+                      <UserAvatar
+                        userAddress={user.stacksAddress}
+                        avatar={user.avatar}
+                        displayName={user.displayName || user.username}
+                        size={48}
+                      />
                     </div>
 
                     <div className="flex-1 min-w-0">

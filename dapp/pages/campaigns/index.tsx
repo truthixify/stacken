@@ -3,10 +3,10 @@ import Link from 'next/link';
 import { useAuth } from '@micro-stacks/react';
 import Layout from '../../components/Layout';
 import { Search, Calendar, Users, Star, ArrowRight } from 'lucide-react';
+import UserAvatar from '../../components/UserAvatar';
+import LikeButton from '../../components/LikeButton';
 import { getDehydratedStateFromSession } from '../../common/session-helpers';
-
-const stripHtml = (html: string) =>
-  html ? html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim() : '';
+import { stripHtml } from '../../lib/textUtils';
 
 import type { NextPage, GetServerSidePropsContext } from 'next';
 
@@ -30,6 +30,11 @@ interface Campaign {
   startTime: string;
   endTime: string;
   creatorAddress: string;
+  creator?: {
+    username?: string;
+    displayName?: string;
+    avatar?: string;
+  };
   imageUrl?: string;
 }
 
@@ -246,6 +251,31 @@ const CampaignsPage: NextPage = () => {
                   <div className="flex items-center text-sm text-white/50 mb-4">
                     <Calendar size={16} className="mr-1 text-white/40" />
                     <span>Ends {formatDate(campaign.endTime)}</span>
+                  </div>
+
+                  {/* Creator and Like */}
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-2">
+                      <UserAvatar
+                        userAddress={campaign.creatorAddress}
+                        avatar={campaign.creator?.avatar}
+                        displayName={campaign.creator?.displayName || campaign.creator?.username}
+                        size={24}
+                      />
+                      <span className="text-sm text-white/60">
+                        {campaign.creator?.displayName ||
+                          campaign.creator?.username ||
+                          `${campaign.creatorAddress.slice(0, 6)}...${campaign.creatorAddress.slice(
+                            -4
+                          )}`}
+                      </span>
+                    </div>
+                    <LikeButton
+                      targetType="CAMPAIGN"
+                      targetId={campaign._id}
+                      showCount={false}
+                      className="text-sm"
+                    />
                   </div>
 
                   <Link href={`/campaigns/${campaign._id}`}>

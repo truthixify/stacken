@@ -4,6 +4,7 @@ import { sessionOptions } from './session';
 
 import type { NextPageContext } from 'next';
 import type { GetServerSidePropsContext } from 'next/types';
+import type { NextApiRequest } from 'next';
 import type { IncomingMessage, ServerResponse } from 'http';
 
 export const getIronSession = (req: NextPageContext['req'], res: NextPageContext['res']) => {
@@ -21,4 +22,37 @@ export const getDehydratedStateFromSession = async (ctx: GetServerSidePropsConte
    * if someone is watching the data, they could gain access to it.
    */
   return dehydratedState ? cleanDehydratedState(dehydratedState) : null;
+};
+
+export const getSession = async (req: NextApiRequest) => {
+  try {
+    const session = await Iron.getIronSession(req, {} as ServerResponse, sessionOptions);
+    const dehydratedState = session.dehydratedState;
+
+    if (!dehydratedState) {
+      return null;
+    }
+
+    const parsed = JSON.parse(dehydratedState);
+
+    // Extract stxAddress from various possible locations in the session
+    const stxAddress =
+      parsed.stxAddress ||
+      parsed.accounts?.[0]?.address ||
+      parsed.userData?.profile?.stxAddress ||
+      parsed.userData?.identityAddress ||
+      null;
+
+    if (!stxAddress) {
+      return null;
+    }
+
+    return {
+      stxAddress,
+      ...parsed,
+    };
+  } catch (error) {
+    console.error('Error getting session:', error);
+    return null;
+  }
 };

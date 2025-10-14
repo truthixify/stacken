@@ -3,7 +3,7 @@ import { ClientProvider } from '@micro-stacks/react';
 import { useCallback, useEffect } from 'react';
 import { destroySession, saveSession } from '../common/fetchers';
 import { STACKS_NETWORK } from '../common/constants';
-import useAutoRegister from '../hooks/useAutoRegister';
+import { useAutoRegister } from '../hooks/useAutoRegister';
 import walletConfig from '../lib/wallet-config';
 
 import type { AppProps } from 'next/app';

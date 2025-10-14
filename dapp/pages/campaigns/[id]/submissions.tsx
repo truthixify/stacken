@@ -16,6 +16,8 @@ import {
   ExternalLink,
   User,
 } from 'lucide-react';
+import UserAvatar from '../../../components/UserAvatar';
+import LikeButton from '../../../components/LikeButton';
 
 import type { NextPage, GetServerSidePropsContext } from 'next';
 
@@ -320,17 +322,12 @@ const CampaignSubmissions: NextPage = () => {
               >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">
-                    {submission.user?.avatar ? (
-                      <img
-                        src={submission.user.avatar}
-                        alt={submission.user.displayName || submission.user.username || 'User'}
-                        className="w-10 h-10 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
-                        <User className="text-primary-600" size={20} />
-                      </div>
-                    )}
+                    <UserAvatar
+                      userAddress={submission.userAddress}
+                      avatar={submission.user?.avatar}
+                      displayName={submission.user?.displayName || submission.user?.username}
+                      size={40}
+                    />
                     <div>
                       <h3 className="font-semibold text-gray-200">
                         {submission.user?.displayName ||
@@ -387,6 +384,11 @@ const CampaignSubmissions: NextPage = () => {
                         <strong>Review:</strong> {submission.reviewNotes}
                       </div>
                     )}
+                    <LikeButton
+                      targetType="SUBMISSION"
+                      targetId={submission._id}
+                      showCount={true}
+                    />
                   </div>
 
                   {/* Creator Actions */}
