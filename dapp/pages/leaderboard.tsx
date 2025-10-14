@@ -105,7 +105,7 @@ const Leaderboard: NextPage = () => {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-200 mb-4">🏆 Leaderboard</h1>
           <p className="text-xl text-gray-200 max-w-2xl mx-auto">
-            See who's leading the pack in earning rewards and participating in campaigns
+            See who's leading the pack in earning rewards and participating in missions
           </p>
         </div>
 
@@ -145,7 +145,7 @@ const Leaderboard: NextPage = () => {
                 <Star className="text-purple-600" size={24} />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-200">Active Campaigns</p>
+                <p className="text-sm font-medium text-gray-200">Active Missions</p>
                 <p className="text-2xl font-bold text-gray-200">{stats.activeCampaigns}</p>
               </div>
             </div>
@@ -196,7 +196,7 @@ const Leaderboard: NextPage = () => {
               <Trophy className="mx-auto h-12 w-12 text-gray-400 mb-4" />
               <h3 className="text-lg font-medium text-gray-200 mb-2">No participants yet</h3>
               <p className="text-gray-200">
-                Be the first to participate in campaigns and earn points!
+                Be the first to participate in missions and earn points!
               </p>
             </div>
           ) : (
@@ -238,7 +238,7 @@ const Leaderboard: NextPage = () => {
                         {formatAddress(user.stacksAddress)}
                       </p>
                       <div className="flex items-center space-x-4 text-sm text-gray-200">
-                        <span>{user.campaignsParticipated} campaigns</span>
+                        <span>{user.campaignsParticipated} missions</span>
                         <span>{user.campaignsWon} wins</span>
                         <span>Last active {new Date(user.lastActiveAt).toLocaleDateString()}</span>
                       </div>
@@ -289,7 +289,7 @@ const Leaderboard: NextPage = () => {
                         )}
                       </div>
                       <div className="flex items-center space-x-3 text-sm text-gray-200">
-                        <span>{user.campaignsParticipated} campaigns</span>
+                        <span>{user.campaignsParticipated} missions</span>
                         <span>{user.campaignsWon} wins</span>
                       </div>
                     </div>
@@ -314,13 +314,13 @@ const Leaderboard: NextPage = () => {
               Ready to climb the leaderboard?
             </h3>
             <p className="text-gray-200 mb-6 max-w-2xl mx-auto">
-              Participate in campaigns, complete tasks, and earn points to see your name at the top!
+              Participate in missions, complete tasks, and earn points to see your name at the top!
             </p>
             <button
-              onClick={() => router.push('/campaigns')}
+              onClick={() => router.push('/missions')}
               className="bg-primary-600 text-white px-8 py-3 rounded-lg hover:bg-primary-700 transition-colors font-semibold"
             >
-              Browse Campaigns
+              Browse Missions
             </button>
           </div>
         </div>

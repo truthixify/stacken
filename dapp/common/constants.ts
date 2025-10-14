@@ -13,7 +13,7 @@ export const STACKS_NETWORK = (process.env.NEXT_PUBLIC_STACKS_NETWORK || 'testne
 export const CONTRACTS = {
   CAMPAIGN_MANAGER:
     process.env.NEXT_PUBLIC_CAMPAIGN_MANAGER_CONTRACT ||
-    'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.campaign-manager',
+    'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.mission-manager',
   POINTS:
     process.env.NEXT_PUBLIC_POINTS_CONTRACT || 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.points',
   MOCK_TOKEN:
@@ -38,7 +38,7 @@ export const ERROR_CODES = {
   CAMPAIGN_TOO_SHORT: 114,
 } as const;
 
-// Campaign duration constants
+// Mission duration constants
 export const MIN_CAMPAIGN_DURATION = 1008; // 7 days in blocks (144 blocks/day * 7 days)
 
 // Points error codes

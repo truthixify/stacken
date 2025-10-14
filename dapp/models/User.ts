@@ -43,10 +43,10 @@ export interface IUser extends Document {
   totalPoints: number;
   achievements: string[];
 
-  // Campaign participation
-  participatedCampaigns: string[];
-  createdCampaigns: string[];
-  wonCampaigns: string[];
+  // Mission participation
+  participatedMissions: string[];
+  createdMissions: string[];
+  wonMissions: string[];
 
   // Role and permissions
   role: 'USER' | 'ADMIN';
@@ -103,9 +103,9 @@ const UserSchema = new Schema<IUser>(
     totalPoints: { type: Number, default: 0 },
     achievements: [{ type: String }],
 
-    participatedCampaigns: [{ type: Schema.Types.ObjectId, ref: 'Campaign' }],
-    createdCampaigns: [{ type: Schema.Types.ObjectId, ref: 'Campaign' }],
-    wonCampaigns: [{ type: Schema.Types.ObjectId, ref: 'Campaign' }],
+    participatedMissions: [{ type: Schema.Types.ObjectId, ref: 'Mission' }],
+    createdMissions: [{ type: Schema.Types.ObjectId, ref: 'Mission' }],
+    wonMissions: [{ type: Schema.Types.ObjectId, ref: 'Mission' }],
 
     role: { type: String, enum: ['USER', 'ADMIN'], default: 'USER' },
 

@@ -17,19 +17,19 @@ const Docs: NextPage = () => {
   const sections = [
     {
       title: 'Getting Started',
-      description: 'Learn the basics of creating and participating in campaigns',
+      description: 'Learn the basics of creating and participating in missions',
       items: [
         { title: 'What is Stacken Rewards?', href: '#what-is-stacken' },
         { title: 'Connecting Your Wallet', href: '#connect-wallet' },
-        { title: 'Your First Campaign', href: '#first-campaign' },
+        { title: 'Your First Mission', href: '#first-mission' },
         { title: 'Earning Points', href: '#earning-points' },
       ],
     },
     {
-      title: 'Campaign Creation',
-      description: 'Comprehensive guide to creating effective reward campaigns',
+      title: 'Mission Creation',
+      description: 'Comprehensive guide to creating effective reward missions',
       items: [
-        { title: 'Campaign Types', href: '#campaign-types' },
+        { title: 'Mission Types', href: '#mission-types' },
         { title: 'Setting Up Activities', href: '#activities' },
         { title: 'Reward Distribution', href: '#rewards' },
         { title: 'Best Practices', href: '#best-practices' },
@@ -40,7 +40,7 @@ const Docs: NextPage = () => {
       description: 'Technical documentation for developers',
       items: [
         { title: 'Factory Contract', href: '#factory-contract' },
-        { title: 'Campaign Contract', href: '#campaign-contract' },
+        { title: 'Mission Contract', href: '#mission-contract' },
         { title: 'Points System', href: '#points-system' },
         { title: 'Integration Guide', href: '#integration' },
       ],
@@ -50,7 +50,7 @@ const Docs: NextPage = () => {
       description: 'REST API endpoints and usage examples',
       items: [
         { title: 'Authentication', href: '#api-auth' },
-        { title: 'Campaigns API', href: '#api-campaigns' },
+        { title: 'Missions API', href: '#api-missions' },
         { title: 'Users API', href: '#api-users' },
         { title: 'Activities API', href: '#api-activities' },
       ],
@@ -140,13 +140,13 @@ const Docs: NextPage = () => {
             <div className="prose max-w-none text-gray-700">
               <p>
                 Stacken Rewards is a decentralized platform built on the Stacks blockchain that
-                enables creators and communities to design, deploy, and manage reward campaigns. Our
+                enables creators and communities to design, deploy, and manage reward missions. Our
                 platform combines the security of Bitcoin with the flexibility of smart contracts to
                 create transparent and trustless reward distribution systems.
               </p>
               <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Key Features:</h3>
               <ul className="list-disc list-inside space-y-2">
-                <li>Create token-based or points-based reward campaigns</li>
+                <li>Create token-based or points-based reward missions</li>
                 <li>Automated reward distribution through smart contracts</li>
                 <li>Social media integration for community engagement</li>
                 <li>Transparent and verifiable reward tracking</li>
@@ -163,7 +163,7 @@ const Docs: NextPage = () => {
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Connecting Your Wallet</h2>
             <div className="prose max-w-none text-gray-700">
               <p>
-                To participate in campaigns or create your own, you'll need to connect a
+                To participate in missions or create your own, you'll need to connect a
                 Stacks-compatible wallet:
               </p>
               <ol className="list-decimal list-inside space-y-2 mt-4">
@@ -175,23 +175,23 @@ const Docs: NextPage = () => {
             </div>
           </section>
 
-          {/* Campaign Types */}
+          {/* Mission Types */}
           <section
-            id="campaign-types"
+            id="mission-types"
             className="bg-white rounded-lg shadow-sm border border-gray-200 p-8"
           >
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Campaign Types</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Mission Types</h2>
             <div className="prose max-w-none text-gray-700">
-              <h3 className="text-lg font-semibold text-gray-900 mb-3">Points Campaigns</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Points Missions</h3>
               <p>
-                Points campaigns reward participants with platform points that can be used for
-                leaderboards, achievements, and future token distributions. These campaigns are
+                Points missions reward participants with platform points that can be used for
+                leaderboards, achievements, and future token distributions. These missions are
                 ideal for community building and engagement.
               </p>
 
-              <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Token Campaigns</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Token Missions</h3>
               <p>
-                Token campaigns distribute actual cryptocurrency tokens to participants. Campaign
+                Token missions distribute actual cryptocurrency tokens to participants. Mission
                 creators must deposit tokens upfront, which are then distributed automatically based
                 on activity completion.
               </p>

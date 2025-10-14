@@ -28,7 +28,7 @@ const HomePage = () => {
 
   const handleGetStarted = () => {
     if (isSignedIn) {
-      router.push('/campaigns');
+      router.push('/missions');
     } else {
       openAuthRequest();
     }
@@ -246,7 +246,7 @@ const HomePage = () => {
                 <Button
                   variant="gradient"
                   size="lg"
-                  onClick={() => router.push('/campaigns/create')}
+                  onClick={() => router.push('/missions/create')}
                   className="text-lg px-8 py-4 h-auto"
                 >
                   Launch a Bounty
@@ -254,7 +254,7 @@ const HomePage = () => {
                 <Button
                   variant="outline"
                   size="lg"
-                  onClick={() => router.push('/campaigns')}
+                  onClick={() => router.push('/missions')}
                   className="text-lg px-8 py-4 h-auto border-gray-600 text-gray-300 hover:bg-gray-800"
                 >
                   Find Missions

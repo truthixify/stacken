@@ -5,8 +5,8 @@ authors = []
 telemetry = true
 cache_dir = './.cache'
 requirements = []
-[contracts.campaign-manager]
-path = 'contracts/campaign-manager.clar'
+[contracts.mission-manager]
+path = 'contracts/mission-manager.clar'
 clarity_version = 3
 epoch = 'latest'
 

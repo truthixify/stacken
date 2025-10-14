@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '../../lib/mongodb';
 import User from '../../models/User';
-import Campaign from '../../models/Campaign';
+import Mission from '../../models/Mission';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
@@ -35,18 +35,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       },
       {
         $lookup: {
-          from: 'campaigns',
-          localField: 'participatedCampaigns',
+          from: 'missions',
+          localField: 'participatedMissions',
           foreignField: '_id',
-          as: 'participatedCampaignDetails',
+          as: 'participatedMissionDetails',
         },
       },
       {
         $addFields: {
-          campaignsWon: {
+          missionsWon: {
             $size: {
               $filter: {
-                input: '$participatedCampaignDetails',
+                input: '$participatedMissionDetails',
                 cond: { $eq: ['$$this.status', 'COMPLETED'] },
               },
             },
@@ -61,8 +61,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           avatar: 1,
           bio: 1,
           totalPoints: 1,
-          campaignsParticipated: { $size: { $ifNull: ['$participatedCampaigns', []] } },
-          campaignsWon: 1,
+          missionsParticipated: { $size: { $ifNull: ['$participatedMissions', []] } },
+          missionsWon: 1,
           lastActiveAt: 1,
           createdAt: 1,
         },
@@ -83,7 +83,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Get additional stats
     const totalUsersCount = await User.countDocuments({ totalPoints: { $gt: 0 } });
-    const activeCampaignsCount = await Campaign.countDocuments({ status: 'ACTIVE' });
+    const activeMissionsCount = await Mission.countDocuments({ status: 'ACTIVE' });
     const totalPointsDistributed = await User.aggregate([
       { $group: { _id: null, total: { $sum: '$totalPoints' } } },
     ]);
@@ -94,7 +94,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       total: usersWithRank.length,
       stats: {
         totalUsers: totalUsersCount,
-        activeCampaigns: activeCampaignsCount,
+        activeMissions: activeMissionsCount,
         totalPointsDistributed: totalPointsDistributed[0]?.total || 0,
       },
     });

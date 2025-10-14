@@ -41,18 +41,18 @@ async function getUser(req: NextApiRequest, res: NextApiResponse, address: strin
 
     // Get recent submissions (safe — no population issues)
     const recentSubmissions = await Submission.find({ userAddress: address })
-      .select('campaignId submittedAt')
+      .select('missionId submittedAt')
       .sort({ submittedAt: -1 })
       .limit(10)
       .lean();
 
     // Compute stats safely
     const stats = {
-      totalCampaignsCreated: Array.isArray(user.createdCampaigns)
-        ? user.createdCampaigns.length
+      totalMissionsCreated: Array.isArray(user.createdMissions)
+        ? user.createdMissions.length
         : 0,
-      totalCampaignsParticipated: Array.isArray(user.participatedCampaigns)
-        ? user.participatedCampaigns.length
+      totalMissionsParticipated: Array.isArray(user.participatedMissions)
+        ? user.participatedMissions.length
         : 0,
       totalPoints: user.totalPoints || 0,
       totalSubmissions: recentSubmissions.length,

@@ -110,7 +110,7 @@ function updateDappEnv(addresses: Record<string, string>, network: string): bool
       let envVarName = contractName;
       if (contractName === 'MOCK-TOKEN') {
         envVarName = 'MOCK_TOKEN';
-      } else if (contractName === 'CAMPAIGN-MANAGER') {
+      } else if (contractName === 'MISSION-MANAGER') {
         envVarName = 'CAMPAIGN_MANAGER';
       }
       lines.push(`NEXT_PUBLIC_${envVarName}_CONTRACT=${address}`);

@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 export interface ILike extends Document {
   userAddress: string;
-  targetType: 'CAMPAIGN' | 'SUBMISSION';
+  targetType: 'MISSION' | 'SUBMISSION';
   targetId: mongoose.Types.ObjectId;
   createdAt: Date;
 }
@@ -12,7 +12,7 @@ const LikeSchema = new Schema<ILike>(
     userAddress: { type: String, required: true, index: true },
     targetType: {
       type: String,
-      enum: ['CAMPAIGN', 'SUBMISSION'],
+      enum: ['MISSION', 'SUBMISSION'],
       required: true,
     },
     targetId: { type: Schema.Types.ObjectId, required: true, index: true },

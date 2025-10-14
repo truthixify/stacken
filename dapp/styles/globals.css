@@ -182,14 +182,14 @@ All colors MUST be HSL.
   background-color: rgba(0, 0, 0, 0.05) !important;
 }
 
-/* Campaign Content Styles - Dark Theme */
-.campaign-content {
+/* Mission Content Styles - Dark Theme */
+.mission-content {
   font-size: 16px;
   line-height: 1.7;
   color: hsl(var(--foreground));
 }
 
-.campaign-content h1 {
+.mission-content h1 {
   font-size: 1.875rem;
   font-weight: 700;
   margin-top: 2rem;
@@ -197,7 +197,7 @@ All colors MUST be HSL.
   color: hsl(var(--foreground));
 }
 
-.campaign-content h2 {
+.mission-content h2 {
   font-size: 1.5rem;
   font-weight: 600;
   margin-top: 1.5rem;
@@ -205,7 +205,7 @@ All colors MUST be HSL.
   color: hsl(var(--foreground));
 }
 
-.campaign-content h3 {
+.mission-content h3 {
   font-size: 1.25rem;
   font-weight: 600;
   margin-top: 1.25rem;
@@ -213,38 +213,38 @@ All colors MUST be HSL.
   color: hsl(var(--muted-foreground));
 }
 
-.campaign-content p {
+.mission-content p {
   margin-bottom: 1rem;
 }
 
-.campaign-content ul,
-.campaign-content ol {
+.mission-content ul,
+.mission-content ol {
   margin-bottom: 1rem;
   padding-left: 1.5rem;
 }
 
-.campaign-content li {
+.mission-content li {
   margin-bottom: 0.5rem;
 }
 
-.campaign-content a {
+.mission-content a {
   color: hsl(var(--sidebar-primary));
   text-decoration: underline;
 }
 
-.campaign-content a:hover {
+.mission-content a:hover {
   color: hsl(var(--sidebar-ring));
 }
 
-.campaign-content strong {
+.mission-content strong {
   font-weight: 600;
 }
 
-.campaign-content em {
+.mission-content em {
   font-style: italic;
 }
 
-.campaign-content code {
+.mission-content code {
   background-color: hsl(var(--muted));
   color: hsl(var(--muted-foreground));
   padding: 0.125rem 0.25rem;
@@ -253,7 +253,7 @@ All colors MUST be HSL.
   font-size: 0.875rem;
 }
 
-.campaign-content pre {
+.mission-content pre {
   background-color: hsl(var(--muted));
   color: hsl(var(--muted-foreground));
   padding: 1rem;
@@ -262,7 +262,7 @@ All colors MUST be HSL.
   margin-bottom: 1rem;
 }
 
-.campaign-content blockquote {
+.mission-content blockquote {
   border-left: 4px solid hsl(var(--border));
   padding-left: 1rem;
   margin: 1rem 0;

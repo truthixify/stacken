@@ -8,7 +8,7 @@ interface LikeData {
   loading: boolean;
 }
 
-export const useLikes = (targetType: 'CAMPAIGN' | 'SUBMISSION', targetId: string) => {
+export const useLikes = (targetType: 'MISSION' | 'SUBMISSION', targetId: string) => {
   const { isSignedIn } = useAuth();
   const { stxAddress } = useAccount();
   const [likeData, setLikeData] = useState<LikeData>({
@@ -79,6 +79,7 @@ export const useLikes = (targetType: 'CAMPAIGN' | 'SUBMISSION', targetId: string
         body: JSON.stringify({
           targetType,
           targetId,
+          userAddress: stxAddress,
         }),
       });
 

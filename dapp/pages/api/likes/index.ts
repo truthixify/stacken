@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '../../../lib/mongodb';
 import Like from '../../../models/Like';
-import { getSession } from '../../../common/session-helpers';
+import mongoose from 'mongoose';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
@@ -17,28 +17,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 async function handleToggleLike(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const session = await getSession(req);
-    const userAddress = session?.stxAddress;
+    const { targetType, targetId, userAddress } = req.body;
 
     if (!userAddress) {
       return res.status(401).json({ message: 'Authentication required' });
     }
 
-    const { targetType, targetId } = req.body;
-
     if (!targetType || !targetId) {
       return res.status(400).json({ message: 'targetType and targetId are required' });
     }
 
-    if (!['CAMPAIGN', 'SUBMISSION'].includes(targetType)) {
+    if (!['MISSION', 'SUBMISSION'].includes(targetType)) {
       return res.status(400).json({ message: 'Invalid targetType' });
     }
+
+    // Validate ObjectId format
+    if (!mongoose.Types.ObjectId.isValid(targetId)) {
+      return res.status(400).json({ message: 'Invalid targetId format' });
+    }
+
+    // Convert targetId to ObjectId
+    const objectId = new mongoose.Types.ObjectId(targetId);
 
     // Check if like already exists
     const existingLike = await Like.findOne({
       userAddress,
       targetType,
-      targetId,
+      targetId: objectId,
     });
 
     if (existingLike) {
@@ -46,7 +51,7 @@ async function handleToggleLike(req: NextApiRequest, res: NextApiResponse) {
       await Like.deleteOne({ _id: existingLike._id });
 
       // Get updated count
-      const likeCount = await Like.countDocuments({ targetType, targetId });
+      const likeCount = await Like.countDocuments({ targetType, targetId: objectId });
 
       return res.status(200).json({
         liked: false,
@@ -58,11 +63,11 @@ async function handleToggleLike(req: NextApiRequest, res: NextApiResponse) {
       await Like.create({
         userAddress,
         targetType,
-        targetId,
+        targetId: objectId,
       });
 
       // Get updated count
-      const likeCount = await Like.countDocuments({ targetType, targetId });
+      const likeCount = await Like.countDocuments({ targetType, targetId: objectId });
 
       return res.status(200).json({
         liked: true,
@@ -90,8 +95,16 @@ async function handleGetLikes(req: NextApiRequest, res: NextApiResponse) {
       return res.status(400).json({ message: 'targetType and targetId are required' });
     }
 
+    // Validate ObjectId format
+    if (!mongoose.Types.ObjectId.isValid(targetId as string)) {
+      return res.status(400).json({ message: 'Invalid targetId format' });
+    }
+
+    // Convert targetId to ObjectId
+    const objectId = new mongoose.Types.ObjectId(targetId as string);
+
     // Get like count
-    const likeCount = await Like.countDocuments({ targetType, targetId });
+    const likeCount = await Like.countDocuments({ targetType, targetId: objectId });
 
     // Check if user has liked (if userAddress provided)
     let userHasLiked = false;
@@ -99,7 +112,7 @@ async function handleGetLikes(req: NextApiRequest, res: NextApiResponse) {
       const userLike = await Like.findOne({
         userAddress,
         targetType,
-        targetId,
+        targetId: objectId,
       });
       userHasLiked = !!userLike;
     }

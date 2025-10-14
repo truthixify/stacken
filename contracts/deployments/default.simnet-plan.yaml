@@ -69,9 +69,9 @@ plan:
             path: contracts/points.clar
             clarity-version: 3
         - emulated-contract-publish:
-            contract-name: campaign-manager
+            contract-name: mission-manager
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/campaign-manager.clar
+            path: contracts/mission-manager.clar
             clarity-version: 3
         - emulated-contract-publish:
             contract-name: mock-token

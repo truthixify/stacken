@@ -45,7 +45,7 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               <li>
                 <Link
-                  href="/campaigns"
+                  href="/missions"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Find Your Mission
@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
               </li>
               <li>
                 <Link
-                  href="/campaigns/create"
+                  href="/missions/create"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Post a Bounty

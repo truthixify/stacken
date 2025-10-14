@@ -24,7 +24,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   };
 }
 
-interface Campaign {
+interface Mission {
   _id: string;
   title: string;
   summary?: string;
@@ -41,7 +41,7 @@ interface Campaign {
 
 const AppPage: NextPage = () => {
   const { isSignedIn, openAuthRequest } = useAuth();
-  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [missions, setCampaigns] = useState<Mission[]>([]);
   const [stats, setStats] = useState({
     totalCampaigns: 0,
     totalUsers: 0,
@@ -55,11 +55,11 @@ const AppPage: NextPage = () => {
 
   const fetchFeaturedCampaigns = async () => {
     try {
-      const response = await fetch('/api/campaigns?limit=6');
+      const response = await fetch('/api/missions?limit=6');
       const data = await response.json();
-      setCampaigns(data.campaigns || []);
+      setCampaigns(data.missions || []);
     } catch (error) {
-      console.error('Error fetching campaigns:', error);
+      console.error('Error fetching missions:', error);
     }
   };
 
@@ -109,7 +109,7 @@ const AppPage: NextPage = () => {
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Connect Your Wallet</h2>
             <p className="text-gray-600 mb-6">
-              Connect your Stacks wallet to access campaigns, create rewards, and manage your
+              Connect your Stacks wallet to access missions, create rewards, and manage your
               community.
             </p>
             <button
@@ -137,13 +137,13 @@ const AppPage: NextPage = () => {
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to Stacken</h1>
             <p className="text-gray-600">
-              Create campaigns, reward your community, and track your impact
+              Create missions, reward your community, and track your impact
             </p>
           </div>
-          <Link href="/campaigns/create">
+          <Link href="/missions/create">
             <a className="mt-4 md:mt-0 bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors inline-flex items-center">
               <Plus className="mr-2" size={16} />
-              Create Campaign
+              Create Mission
             </a>
           </Link>
         </div>
@@ -157,7 +157,7 @@ const AppPage: NextPage = () => {
               </div>
               <div className="ml-4">
                 <h3 className="text-2xl font-bold text-gray-900">{stats.totalCampaigns}+</h3>
-                <p className="text-gray-600">Active Campaigns</p>
+                <p className="text-gray-600">Active Missions</p>
               </div>
             </div>
           </div>
@@ -189,16 +189,16 @@ const AppPage: NextPage = () => {
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <Link href="/campaigns/create">
+          <Link href="/missions/create">
             <a className="bg-primary-600 text-white p-4 rounded-lg hover:bg-primary-700 transition-colors text-center">
               <Plus className="mx-auto mb-2" size={24} />
-              <span className="block font-semibold">Create Campaign</span>
+              <span className="block font-semibold">Create Mission</span>
             </a>
           </Link>
-          <Link href="/campaigns">
+          <Link href="/missions">
             <a className="bg-white border border-gray-200 text-gray-900 p-4 rounded-lg hover:bg-gray-50 transition-colors text-center">
               <Trophy className="mx-auto mb-2" size={24} />
-              <span className="block font-semibold">Browse Campaigns</span>
+              <span className="block font-semibold">Browse Missions</span>
             </a>
           </Link>
           <Link href="/dashboard">
@@ -215,11 +215,11 @@ const AppPage: NextPage = () => {
           </Link>
         </div>
 
-        {/* Active Campaigns */}
+        {/* Active Missions */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">Active Campaigns</h2>
-            <Link href="/campaigns">
+            <h2 className="text-2xl font-bold text-gray-900">Active Missions</h2>
+            <Link href="/missions">
               <a className="text-primary-600 hover:text-primary-700 font-medium inline-flex items-center">
                 View All
                 <ArrowRight className="ml-1" size={16} />
@@ -227,32 +227,32 @@ const AppPage: NextPage = () => {
             </Link>
           </div>
 
-          {campaigns.length === 0 ? (
+          {missions.length === 0 ? (
             <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
               <Trophy className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No active campaigns</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No active missions</h3>
               <p className="text-gray-600 mb-4">
-                Be the first to create a campaign and start rewarding your community!
+                Be the first to create a mission and start rewarding your community!
               </p>
-              <Link href="/campaigns/create">
+              <Link href="/missions/create">
                 <a className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors inline-flex items-center">
                   <Plus className="mr-2" size={16} />
-                  Create Campaign
+                  Create Mission
                 </a>
               </Link>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {campaigns.map(campaign => (
+              {missions.map(mission => (
                 <div
-                  key={campaign._id}
+                  key={mission._id}
                   className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden card-hover"
                 >
-                  {campaign.imageUrl && (
+                  {mission.imageUrl && (
                     <div className="h-48 bg-gray-200">
                       <img
-                        src={campaign.imageUrl}
-                        alt={campaign.title}
+                        src={mission.imageUrl}
+                        alt={mission.title}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -261,39 +261,39 @@ const AppPage: NextPage = () => {
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-3">
                       <span className="bg-primary-100 text-primary-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
-                        {campaign.category}
+                        {mission.category}
                       </span>
                       <span
                         className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${getStatusColor(
-                          campaign.status
+                          mission.status
                         )}`}
                       >
-                        {campaign.status}
+                        {mission.status}
                       </span>
                     </div>
 
                     <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-1">
-                      {campaign.title}
+                      {mission.title}
                     </h3>
 
                     <p className="text-gray-600 mb-4 line-clamp-2">
-                      {campaign.summary || stripHtml(campaign.description)}
+                      {mission.summary || stripHtml(mission.description)}
                     </p>
 
                     <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
                       <div className="flex items-center">
                         <Users size={16} className="mr-1" />
-                        <span>{campaign.totalParticipants} participants</span>
+                        <span>{mission.totalParticipants} participants</span>
                       </div>
                       <div className="flex items-center">
                         <Star size={16} className="mr-1" />
-                        <span>{campaign.totalPoints} points</span>
+                        <span>{mission.totalPoints} points</span>
                       </div>
                     </div>
 
-                    <Link href={`/campaigns/${campaign._id}`}>
+                    <Link href={`/missions/${mission._id}`}>
                       <a className="w-full bg-primary-600 text-white py-2 px-4 rounded-lg hover:bg-primary-700 transition-colors text-center block">
-                        View Campaign
+                        View Mission
                       </a>
                     </Link>
                   </div>

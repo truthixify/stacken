@@ -3,7 +3,7 @@ import { Heart } from 'lucide-react';
 import { useLikes } from '../hooks/useLikes';
 
 interface LikeButtonProps {
-  targetType: 'CAMPAIGN' | 'SUBMISSION';
+  targetType: 'MISSION' | 'SUBMISSION';
   targetId: string;
   className?: string;
   showCount?: boolean;

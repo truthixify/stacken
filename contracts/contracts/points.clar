@@ -1,7 +1,7 @@
 ;; title: Points System
 ;; version: 1.0.0
-;; summary: On-chain points system for campaign rewards
-;; description: A simple points system that tracks user points for campaign rewards
+;; summary: On-chain points system for mission rewards
+;; description: A simple points system that tracks user points for mission rewards
 
 ;; constants
 (define-constant CONTRACT_OWNER tx-sender)

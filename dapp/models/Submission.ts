@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface ISubmission extends Document {
-  campaignId: mongoose.Types.ObjectId;
+  missionId: mongoose.Types.ObjectId;
   userAddress: string;
 
   // Submission content
@@ -31,7 +31,7 @@ export interface ISubmission extends Document {
 
 const SubmissionSchema = new Schema<ISubmission>(
   {
-    campaignId: { type: Schema.Types.ObjectId, ref: 'Campaign', required: true },
+    missionId: { type: Schema.Types.ObjectId, ref: 'Mission', required: true },
     userAddress: { type: String, required: true },
 
     submissionType: {
@@ -70,8 +70,8 @@ const SubmissionSchema = new Schema<ISubmission>(
 SubmissionSchema.index({ status: 1 });
 SubmissionSchema.index({ submittedAt: -1 });
 
-// Ensure one submission per user per campaign (unique compound index)
-SubmissionSchema.index({ campaignId: 1, userAddress: 1 }, { unique: true });
+// Ensure one submission per user per mission (unique compound index)
+SubmissionSchema.index({ missionId: 1, userAddress: 1 }, { unique: true });
 
 export default mongoose.models.Submission ||
   mongoose.model<ISubmission>('Submission', SubmissionSchema);

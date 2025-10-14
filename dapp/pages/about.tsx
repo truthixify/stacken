@@ -207,14 +207,14 @@ const About: NextPage = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="/campaigns"
+              href="/missions"
               className="bg-primary-600 text-white px-8 py-4 rounded-lg hover:bg-primary-700 transition-colors inline-flex items-center justify-center"
             >
               Find Your Next Mission
               <ArrowRight className="ml-2" size={20} />
             </a>
             <a
-              href="/campaigns/create"
+              href="/missions/create"
               className="border border-gray-300/20 text-white px-8 py-4 rounded-lg hover:bg-gray-300/20 hover:text-white transition-colors inline-flex items-center justify-center"
             >
               Launch a Bounty

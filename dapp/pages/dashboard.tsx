@@ -85,10 +85,10 @@ const Dashboard: NextPage = () => {
             <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard</h1>
             <p className="text-muted-foreground">Welcome back! Here's your activity overview.</p>
           </div>
-          <Link href="/campaigns/create">
+          <Link href="/missions/create">
             <a className="mt-4 md:mt-0 bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors inline-flex items-center">
               <Plus className="mr-2" size={16} />
-              Create Campaign
+              Create Mission
             </a>
           </Link>
         </div>
@@ -127,7 +127,7 @@ const Dashboard: NextPage = () => {
                 <Users className="text-blue-600" size={24} />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Campaigns Joined</p>
+                <p className="text-sm font-medium text-gray-600">Missions Joined</p>
                 <p className="text-2xl font-bold text-gray-900">
                   {stats.totalCampaignsParticipated}
                 </p>
@@ -141,7 +141,7 @@ const Dashboard: NextPage = () => {
                 <Calendar className="text-purple-600" size={24} />
               </div>
               <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">Campaigns Created</p>
+                <p className="text-sm font-medium text-gray-600">Missions Created</p>
                 <p className="text-2xl font-bold text-gray-900">{stats.totalCampaignsCreated}</p>
               </div>
             </div>
@@ -165,7 +165,7 @@ const Dashboard: NextPage = () => {
                       <div>
                         <p className="font-medium text-gray-900">{activity.activityName}</p>
                         <p className="text-sm text-gray-600">
-                          {activity.campaignId?.title || 'Campaign'}
+                          {activity.campaignId?.title || 'Mission'}
                         </p>
                       </div>
                       <div className="text-right">
@@ -183,9 +183,9 @@ const Dashboard: NextPage = () => {
                 <div className="text-center py-8">
                   <Star className="mx-auto h-12 w-12 text-gray-400 mb-4" />
                   <p className="text-gray-600">No activities yet</p>
-                  <Link href="/campaigns">
+                  <Link href="/missions">
                     <a className="text-primary-600 hover:text-primary-700 font-medium">
-                      Browse campaigns to get started
+                      Browse missions to get started
                     </a>
                   </Link>
                 </div>
@@ -193,11 +193,11 @@ const Dashboard: NextPage = () => {
             </div>
           </div>
 
-          {/* My Campaigns */}
+          {/* My Missions */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200">
             <div className="p-6 border-b border-gray-200 flex justify-between items-center">
-              <h2 className="text-lg font-semibold text-gray-900">My Campaigns</h2>
-              <Link href="/campaigns/create">
+              <h2 className="text-lg font-semibold text-gray-900">My Missions</h2>
+              <Link href="/missions/create">
                 <a className="text-primary-600 hover:text-primary-700 font-medium text-sm">
                   Create New
                 </a>
@@ -208,18 +208,18 @@ const Dashboard: NextPage = () => {
                 <div className="space-y-4">
                   {userData.user.createdCampaigns
                     .slice(0, 5)
-                    .map((campaign: any, index: number) => (
+                    .map((mission: any, index: number) => (
                       <div
                         key={index}
                         className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0"
                       >
                         <div>
-                          <p className="font-medium text-gray-900">{campaign.title}</p>
+                          <p className="font-medium text-gray-900">{mission.title}</p>
                           <p className="text-sm text-gray-600">
-                            {campaign.status} • {campaign.totalParticipants || 0} participants
+                            {mission.status} • {mission.totalParticipants || 0} participants
                           </p>
                         </div>
-                        <Link href={`/campaigns/${campaign._id}`}>
+                        <Link href={`/missions/${mission._id}`}>
                           <a className="text-primary-600 hover:text-primary-700">
                             <ArrowRight size={16} />
                           </a>
@@ -230,11 +230,11 @@ const Dashboard: NextPage = () => {
               ) : (
                 <div className="text-center py-8">
                   <Plus className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-                  <p className="text-gray-600 mb-2">No campaigns created yet</p>
-                  <Link href="/campaigns/create">
+                  <p className="text-gray-600 mb-2">No missions created yet</p>
+                  <Link href="/missions/create">
                     <a className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors inline-flex items-center">
                       <Plus className="mr-2" size={16} />
-                      Create Your First Campaign
+                      Create Your First Mission
                     </a>
                   </Link>
                 </div>

@@ -52,7 +52,7 @@ const Navbar: React.FC = () => {
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-10">
           <Link
-            href="/campaigns"
+            href="/missions"
             className="text-white text-sm font-medium hover:text-orange-400 transition"
           >
             Discover Missions
@@ -147,7 +147,7 @@ const Navbar: React.FC = () => {
         <div className="md:hidden mt-4 border-t border-gray-800 pt-3">
           <div className="flex flex-col gap-4">
             <Link
-              href="/campaigns"
+              href="/missions"
               className="text-white text-sm font-medium px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-orange-400 transition"
             >
               Discover Missions

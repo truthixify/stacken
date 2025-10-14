@@ -38,7 +38,7 @@ export const createCampaign = async (
   const txOptions = {
     contractAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
     contractName: CONTRACTS.CAMPAIGN_MANAGER.split('.')[1],
-    functionName: 'create-campaign',
+    functionName: 'create-mission',
     functionArgs: [
       stringUtf8CV(title),
       stringUtf8CV(description),
@@ -131,7 +131,7 @@ export const finalizeCampaign = async (senderKey: string, campaignId: number) =>
   const txOptions = {
     contractAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
     contractName: CONTRACTS.CAMPAIGN_MANAGER.split('.')[1],
-    functionName: 'finalize-campaign',
+    functionName: 'finalize-mission',
     functionArgs: [uintCV(campaignId)],
     senderKey,
     validateWithAbi: true,
@@ -151,7 +151,7 @@ export const getCampaignInfo = async (campaignId: number) => {
   const result = await callReadOnlyFunction({
     contractAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
     contractName: CONTRACTS.CAMPAIGN_MANAGER.split('.')[1],
-    functionName: 'get-campaign-info',
+    functionName: 'get-mission-info',
     functionArgs: [uintCV(campaignId)],
     network,
     senderAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
@@ -181,7 +181,7 @@ export const getCampaignCount = async () => {
   const result = await callReadOnlyFunction({
     contractAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
     contractName: CONTRACTS.CAMPAIGN_MANAGER.split('.')[1],
-    functionName: 'get-campaign-count',
+    functionName: 'get-mission-count',
     functionArgs: [],
     network,
     senderAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
@@ -196,7 +196,7 @@ export const isCampaignActive = async (campaignId: number) => {
   const result = await callReadOnlyFunction({
     contractAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
     contractName: CONTRACTS.CAMPAIGN_MANAGER.split('.')[1],
-    functionName: 'is-campaign-active',
+    functionName: 'is-mission-active',
     functionArgs: [uintCV(campaignId)],
     network,
     senderAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
