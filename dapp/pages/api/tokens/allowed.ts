@@ -76,7 +76,9 @@ async function removeAllowedToken(req: NextApiRequest, res: NextApiResponse) {
 
     // Only deployer can remove tokens
     if (!isDeployerAddress(userAddress)) {
-      return res.status(403).json({ message: 'Only the contract deployer can remove allowed tokens' });
+      return res
+        .status(403)
+        .json({ message: 'Only the contract deployer can remove allowed tokens' });
     }
 
     if (!contractAddress) {

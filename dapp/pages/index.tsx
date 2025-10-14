@@ -4,16 +4,7 @@ import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { useRouter } from 'next/router';
 import { useAuth } from '@micro-stacks/react';
-import {
-  Trophy,
-  Users,
-  Zap,
-  Target,
-  ArrowRight,
-  TrendingUp,
-  Award,
-  Coins,
-} from 'lucide-react';
+import { Trophy, Users, Zap, Target, ArrowRight, TrendingUp, Award, Coins } from 'lucide-react';
 
 const HomePage = () => {
   const router = useRouter();

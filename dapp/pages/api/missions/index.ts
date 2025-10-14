@@ -134,13 +134,13 @@ async function createmission(req: NextApiRequest, res: NextApiResponse) {
     // Validate token address if provided
     // TODO: Re-enable when AllowedToken schema is fixed
     // if (tokenAddress) {
-    //   const allowedToken = await AllowedToken.findOne({ 
-    //     contractAddress: tokenAddress, 
-    //     isActive: true 
+    //   const allowedToken = await AllowedToken.findOne({
+    //     contractAddress: tokenAddress,
+    //     isActive: true
     //   });
     //   if (!allowedToken) {
-    //     return res.status(400).json({ 
-    //       message: 'Selected token is not in the allowed tokens list' 
+    //     return res.status(400).json({
+    //       message: 'Selected token is not in the allowed tokens list'
     //     });
     //   }
     // }

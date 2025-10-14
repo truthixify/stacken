@@ -20,7 +20,7 @@ export const useAllowedTokens = () => {
       try {
         setLoading(true);
         const response = await fetch('/api/tokens/allowed');
-        
+
         if (response.ok) {
           const data = await response.json();
           setTokens(data.tokens || []);

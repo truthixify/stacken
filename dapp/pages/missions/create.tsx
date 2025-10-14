@@ -92,7 +92,7 @@ const CreateCampaign: NextPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [campaignType, setCampaignType] = useState<'TOKEN' | 'POINTS'>('TOKEN');
-  
+
   // Fetch allowed tokens
   const { tokens: allowedTokens, loading: tokensLoading } = useAllowedTokens();
 
@@ -409,10 +409,12 @@ const CreateCampaign: NextPage = () => {
 
         // Handle token argument based on selected token
         let tokenArg: any = noneCV(); // Default to none (STX)
-        
+
         if (data.selectedToken && allowedTokens.length > 0) {
           // Find the selected token to get the contract address
-          const selectedTokenData = allowedTokens.find(token => token.contractAddress === data.selectedToken);
+          const selectedTokenData = allowedTokens.find(
+            token => token.contractAddress === data.selectedToken
+          );
           if (selectedTokenData) {
             // Parse contract address (format: SP1ABC...XYZ.token-name)
             const [address, contractName] = selectedTokenData.contractAddress.split('.');
@@ -750,8 +752,8 @@ const CreateCampaign: NextPage = () => {
                   </div>
 
                   <p className="text-sm text-gray-400 mt-1">
-                    Spell out exactly what builders need to deliver, how you&apos;ll judge submissions,
-                    and any special requirements.
+                    Spell out exactly what builders need to deliver, how you&apos;ll judge
+                    submissions, and any special requirements.
                   </p>
                 </div>
 
@@ -785,7 +787,7 @@ const CreateCampaign: NextPage = () => {
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
                     >
                       <option value="">STX (Default)</option>
-                      {allowedTokens.map((token) => (
+                      {allowedTokens.map(token => (
                         <option key={token._id} value={token.contractAddress}>
                           {token.name} ({token.symbol})
                         </option>
