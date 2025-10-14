@@ -13,8 +13,8 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({
   children,
-  title = 'Stacken Rewards',
-  description = 'Decentralized reward campaigns on Stacks blockchain',
+  title = 'Stacken — Build, Earn, Repeat',
+  description = 'Join bounty missions on Stacks. Build amazing projects, earn crypto rewards, and grow with the community.',
 }) => {
   return (
     <>

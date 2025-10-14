@@ -28,8 +28,7 @@ const Footer: React.FC = () => {
           </div>
         </Link>
             <p className="text-gray-400 max-w-lg">
-              Decentralized reward campaigns on the Stacks blockchain. Create engaging campaigns,
-              reward your community, and build stronger connections.
+              Where builders meet bounties. Create missions, reward amazing work, and grow your community with transparent, blockchain-powered incentives.
             </p>
             <div className="flex items-center gap-4 pt-2">
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
@@ -46,11 +45,11 @@ const Footer: React.FC = () => {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+            <h3 className="text-lg font-semibold mb-4">Start Building</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/campaigns" className="text-gray-400 hover:text-white transition-colors">
-                  Browse Campaigns
+                  Find Your Mission
                 </Link>
               </li>
               <li>
@@ -58,7 +57,7 @@ const Footer: React.FC = () => {
                   href="/campaigns/create"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Create Campaign
+                  Post a Bounty
                 </Link>
               </li>
               <li>
@@ -66,12 +65,12 @@ const Footer: React.FC = () => {
                   href="/leaderboard"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Leaderboard
+                  Top Builders
                 </Link>
               </li>
               <li>
                 <Link href="/about" className="text-gray-400 hover:text-white transition-colors">
-                  About Us
+                  Our Story
                 </Link>
               </li>
             </ul>
@@ -79,21 +78,21 @@ const Footer: React.FC = () => {
 
           {/* Resources */}
           <div>
-            <h3 className="text-lg font-semibold mb-4">Resources</h3>
+            <h3 className="text-lg font-semibold mb-4">Need Help?</h3>
             <ul className="space-y-2">
               <li>
                 <Link href="/docs" className="text-gray-400 hover:text-white transition-colors">
-                  Documentation
+                  Builder Guides
                 </Link>
               </li>
               <li>
                 <Link href="/" className="text-gray-400 hover:text-white transition-colors">
-                  Support
+                  Get Support
                 </Link>
               </li>
               <li>
                 <Link href="/" className="text-gray-400 hover:text-white transition-colors">
-                  Privacy Policy
+                  Privacy & Terms
                 </Link>
               </li>
             </ul>
@@ -102,8 +101,8 @@ const Footer: React.FC = () => {
 
         {/* Bottom Section */}
         <div className="border-t border-gray-700 mt-12 pt-6 flex flex-col md:flex-row justify-between items-center text-gray-400 text-sm">
-          <p>© 2025 Stacken. Built on the Stacks blockchain.</p>
-          <p className="mt-2 md:mt-0">Made with ❤️ by StrawhatCrew for the Stacks community</p>
+          <p>© 2025 Stacken. Powered by Stacks blockchain.</p>
+          <p className="mt-2 md:mt-0">Built with ❤️ by StrawHatCrew for the builder community</p>
         </div>
       </div>
     </footer>

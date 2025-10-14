@@ -93,20 +93,20 @@ const CampaignsPage: NextPage = () => {
   };
 
   return (
-    <Layout title="Browse Campaigns - Stacken Rewards">
+    <Layout title="Discover Missions — Stacken">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 text-white">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Browse Campaigns</h1>
+            <h1 className="text-3xl font-bold mb-2">Discover Active Missions</h1>
             <p className="text-white/60">
-              Discover and join reward campaigns from the community
+              Find bounty challenges that match your skills and start earning crypto
             </p>
           </div>
           {isSignedIn && (
             <Link href="/campaigns/create">
               <a className="mt-4 md:mt-0 bg-orange-600 text-white px-6 py-3 rounded-xl hover:bg-orange-700 transition inline-flex items-center">
-                <span>Create Campaign</span>
+                <span>Launch a Bounty</span>
                 <ArrowRight className="ml-2" size={16} />
               </a>
             </Link>
@@ -125,7 +125,7 @@ const CampaignsPage: NextPage = () => {
                 />
                 <input
                   type="text"
-                  placeholder="Search campaigns..."
+                  placeholder="Search missions, creators, or bounty tags..."
                   value={searchTerm}
                   onChange={e => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-2 bg-gray-700/20 border border-white/10 rounded-lg text-white placeholder-white/40 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
@@ -139,7 +139,7 @@ const CampaignsPage: NextPage = () => {
               onChange={e => setSelectedCategory(e.target.value)}
               className="px-4 py-2 bg-gray-700/20 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
             >
-              <option value="">All Categories</option>
+              <option value="">All Mission Types</option>
               {categories.map(category => (
                 <option key={category} value={category}>
                   {category}
@@ -153,7 +153,7 @@ const CampaignsPage: NextPage = () => {
               onChange={e => setSelectedStatus(e.target.value)}
               className="px-4 py-2 bg-gray-700/20 border border-white/10 rounded-lg text-white focus:ring-2 focus:ring-orange-500 focus:border-transparent"
             >
-              <option value="">All Status</option>
+              <option value="">All Statuses</option>
               <option value="ACTIVE">Active</option>
               <option value="DRAFT">Draft</option>
               <option value="COMPLETED">Completed</option>
@@ -181,14 +181,14 @@ const CampaignsPage: NextPage = () => {
             <div className="w-24 h-24 bg-gray-700/20 border border-white/10 rounded-full flex items-center justify-center mx-auto mb-4">
               <Search className="text-white/40" size={32} />
             </div>
-            <h3 className="text-lg font-medium mb-2">No campaigns found</h3>
+            <h3 className="text-lg font-medium mb-2">No missions found</h3>
             <p className="text-white/50 mb-6">
-              Try adjusting your search criteria or create a new campaign.
+              Try different search terms or be the first to launch a bounty challenge.
             </p>
             {isSignedIn && (
               <Link href="/campaigns/create">
                 <a className="bg-orange-600 text-white px-6 py-3 rounded-xl hover:bg-orange-700 transition inline-flex items-center">
-                  Create Campaign
+                  Launch Your Bounty
                   <ArrowRight className="ml-2" size={16} />
                 </a>
               </Link>
@@ -235,11 +235,11 @@ const CampaignsPage: NextPage = () => {
                   <div className="flex items-center justify-between text-sm text-white/50 mb-4">
                     <div className="flex items-center">
                       <Users size={16} className="mr-1 text-white/40" />
-                      <span>{campaign.totalParticipants} participants</span>
+                      <span>{campaign.totalParticipants} builders joined</span>
                     </div>
                     <div className="flex items-center">
                       <Star size={16} className="mr-1 text-white/40" />
-                      <span>{campaign.totalPoints} points</span>
+                      <span>{campaign.totalPoints} reward pool</span>
                     </div>
                   </div>
 
@@ -250,7 +250,7 @@ const CampaignsPage: NextPage = () => {
 
                   <Link href={`/campaigns/${campaign._id}`}>
                     <a className="w-full bg-orange-600 text-white py-2 px-4 rounded-lg hover:bg-orange-700 transition text-center block">
-                      View Campaign
+                      Join Mission
                     </a>
                   </Link>
                 </div>

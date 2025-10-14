@@ -247,7 +247,7 @@ const CreateCampaign: NextPage = () => {
 
   const onSubmit = async (data: CampaignFormData) => {
     if (!isSignedIn || !stxAddress) {
-      toast.error('Please connect your wallet first');
+      toast.error('Link your Stacks wallet to launch bounties');
       return;
     }
 
@@ -256,7 +256,7 @@ const CreateCampaign: NextPage = () => {
       data.rewardDistribution.type === 'TIERED' &&
       (!data.rewardDistribution.tiers || data.rewardDistribution.tiers.length === 0)
     ) {
-      toast.error('Please add at least one tier for tiered rewards');
+      toast.error('Add at least one reward tier to continue');
       return;
     }
 
@@ -264,31 +264,31 @@ const CreateCampaign: NextPage = () => {
       const totalPercentage =
         data.rewardDistribution.tiers?.reduce((sum, tier) => sum + tier.percentage, 0) || 0;
       if (totalPercentage !== 100) {
-        toast.error('Tier percentages must add up to 100%');
+        toast.error('Reward percentages must total 100%');
         return;
       }
     }
 
     setLoading(true);
-    const loadingToast = toast.loading('Preparing campaign...');
+    const loadingToast = toast.loading('Launching your bounty mission...');
 
     try {
       let imageUrl = data.imageUrl;
 
       // Upload image if file is selected
       if (imageFile) {
-        toast.loading('Uploading image...', { id: loadingToast });
+        toast.loading('Uploading your mission image...', { id: loadingToast });
         try {
           imageUrl = await uploadImage(imageFile);
         } catch (error) {
-          toast.error('Failed to upload image. Please try again.', { id: loadingToast });
+          toast.error('Image upload failed — let\'s try that again', { id: loadingToast });
           setLoading(false);
           return;
         }
       }
 
       // First create campaign on smart contract
-      toast.loading('Publishing to blockchain...', { id: loadingToast });
+      toast.loading('Publishing to Stacks blockchain...', { id: loadingToast });
 
       let campaignId: string | null = null;
 
@@ -355,7 +355,7 @@ const CreateCampaign: NextPage = () => {
             ],
             onFinish: async (txData: any) => {
               console.log('Transaction finished:', txData);
-              toast.loading('Saving campaign...', { id: loadingToast });
+              toast.loading('Finalizing your mission...', { id: loadingToast });
 
               try {
                 // Generate campaign address (contract address + campaign ID)
@@ -384,7 +384,7 @@ const CreateCampaign: NextPage = () => {
                 const result = await response.json();
                 campaignId = result.campaign._id;
 
-                toast.success('Campaign created and published successfully!', { id: loadingToast });
+                toast.success('Mission launched! Your bounty is live and ready for builders.', { id: loadingToast });
                 router.push(`/campaigns/${campaignId}`);
               } catch (dbError: any) {
                 console.error('Database save error:', dbError);
@@ -407,7 +407,7 @@ const CreateCampaign: NextPage = () => {
             },
             onCancel: () => {
               console.log('Transaction cancelled');
-              toast.error('Transaction cancelled.', { id: loadingToast });
+              toast.error('Transaction cancelled — no worries, try again when ready', { id: loadingToast });
               setLoading(false);
             },
           });
@@ -444,18 +444,18 @@ const CreateCampaign: NextPage = () => {
   }
 
   const steps = [
-    { number: 1, title: 'Basic Info', description: 'Campaign details and settings' },
-    { number: 2, title: 'Rewards', description: 'Configure reward distribution' },
-    { number: 3, title: 'Review', description: 'Review and publish' },
+    { number: 1, title: 'Mission Details', description: 'Set up your bounty challenge' },
+    { number: 2, title: 'Reward Pool', description: 'Configure how builders get paid' },
+    { number: 3, title: 'Launch', description: 'Review and go live' },
   ];
 
   return (
-    <Layout title="Create Campaign - Stacken Rewards">
+    <Layout title="Launch Your Bounty — Stacken">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-200 mb-2">Create New Campaign</h1>
-          <p className="text-gray-200">Set up a reward campaign to engage your community</p>
+          <h1 className="text-3xl font-bold text-gray-200 mb-2">Launch Your Bounty Mission</h1>
+          <p className="text-gray-200">Create challenges, set rewards, and watch builders create amazing work</p>
         </div>
 
         {/* Progress Steps */}
@@ -498,18 +498,18 @@ const CreateCampaign: NextPage = () => {
           {/* Step 1: Basic Info */}
           {currentStep === 1 && (
             <div className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-6">
-              <h2 className="text-xl font-semibold text-gray-200 mb-6">Campaign Information</h2>
+              <h2 className="text-xl font-semibold text-gray-200 mb-6">Mission Details</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-200 mb-2">
-                    Campaign Title *
+                    Mission Title *
                   </label>
                   <input
                     type="text"
                     {...register('title', { required: 'Title is required' })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
-                    placeholder="Enter campaign title"
+                    placeholder="Build a DeFi dashboard, Create viral content, Fix critical bugs..."
                   />
                   {errors.title && (
                     <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
@@ -518,25 +518,25 @@ const CreateCampaign: NextPage = () => {
 
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-200 mb-2">
-                    Campaign Summary *
+                    Mission Summary *
                   </label>
                   <textarea
                     {...register('summary', { required: 'Summary is required' })}
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
-                    placeholder="Brief summary of your campaign (shown on campaign cards)"
+                    placeholder="What challenge are you posting? Keep it short and exciting..."
                   />
                   {errors.summary && (
                     <p className="text-red-500 text-sm mt-1">{errors.summary.message}</p>
                   )}
                   <p className="text-sm text-gray-400 mt-1">
-                    This will be displayed on campaign cards and listings
+                    This hook will appear on mission cards — make it compelling!
                   </p>
                 </div>
 
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-200 mb-2">
-                    Campaign Description & Instructions *
+                    Mission Brief & Requirements *
                   </label>
                   <div className="border border-gray-300 rounded-lg overflow-hidden">
                     <ReactQuill
@@ -575,18 +575,17 @@ const CreateCampaign: NextPage = () => {
                   </div>
 
                   <p className="text-sm text-gray-400 mt-1">
-                    Provide comprehensive details about your campaign, what participants need to do,
-                    submission requirements, evaluation criteria, etc.
+                    Spell out exactly what builders need to deliver, how you'll judge submissions, and any special requirements.
                   </p>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-200 mb-2">Category *</label>
+                  <label className="block text-sm font-medium text-gray-200 mb-2">Mission Type *</label>
                   <select
                     {...register('category', { required: 'Category is required' })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500 text-gray-500"
                   >
-                    <option value="">Select category</option>
+                    <option value="">What kind of work is this?</option>
                     {categories.map(category => (
                       <option key={category} value={category}>
                         {category}
@@ -600,20 +599,20 @@ const CreateCampaign: NextPage = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-200 mb-2">
-                    Token Contract Address (Optional)
+                    Custom Token Contract (Optional)
                   </label>
                   <input
                     type="text"
                     {...register('tokenAddress')}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
-                    placeholder="SP1ABC...XYZ.token-name (leave empty for points only)"
+                    placeholder="SP1ABC...XYZ.token-name (or leave empty for STX rewards)"
                   />
-                  <p className="text-sm text-gray-400 mt-1">Leave empty for points-only campaign</p>
+                  <p className="text-sm text-gray-400 mt-1">Want to pay in your own token? Add the contract address here</p>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-200 mb-2">
-                    Token Amount (Optional)
+                    Token Reward Amount (Optional)
                   </label>
                   <input
                     type="number"
@@ -622,13 +621,13 @@ const CreateCampaign: NextPage = () => {
                     placeholder="1000"
                   />
                   <p className="text-sm text-gray-400 mt-1">
-                    Amount of tokens to distribute (0 for points only)
+                    How many tokens will you distribute? (Leave 0 for points-only missions)
                   </p>
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-200 mb-2">
-                    Total Points Pool *
+                    Total Reward Pool *
                   </label>
                   <input
                     type="number"
@@ -640,13 +639,13 @@ const CreateCampaign: NextPage = () => {
                     <p className="text-red-500 text-sm mt-1">{errors.totalPoints.message}</p>
                   )}
                   <p className="text-sm text-gray-400 mt-1">
-                    Total points available for distribution
+                    Total points to distribute among winners
                   </p>
                 </div>
 
                 <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-200 mb-2">
-                    Campaign Image
+                    Mission Cover Image
                   </label>
                   <div className="flex items-center space-x-4">
                     <div className="flex-1">
@@ -663,7 +662,7 @@ const CreateCampaign: NextPage = () => {
                       >
                         <Upload className="mr-2 h-5 w-5 text-gray-400" />
                         <span className="text-gray-200">
-                          {imageFile ? imageFile.name : 'Click to upload image'}
+                          {imageFile ? imageFile.name : 'Add a cover image to grab attention'}
                         </span>
                       </label>
                     </div>
@@ -678,7 +677,7 @@ const CreateCampaign: NextPage = () => {
                     )}
                   </div>
                   <p className="text-sm text-gray-400 mt-1">
-                    Upload an image to represent your campaign (optional)
+                    A great image helps builders understand your mission at a glance
                   </p>
                 </div>
 

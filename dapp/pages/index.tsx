@@ -37,37 +37,37 @@ const HomePage = () => {
   const features = [
     {
       icon: <Trophy className="h-8 w-8 text-orange-600" />,
-      title: 'Reward Campaigns',
+      title: 'Bounty Missions',
       description:
-        'Create and participate in decentralized reward campaigns with transparent token distribution.',
+        'Launch challenges and tackle projects with transparent crypto rewards locked in smart contracts.',
     },
     {
       icon: <Users className="h-8 w-8 text-orange-600" />,
-      title: 'Community Driven',
-      description: 'Build engaged communities through gamified experiences and meaningful rewards.',
+      title: 'Builder Community',
+      description: 'Join thousands of creators, developers, and innovators earning rewards for great work.',
     },
     {
       icon: <Zap className="h-8 w-8 text-orange-600" />,
-      title: 'Instant Rewards',
+      title: 'Instant Payouts',
       description:
-        'Earn points and tokens instantly for completing tasks and contributing to campaigns.',
+        'Get paid in crypto the moment your work is approved — no waiting, no middlemen.',
     },
     {
       icon: <Target className="h-8 w-8 text-orange-600" />,
-      title: 'Smart Targeting',
-      description: 'Advanced campaign targeting ensures your rewards reach the right audience.',
+      title: 'Perfect Matches',
+      description: 'Smart matching connects the right builders with the right missions every time.',
     },
   ];
 
   const stats = [
-    { label: 'Active Campaigns', value: '150+', icon: <TrendingUp className="h-5 w-5" /> },
-    { label: 'Community Members', value: '10K+', icon: <Users className="h-5 w-5" /> },
-    { label: 'Points Distributed', value: '1M+', icon: <Coins className="h-5 w-5" /> },
+    { label: 'Active Missions', value: '150+', icon: <TrendingUp className="h-5 w-5" /> },
+    { label: 'Builders Joined', value: '10K+', icon: <Users className="h-5 w-5" /> },
+    { label: 'Rewards Distributed', value: '1M+', icon: <Coins className="h-5 w-5" /> },
     { label: 'Success Rate', value: '98%', icon: <Award className="h-5 w-5" /> },
   ];
 
   return (
-    <Layout title="Stacken Rewards - Decentralized Reward Campaigns">
+    <Layout title="Stacken — Where Builders Meet Bounties">
       <div className="min-h-screen">
         {/* Hero Section */}
         <section className="relative overflow-hidden">
@@ -80,12 +80,11 @@ const HomePage = () => {
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
             <div className="text-center">
               <h1 className="text-4xl font-bold bg-gradient-to-b from-white to-orange-600 bg-clip-text text-transparent mb-8">
-                Turn Social Media Into a<p>Decentralized Adventure</p>
+                Where Builders Meet Bounties<p>and Great Work Gets Rewarded</p>
               </h1>
 
               <p className="text-xl md:text-2xl text-gray-400 mb-8 max-w-3xl mx-auto leading-relaxed">
-                Create reward campaigns, engage communities, and distribute tokens seamlessly on the
-                Stacks blockchain.
+                Launch bounty missions, showcase your skills, and earn crypto rewards on the most trusted blockchain — all powered by Stacks.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -97,9 +96,9 @@ const HomePage = () => {
                 >
                   {mounted
                     ? isSignedIn
-                      ? 'Browse Campaigns'
-                      : 'Connect Wallet'
-                    : 'Connect Wallet'}
+                      ? 'Find Your Mission'
+                      : 'Start Building Today'
+                    : 'Start Building Today'}
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button
@@ -108,7 +107,7 @@ const HomePage = () => {
                   onClick={() => router.push('/leaderboard')}
                   className="text-lg px-8 py-4 h-auto border-gray-600 text-gray-300 hover:bg-gray-800"
                 >
-                  View Leaderboard
+                  See Top Builders
                 </Button>
               </div>
             </div>
@@ -136,10 +135,9 @@ const HomePage = () => {
         <section className="py-20">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">How Stacken Works</h2>
+              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Why Builders Choose Stacken</h2>
               <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-                Every campaign is a new opportunity. Your participation today could earn you rewards
-                tomorrow.
+                Every mission is a chance to showcase your skills, earn crypto, and build something amazing with the community.
               </p>
             </div>
 
@@ -167,12 +165,12 @@ const HomePage = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
               <div>
                 <h3 className="text-3xl md:text-4xl font-bold text-white mb-12">
-                  Simple Steps to Get Started
+                  Ready to Start Earning?
                 </h3>
 
                 <div className="relative">
                   {/* Vertical connector line */}
-                  <div className="absolute left-5 top-0 bottom-0 w-px bg-gradient-to-b from-orange-500/60 via-orange-600/30 to-transparent" />
+                  <div className="absolute left-5 top-0 bottom-0 w-1 -translate-x-1/2 bg-gradient-to-b from-orange-500/60 via-gray-400/30 to-transparent" />
 
                   <div className="space-y-12 relative">
                     {/* Step 1 */}
@@ -182,10 +180,10 @@ const HomePage = () => {
                       </div>
                       <div>
                         <h4 className="text-xl font-semibold text-white mb-2">
-                          Connect Your Wallet
+                          Link Your Stacks Wallet
                         </h4>
                         <p className="text-gray-400">
-                          Connect your Stacks wallet to start participating in campaigns.
+                          Connect your wallet in seconds and join the builder community.
                         </p>
                       </div>
                     </div>
@@ -196,9 +194,9 @@ const HomePage = () => {
                         2
                       </div>
                       <div>
-                        <h4 className="text-xl font-semibold text-white mb-2">Join Campaigns</h4>
+                        <h4 className="text-xl font-semibold text-white mb-2">Find Your Mission</h4>
                         <p className="text-gray-400">
-                          Browse active campaigns and submit your work to earn rewards.
+                          Browse active bounties and pick challenges that match your skills.
                         </p>
                       </div>
                     </div>
@@ -209,9 +207,9 @@ const HomePage = () => {
                         3
                       </div>
                       <div>
-                        <h4 className="text-xl font-semibold text-white mb-2">Earn Rewards</h4>
+                        <h4 className="text-xl font-semibold text-white mb-2">Get Paid in Crypto</h4>
                         <p className="text-gray-400">
-                          Get points and tokens for your contributions and climb the leaderboard.
+                          Submit amazing work, get approved, and watch crypto rewards hit your wallet.
                         </p>
                       </div>
                     </div>
@@ -227,10 +225,10 @@ const HomePage = () => {
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <div className="bg-gradient-to-r from-gray-500/10 to-gray-700/20 rounded-2xl p-12 border border-gray-600/20">
               <h3 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                Start Your Reward Journey Today
+                Ready to Build Something Amazing?
               </h3>
               <p className="text-xl text-gray-400 mb-8">
-                Create campaigns, engage communities, and earn rewards on the decentralized web.
+                Join thousands of builders earning crypto for their skills. Launch bounties, tackle challenges, and get rewarded.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
@@ -239,7 +237,7 @@ const HomePage = () => {
                   onClick={() => router.push('/campaigns/create')}
                   className="text-lg px-8 py-4 h-auto"
                 >
-                  Create Campaign
+                  Launch a Bounty
                 </Button>
                 <Button
                   variant="outline"
@@ -247,7 +245,7 @@ const HomePage = () => {
                   onClick={() => router.push('/campaigns')}
                   className="text-lg px-8 py-4 h-auto border-gray-600 text-gray-300 hover:bg-gray-800"
                 >
-                  Explore Campaigns
+                  Find Missions
                 </Button>
               </div>
             </div>

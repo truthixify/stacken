@@ -107,7 +107,7 @@ const CampaignDetail: NextPage = () => {
 
   const completeActivity = async (activityId: string) => {
     if (!isSignedIn || !stxAddress) {
-      toast.error('Please connect your wallet to participate');
+      toast.error('Link your Stacks wallet to join this mission');
       return;
     }
 
@@ -133,16 +133,16 @@ const CampaignDetail: NextPage = () => {
 
       if (response.ok) {
         setCompletedActivities([...completedActivities, activityId]);
-        toast.success('Activity completed! Points will be awarded after verification.', {
+        toast.success('Nice! Your work is submitted and rewards are coming your way.', {
           id: loadingToast,
         });
       } else {
         const error = await response.json();
-        toast.error(error.message || 'Failed to complete activity', { id: loadingToast });
+        toast.error(error.message || 'Oops, something went wrong. Let\'s try that again.', { id: loadingToast });
       }
     } catch (error) {
       console.error('Error completing activity:', error);
-      toast.error('Failed to complete activity. Please try again.', { id: loadingToast });
+      toast.error('Something broke on our end. Give it another shot!', { id: loadingToast });
     } finally {
       setCompletingActivity(null);
     }
@@ -550,10 +550,10 @@ const CampaignDetail: NextPage = () => {
             {isSignedIn && stxAddress !== campaign.creatorAddress && (
               <div className="bg-primary-50 border border-primary-200 rounded-lg p-6">
                 <h3 className="text-lg font-semibold text-primary-900 mb-2">
-                  Ready to Participate?
+                  Ready to Build?
                 </h3>
                 <p className="text-primary-700 mb-4">
-                  Submit your work and earn up to {campaign.totalPoints} points!
+                  Submit your work and claim up to {campaign.totalPoints} reward points!
                 </p>
                 <div className="space-y-3">
                   <button
@@ -566,7 +566,7 @@ const CampaignDetail: NextPage = () => {
                     onClick={() => router.push(`/campaigns/${id}/submissions`)}
                     className="w-full border border-primary-600 text-primary-600 py-2 px-4 rounded-lg hover:bg-primary-50 transition-colors font-medium"
                   >
-                    View All Submissions
+                    See All Submissions
                   </button>
                 </div>
               </div>
@@ -575,9 +575,9 @@ const CampaignDetail: NextPage = () => {
             {/* Join Campaign CTA for non-signed users */}
             {!isSignedIn && (
               <div className="bg-primary-50 border border-primary-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-primary-900 mb-2">Join the Campaign</h3>
+                <h3 className="text-lg font-semibold text-primary-900 mb-2">Join the Mission</h3>
                 <p className="text-primary-700 mb-4">
-                  Connect your wallet to participate and earn rewards!
+                  Link your Stacks wallet to start building and earning crypto rewards!
                 </p>
                 <button
                   onClick={() => {
@@ -585,7 +585,7 @@ const CampaignDetail: NextPage = () => {
                   }}
                   className="w-full bg-primary-600 text-white py-2 px-4 rounded-lg hover:bg-primary-700 transition-colors"
                 >
-                  Connect Wallet
+                  Link Your Stacks Wallet
                 </button>
               </div>
             )}

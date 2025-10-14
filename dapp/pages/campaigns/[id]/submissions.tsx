@@ -297,10 +297,10 @@ const CampaignSubmissions: NextPage = () => {
           {submissions.length === 0 ? (
             <div className="text-center py-12">
               <FileText className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-              <h3 className="text-lg font-medium text-gray-200 mb-2">No submissions found</h3>
+              <h3 className="text-lg font-medium text-gray-200 mb-2">No submissions yet</h3>
               <p className="text-gray-200 mb-6">
                 {filter === 'ALL'
-                  ? 'No one has submitted to this campaign yet.'
+                  ? 'This mission is waiting for its first builder to step up.'
                   : `No submissions with status "${filter.toLowerCase().replace('_', ' ')}" found.`}
               </p>
               {isSignedIn && stxAddress !== campaign?.creatorAddress && (
@@ -308,7 +308,7 @@ const CampaignSubmissions: NextPage = () => {
                   onClick={() => router.push(`/campaigns/${id}/submit`)}
                   className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
                 >
-                  Be the First to Submit
+                  Be the First Builder
                 </button>
               )}
             </div>
@@ -422,7 +422,7 @@ const CampaignSubmissions: NextPage = () => {
             onClick={() => router.push(`/campaigns/${id}`)}
             className="border border-gray-600/20 text-gray-200 px-6 py-3 rounded-lg hover:bg-gray-600/20 transition-colors"
           >
-            Back to Campaign
+            Back to Mission
           </button>
         </div>
       </div>

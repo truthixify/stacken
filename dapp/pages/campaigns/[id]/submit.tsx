@@ -94,12 +94,12 @@ const SubmitToCampaign: NextPage = () => {
         const data = await response.json();
         setCampaign(data.campaign);
       } else {
-        toast.error('Campaign not found');
+        toast.error('This mission doesn\'t exist or has ended');
         router.push('/campaigns');
       }
     } catch (error) {
       console.error('Error fetching campaign:', error);
-      toast.error('Failed to load campaign');
+      toast.error('Couldn\'t load this mission — let\'s try again');
     } finally {
       setLoading(false);
     }
@@ -124,12 +124,12 @@ const SubmitToCampaign: NextPage = () => {
 
   const onSubmit = async (data: SubmissionFormData) => {
     if (!isSignedIn || !stxAddress) {
-      toast.error('Please connect your wallet first');
+      toast.error('Link your Stacks wallet to claim rewards');
       return;
     }
 
     setSubmitting(true);
-    const loadingToast = toast.loading('Submitting...');
+    const loadingToast = toast.loading('Submitting your work...');
 
     try {
       const submissionData = {
@@ -158,11 +158,11 @@ const SubmitToCampaign: NextPage = () => {
         setHasSubmitted(true);
       } else {
         const error = await response.json();
-        toast.error(error.message || 'Failed to submit', { id: loadingToast });
+        toast.error(error.message || 'Submission failed — let\'s try that again', { id: loadingToast });
       }
     } catch (error) {
       console.error('Error submitting:', error);
-      toast.error('Failed to submit. Please try again.', { id: loadingToast });
+      toast.error('Oops, something broke. Give it another shot!', { id: loadingToast });
     } finally {
       setSubmitting(false);
     }
@@ -195,18 +195,18 @@ const SubmitToCampaign: NextPage = () => {
 
   if (!isSignedIn) {
     return (
-      <Layout title="Submit to Campaign">
+      <Layout title="Ready to Claim Your Reward?">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-200 mb-4">Connect Your Wallet</h1>
+            <h1 className="text-2xl font-bold text-gray-200 mb-4">Link Your Stacks Wallet to Begin</h1>
             <p className="text-gray-200 mb-8">
-              You need to connect your wallet to submit to campaigns.
+              Connect your wallet to submit your work and claim your crypto rewards.
             </p>
             <button
               onClick={() => router.push(`/campaigns/${id}`)}
               className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
             >
-              Back to Campaign
+              Back to Mission
             </button>
           </div>
         </div>
@@ -216,7 +216,7 @@ const SubmitToCampaign: NextPage = () => {
 
   if (loading) {
     return (
-      <Layout title="Loading...">
+      <Layout title="Loading Your Mission...">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
@@ -229,18 +229,18 @@ const SubmitToCampaign: NextPage = () => {
 
   if (!campaign) {
     return (
-      <Layout title="Campaign Not Found">
+      <Layout title="Mission Not Found">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-200 mb-4">Campaign Not Found</h1>
+            <h1 className="text-2xl font-bold text-gray-200 mb-4">Oops, This Mission Doesn't Exist</h1>
             <p className="text-gray-200 mb-8">
-              The campaign you're trying to submit to doesn't exist.
+              This bounty might have ended or been removed. Let's find you another mission to tackle.
             </p>
             <button
               onClick={() => router.push('/campaigns')}
               className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
             >
-              Browse Campaigns
+              Discover Active Missions
             </button>
           </div>
         </div>
@@ -254,23 +254,22 @@ const SubmitToCampaign: NextPage = () => {
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
             <CheckCircle className="mx-auto h-16 w-16 text-green-500 mb-4" />
-            <h1 className="text-2xl font-bold text-gray-200 mb-4">Submission Complete!</h1>
+            <h1 className="text-2xl font-bold text-gray-200 mb-4">Nice Work — You're All Set!</h1>
             <p className="text-gray-200 mb-8">
-              You have already submitted to this campaign. Your submission is being reviewed by the
-              campaign creator.
+              Your submission is live and under review. The mission creator will evaluate your work and distribute rewards soon.
             </p>
             <div className="flex space-x-4 justify-center">
               <button
                 onClick={() => router.push(`/campaigns/${id}`)}
                 className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
               >
-                Back to Campaign
+                Back to Mission
               </button>
               <button
                 onClick={() => router.push(`/campaigns/${id}/submissions`)}
                 className="border border-gray-600/20 text-gray-200 px-6 py-3 rounded-lg hover:bg-gray-600/20 transition-colors"
               >
-                View Submissions
+                See All Submissions
               </button>
             </div>
           </div>

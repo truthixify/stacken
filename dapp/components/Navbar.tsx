@@ -58,10 +58,10 @@ const Navbar: React.FC = () => {
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-10">
           <Link href="/campaigns" className="text-white text-sm font-medium hover:text-orange-400 transition">
-            Browse Campaigns
+            Discover Missions
           </Link>
           <Link href="/leaderboard" className="text-white text-sm font-medium hover:text-orange-400 transition">
-            View Leaderboard
+            Top Builders
           </Link>
         </div>
 
@@ -110,7 +110,7 @@ const Navbar: React.FC = () => {
                         variant="beam"
                         colors={['#EA580C', '#FDBA74', '#F97316', '#FB923C', '#FED7AA']}
                       />
-                      <span>Profile</span>
+                      <span>My Profile</span>
                     </div>
                   </Link>
                   <hr className="border-white/20 my-1" />
@@ -119,7 +119,7 @@ const Navbar: React.FC = () => {
                     className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-red-900/20 rounded-lg transition"
                   >
                     <LogOut size={14} />
-                    <span>Sign Out</span>
+                    <span>Disconnect</span>
                   </button>
                 </div>
               </div>
@@ -159,13 +159,13 @@ const Navbar: React.FC = () => {
               href="/campaigns"
               className="text-white text-sm font-medium px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-orange-400 transition"
             >
-              Browse Campaigns
+              Discover Missions
             </Link>
             <Link
               href="/leaderboard"
               className="text-white text-sm font-medium px-3 py-2 rounded-lg hover:bg-gray-800 hover:text-orange-400 transition"
             >
-              View Leaderboard
+              Top Builders
             </Link>
           </div>
         </div>
