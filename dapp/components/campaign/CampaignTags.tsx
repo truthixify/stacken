@@ -9,13 +9,7 @@ interface Props {
   removeTag: (tag: string) => void;
 }
 
-const CampaignTags: React.FC<Props> = ({
-  tags,
-  newTag,
-  setNewTag,
-  addTag,
-  removeTag
-}) => {
+const CampaignTags: React.FC<Props> = ({ tags, newTag, setNewTag, addTag, removeTag }) => {
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault();
@@ -25,10 +19,8 @@ const CampaignTags: React.FC<Props> = ({
 
   return (
     <div>
-      <label className="block text-sm font-medium text-gray-700 mb-3">
-        Tags (Optional)
-      </label>
-      
+      <label className="block text-sm font-medium text-gray-700 mb-3">Tags (Optional)</label>
+
       {/* Existing Tags */}
       {tags.length > 0 && (
         <div className="flex flex-wrap gap-2 mb-3">
@@ -55,7 +47,7 @@ const CampaignTags: React.FC<Props> = ({
         <input
           type="text"
           value={newTag}
-          onChange={(e) => setNewTag(e.target.value)}
+          onChange={e => setNewTag(e.target.value)}
           onKeyPress={handleKeyPress}
           placeholder="Add a tag"
           className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -69,10 +61,8 @@ const CampaignTags: React.FC<Props> = ({
           <Plus size={16} />
         </button>
       </div>
-      
-      <p className="text-sm text-gray-500 mt-1">
-        Add tags to help users discover your campaign
-      </p>
+
+      <p className="text-sm text-gray-500 mt-1">Add tags to help users discover your campaign</p>
     </div>
   );
 };

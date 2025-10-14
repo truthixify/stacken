@@ -5,13 +5,20 @@ export const APP_URL =
     : 'https://stacken-rewards.vercel.app';
 
 // Stacks Network Configuration
-export const STACKS_NETWORK = (process.env.NEXT_PUBLIC_STACKS_NETWORK || 'testnet') as 'testnet' | 'mainnet';
+export const STACKS_NETWORK = (process.env.NEXT_PUBLIC_STACKS_NETWORK || 'testnet') as
+  | 'testnet'
+  | 'mainnet';
 
 // Contract Addresses
 export const CONTRACTS = {
-  CAMPAIGN_MANAGER: process.env.NEXT_PUBLIC_CAMPAIGN_MANAGER_CONTRACT || 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.campaign-manager',
-  POINTS: process.env.NEXT_PUBLIC_POINTS_CONTRACT || 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.points',
-  MOCK_TOKEN: process.env.NEXT_PUBLIC_MOCK_TOKEN_CONTRACT || 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.mock-token',
+  CAMPAIGN_MANAGER:
+    process.env.NEXT_PUBLIC_CAMPAIGN_MANAGER_CONTRACT ||
+    'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.campaign-manager',
+  POINTS:
+    process.env.NEXT_PUBLIC_POINTS_CONTRACT || 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.points',
+  MOCK_TOKEN:
+    process.env.NEXT_PUBLIC_MOCK_TOKEN_CONTRACT ||
+    'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.mock-token',
 };
 
 // Error Codes from contracts

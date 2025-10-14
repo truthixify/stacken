@@ -60,27 +60,45 @@ const EditCampaign: NextPage = () => {
   const [initialLoading, setInitialLoading] = useState(true);
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState('');
-  const [taskLinks, setTaskLinks] = useState<Array<{
-    title: string;
-    url: string;
-    type: 'GITHUB' | 'TWITTER' | 'DISCORD' | 'WEBSITE' | 'DOCUMENT' | 'OTHER';
-    required: boolean;
-    description?: string;
-  }>>([]);
+  const [taskLinks, setTaskLinks] = useState<
+    Array<{
+      title: string;
+      url: string;
+      type: 'GITHUB' | 'TWITTER' | 'DISCORD' | 'WEBSITE' | 'DOCUMENT' | 'OTHER';
+      required: boolean;
+      description?: string;
+    }>
+  >([]);
   const [details, setDetails] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
 
-  const { register, handleSubmit, watch, setValue, formState: { errors }, reset } = useForm<CampaignFormData>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+    reset,
+  } = useForm<CampaignFormData>();
 
-  const categories = ['DeFi', 'NFT', 'Gaming', 'Social', 'Education', 'Community', 'Marketing', 'Other'];
+  const categories = [
+    'DeFi',
+    'NFT',
+    'Gaming',
+    'Social',
+    'Education',
+    'Community',
+    'Marketing',
+    'Other',
+  ];
 
   useEffect(() => {
     if (!isSignedIn) {
       router.push('/');
       return;
     }
-    
+
     if (id) {
       fetchCampaign();
     }
@@ -92,14 +110,14 @@ const EditCampaign: NextPage = () => {
       if (response.ok) {
         const data = await response.json();
         const campaign = data.campaign;
-        
+
         // Check if user is the creator
         if (campaign.creatorAddress !== stxAddress) {
           toast.error('You can only edit campaigns you created');
           router.push(`/campaigns/${id}`);
           return;
         }
-        
+
         // Populate form with existing data
         reset({
           title: campaign.title,
@@ -109,14 +127,13 @@ const EditCampaign: NextPage = () => {
           totalPoints: campaign.totalPoints,
           startTime: new Date(campaign.startTime).toISOString().slice(0, 16),
           endTime: new Date(campaign.endTime).toISOString().slice(0, 16),
-          socialLinks: campaign.socialLinks || {}
+          socialLinks: campaign.socialLinks || {},
         });
-        
+
         setDetails(campaign.details || campaign.description || '');
         setTags(campaign.tags || []);
         setTaskLinks(campaign.taskLinks || []);
         setImagePreview(campaign.imageUrl || '');
-        
       } else {
         toast.error('Campaign not found');
         router.push('/campaigns');
@@ -135,7 +152,7 @@ const EditCampaign: NextPage = () => {
     if (file) {
       setImageFile(file);
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         setImagePreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
@@ -145,17 +162,17 @@ const EditCampaign: NextPage = () => {
   const uploadImage = async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append('file', file);
-    
+
     try {
       const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
       });
-      
+
       if (!response.ok) {
         throw new Error('Upload failed');
       }
-      
+
       const data = await response.json();
       return data.url;
     } catch (error) {
@@ -185,7 +202,7 @@ const EditCampaign: NextPage = () => {
       url: '',
       type: 'OTHER' as const,
       required: false,
-      description: ''
+      description: '',
     };
     const updatedLinks = [...taskLinks, newLink];
     setTaskLinks(updatedLinks);
@@ -213,17 +230,19 @@ const EditCampaign: NextPage = () => {
 
     setLoading(true);
     const loadingToast = toast.loading('Updating campaign...');
-    
+
     try {
       let imageUrl = data.imageUrl || imagePreview;
-      
+
       // Upload image if file is selected
       if (imageFile) {
         toast.loading('Uploading image...', { id: loadingToast });
         try {
           imageUrl = await uploadImage(imageFile);
         } catch (error) {
-          toast.error('Failed to upload image. Continuing with existing image.', { id: loadingToast });
+          toast.error('Failed to upload image. Continuing with existing image.', {
+            id: loadingToast,
+          });
         }
       }
 
@@ -235,7 +254,7 @@ const EditCampaign: NextPage = () => {
         details,
         imageUrl,
         description: details, // Use details as description for API compatibility
-        userAddress: stxAddress // Add user address for authorization
+        userAddress: stxAddress, // Add user address for authorization
       };
 
       const response = await fetch(`/api/campaigns/${id}`, {
@@ -301,7 +320,7 @@ const EditCampaign: NextPage = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
             <h2 className="text-xl font-semibold text-gray-900 mb-6">Campaign Information</h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -313,7 +332,9 @@ const EditCampaign: NextPage = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="Enter campaign title"
                 />
-                {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>}
+                {errors.title && (
+                  <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
+                )}
               </div>
 
               <div className="md:col-span-2">
@@ -323,22 +344,29 @@ const EditCampaign: NextPage = () => {
                 <div className="border border-gray-300 rounded-lg">
                   <ReactQuill
                     value={details}
-                    onChange={(value) => {
+                    onChange={value => {
                       setDetails(value);
                       setValue('details', value);
                     }}
                     modules={{
                       toolbar: [
-                        [{ 'header': [1, 2, 3, false] }],
+                        [{ header: [1, 2, 3, false] }],
                         ['bold', 'italic', 'underline', 'strike'],
-                        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                        [{ list: 'ordered' }, { list: 'bullet' }],
                         ['link', 'code-block'],
-                        ['clean']
+                        ['clean'],
                       ],
                     }}
                     formats={[
-                      'header', 'bold', 'italic', 'underline', 'strike',
-                      'list', 'bullet', 'link', 'code-block'
+                      'header',
+                      'bold',
+                      'italic',
+                      'underline',
+                      'strike',
+                      'list',
+                      'bullet',
+                      'link',
+                      'code-block',
                     ]}
                     placeholder="Describe your campaign, provide detailed instructions, requirements, and guidelines for participants."
                     style={{ minHeight: '250px' }}
@@ -347,19 +375,21 @@ const EditCampaign: NextPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Category *
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Category *</label>
                 <select
                   {...register('category', { required: 'Category is required' })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 >
                   <option value="">Select category</option>
                   {categories.map(category => (
-                    <option key={category} value={category}>{category}</option>
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
                   ))}
                 </select>
-                {errors.category && <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>}
+                {errors.category && (
+                  <p className="text-red-500 text-sm mt-1">{errors.category.message}</p>
+                )}
               </div>
 
               <div>
@@ -372,7 +402,9 @@ const EditCampaign: NextPage = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="1000"
                 />
-                {errors.totalPoints && <p className="text-red-500 text-sm mt-1">{errors.totalPoints.message}</p>}
+                {errors.totalPoints && (
+                  <p className="text-red-500 text-sm mt-1">{errors.totalPoints.message}</p>
+                )}
               </div>
 
               <div className="md:col-span-2">
@@ -411,37 +443,38 @@ const EditCampaign: NextPage = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Start Date *
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Start Date *</label>
                 <input
                   type="datetime-local"
                   {...register('startTime', { required: 'Start time is required' })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 />
-                {errors.startTime && <p className="text-red-500 text-sm mt-1">{errors.startTime.message}</p>}
+                {errors.startTime && (
+                  <p className="text-red-500 text-sm mt-1">{errors.startTime.message}</p>
+                )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  End Date *
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">End Date *</label>
                 <input
                   type="datetime-local"
                   {...register('endTime', { required: 'End time is required' })}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 />
-                {errors.endTime && <p className="text-red-500 text-sm mt-1">{errors.endTime.message}</p>}
+                {errors.endTime && (
+                  <p className="text-red-500 text-sm mt-1">{errors.endTime.message}</p>
+                )}
               </div>
 
               {/* Tags */}
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Tags
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
                 <div className="flex flex-wrap gap-2 mb-2">
                   {tags.map((tag, index) => (
-                    <span key={index} className="bg-primary-100 text-primary-800 px-3 py-1 rounded-full text-sm flex items-center">
+                    <span
+                      key={index}
+                      className="bg-primary-100 text-primary-800 px-3 py-1 rounded-full text-sm flex items-center"
+                    >
                       {tag}
                       <button
                         type="button"
@@ -457,8 +490,8 @@ const EditCampaign: NextPage = () => {
                   <input
                     type="text"
                     value={newTag}
-                    onChange={(e) => setNewTag(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
+                    onChange={e => setNewTag(e.target.value)}
+                    onKeyPress={e => e.key === 'Enter' && (e.preventDefault(), addTag())}
                     className="flex-1 px-3 py-2 border border-gray-300 rounded-l-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder="Add a tag"
                   />

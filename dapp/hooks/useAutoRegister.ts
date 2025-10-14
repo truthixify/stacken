@@ -16,7 +16,7 @@ export const useAutoRegister = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            stacksAddress: stxAddress
+            stacksAddress: stxAddress,
           }),
         });
 

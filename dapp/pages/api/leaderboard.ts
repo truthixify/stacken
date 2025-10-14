@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Build match conditions based on timeframe
     let matchConditions: any = {
-      totalPoints: { $gt: 0 } // Only users with points
+      totalPoints: { $gt: 0 }, // Only users with points
     };
 
     if (timeframe === 'month') {
@@ -31,15 +31,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Execute aggregation with better projection
     const users = await User.aggregate([
       {
-        $match: matchConditions
+        $match: matchConditions,
       },
       {
         $lookup: {
           from: 'campaigns',
           localField: 'participatedCampaigns',
           foreignField: '_id',
-          as: 'participatedCampaignDetails'
-        }
+          as: 'participatedCampaignDetails',
+        },
       },
       {
         $addFields: {
@@ -47,11 +47,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             $size: {
               $filter: {
                 input: '$participatedCampaignDetails',
-                cond: { $eq: ['$$this.status', 'COMPLETED'] }
-              }
-            }
-          }
-        }
+                cond: { $eq: ['$$this.status', 'COMPLETED'] },
+              },
+            },
+          },
+        },
       },
       {
         $project: {
@@ -64,28 +64,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           campaignsParticipated: { $size: { $ifNull: ['$participatedCampaigns', []] } },
           campaignsWon: 1,
           lastActiveAt: 1,
-          createdAt: 1
-        }
+          createdAt: 1,
+        },
       },
       {
-        $sort: { totalPoints: -1, lastActiveAt: -1 }
+        $sort: { totalPoints: -1, lastActiveAt: -1 },
       },
       {
-        $limit: Number(limit)
-      }
+        $limit: Number(limit),
+      },
     ]);
 
     // Add rank manually since MongoDB aggregation for ranking is complex
     const usersWithRank = users.map((user, index) => ({
       ...user,
-      rank: index + 1
+      rank: index + 1,
     }));
 
     // Get additional stats
     const totalUsersCount = await User.countDocuments({ totalPoints: { $gt: 0 } });
     const activeCampaignsCount = await Campaign.countDocuments({ status: 'ACTIVE' });
     const totalPointsDistributed = await User.aggregate([
-      { $group: { _id: null, total: { $sum: '$totalPoints' } } }
+      { $group: { _id: null, total: { $sum: '$totalPoints' } } },
     ]);
 
     res.status(200).json({
@@ -95,10 +95,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       stats: {
         totalUsers: totalUsersCount,
         activeCampaigns: activeCampaignsCount,
-        totalPointsDistributed: totalPointsDistributed[0]?.total || 0
-      }
+        totalPointsDistributed: totalPointsDistributed[0]?.total || 0,
+      },
     });
-
   } catch (error) {
     console.error('Error fetching leaderboard:', error);
     res.status(500).json({ message: 'Internal server error' });

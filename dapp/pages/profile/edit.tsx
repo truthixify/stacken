@@ -40,7 +40,12 @@ const EditProfile: NextPage = () => {
   const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [avatarPreview, setAvatarPreview] = useState<string>('');
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<ProfileFormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<ProfileFormData>({
     defaultValues: {
       username: '',
       displayName: '',
@@ -51,9 +56,9 @@ const EditProfile: NextPage = () => {
         discord: '',
         github: '',
         website: '',
-        telegram: ''
-      }
-    }
+        telegram: '',
+      },
+    },
   });
 
   useEffect(() => {
@@ -61,7 +66,7 @@ const EditProfile: NextPage = () => {
       router.push('/');
       return;
     }
-    
+
     fetchUserProfile();
   }, [isSignedIn, stxAddress, router]);
 
@@ -71,7 +76,7 @@ const EditProfile: NextPage = () => {
       if (response.ok) {
         const data = await response.json();
         const user = data.user;
-        
+
         reset({
           username: user.username || '',
           displayName: user.displayName || '',
@@ -82,10 +87,10 @@ const EditProfile: NextPage = () => {
             discord: user.socialLinks?.discord || '',
             github: user.socialLinks?.github || '',
             website: user.socialLinks?.website || '',
-            telegram: user.socialLinks?.telegram || ''
-          }
+            telegram: user.socialLinks?.telegram || '',
+          },
         });
-        
+
         setAvatarPreview(user.avatar || '');
       }
     } catch (error) {
@@ -100,7 +105,7 @@ const EditProfile: NextPage = () => {
     if (file) {
       setAvatarFile(file);
       const reader = new FileReader();
-      reader.onload = (e) => {
+      reader.onload = e => {
         setAvatarPreview(e.target?.result as string);
       };
       reader.readAsDataURL(file);
@@ -110,17 +115,17 @@ const EditProfile: NextPage = () => {
   const uploadAvatar = async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append('file', file);
-    
+
     try {
       const response = await fetch('/api/upload', {
         method: 'POST',
         body: formData,
       });
-      
+
       if (!response.ok) {
         throw new Error('Upload failed');
       }
-      
+
       const data = await response.json();
       return data.url;
     } catch (error) {
@@ -137,17 +142,19 @@ const EditProfile: NextPage = () => {
 
     setLoading(true);
     const loadingToast = toast.loading('Updating profile...');
-    
+
     try {
       let avatarUrl = avatarPreview;
-      
+
       // Upload avatar if file is selected
       if (avatarFile) {
         toast.loading('Uploading avatar...', { id: loadingToast });
         try {
           avatarUrl = await uploadAvatar(avatarFile);
         } catch (error) {
-          toast.error('Failed to upload avatar. Continuing with existing avatar.', { id: loadingToast });
+          toast.error('Failed to upload avatar. Continuing with existing avatar.', {
+            id: loadingToast,
+          });
         }
       }
 
@@ -155,7 +162,7 @@ const EditProfile: NextPage = () => {
       const profileData = {
         ...data,
         avatar: avatarUrl,
-        stacksAddress: stxAddress
+        stacksAddress: stxAddress,
       };
 
       const response = await fetch(`/api/users/${stxAddress}`, {
@@ -188,8 +195,8 @@ const EditProfile: NextPage = () => {
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
             <div className="space-y-6">
-              <div className="h-32 bg-gray-200 rounded"></div>
-              <div className="h-32 bg-gray-200 rounded"></div>
+              <div className="h-32 bg-gray-700/20 rounded"></div>
+              <div className="h-32 bg-gray-700/20 rounded"></div>
             </div>
           </div>
         </div>
@@ -205,32 +212,32 @@ const EditProfile: NextPage = () => {
           <div className="flex items-center mb-4">
             <button
               onClick={() => router.push(`/profile/${stxAddress}`)}
-              className="mr-4 p-2 text-gray-600 hover:text-gray-900 transition-colors"
+              className="mr-4 p-2 text-gray-200 hover:text-gray-300 transition-colors"
             >
               <ArrowLeft size={20} />
             </button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Edit Profile</h1>
-              <p className="text-gray-600">Update your profile information and social links</p>
+              <h1 className="text-3xl font-bold text-gray-200">Edit Profile</h1>
+              <p className="text-gray-200">Update your profile information and social links</p>
             </div>
           </div>
         </div>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           {/* Profile Picture */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Profile Picture</h2>
-            
+          <div className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-6">
+            <h2 className="text-xl font-semibold text-gray-200 mb-6">Profile Picture</h2>
+
             <div className="flex items-center space-x-6">
               <div className="flex-shrink-0">
                 {avatarPreview ? (
                   <img
                     src={avatarPreview}
                     alt="Avatar"
-                    className="w-24 h-24 rounded-full object-cover border-4 border-gray-200"
+                    className="w-24 h-24 rounded-full object-cover border-4 border-gray-600/20"
                   />
                 ) : (
-                  <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
+                  <div className="w-24 h-24 rounded-full bg-gray-700/20 flex items-center justify-center">
                     <User className="text-gray-400" size={32} />
                   </div>
                 )}
@@ -250,86 +257,77 @@ const EditProfile: NextPage = () => {
                   <Upload className="mr-2" size={16} />
                   {avatarFile ? 'Change Avatar' : 'Upload Avatar'}
                 </label>
-                <p className="text-sm text-gray-500 mt-2">
-                  JPG, PNG or GIF. Max size 5MB.
-                </p>
+                <p className="text-sm text-gray-400 mt-2">JPG, PNG or GIF. Max size 5MB.</p>
               </div>
             </div>
           </div>
 
           {/* Basic Information */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Basic Information</h2>
-            
+          <div className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-6">
+            <h2 className="text-xl font-semibold text-gray-200 mb-6">Basic Information</h2>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Username
-                </label>
+                <label className="block text-sm font-medium text-gray-200 mb-2">Username</label>
                 <input
                   type="text"
-                  {...register('username', { 
+                  {...register('username', {
                     pattern: {
                       value: /^[a-zA-Z0-9_-]+$/,
-                      message: 'Username can only contain letters, numbers, hyphens, and underscores'
-                    }
+                      message:
+                        'Username can only contain letters, numbers, hyphens, and underscores',
+                    },
                   })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="your_username"
                 />
-                {errors.username && <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>}
-                <p className="text-sm text-gray-500 mt-1">
-                  Unique identifier for your profile
-                </p>
+                {errors.username && (
+                  <p className="text-red-500 text-sm mt-1">{errors.username.message}</p>
+                )}
+                <p className="text-sm text-gray-400 mt-1">Unique identifier for your profile</p>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Display Name
-                </label>
+                <label className="block text-sm font-medium text-gray-200 mb-2">Display Name</label>
                 <input
                   type="text"
                   {...register('displayName')}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="Your Display Name"
                 />
-                <p className="text-sm text-gray-500 mt-1">
-                  How others will see your name
-                </p>
+                <p className="text-sm text-gray-400 mt-1">How others will see your name</p>
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email
-                </label>
+                <label className="block text-sm font-medium text-gray-200 mb-2">Email</label>
                 <input
                   type="email"
                   {...register('email', {
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: 'Invalid email address'
-                    }
+                      message: 'Invalid email address',
+                    },
                   })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="your@email.com"
                 />
-                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
-                <p className="text-sm text-gray-500 mt-1">
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                )}
+                <p className="text-sm text-gray-400 mt-1">
                   For notifications and updates (optional)
                 </p>
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Bio
-                </label>
+                <label className="block text-sm font-medium text-gray-200 mb-2">Bio</label>
                 <textarea
                   {...register('bio')}
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
                   placeholder="Tell others about yourself, your interests, and what you're working on..."
                 />
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-gray-400 mt-1">
                   Brief description about yourself (max 500 characters)
                 </p>
               </div>
@@ -337,66 +335,56 @@ const EditProfile: NextPage = () => {
           </div>
 
           {/* Social Links */}
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">Social Links</h2>
-            
+          <div className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-6">
+            <h2 className="text-xl font-semibold text-gray-200 mb-6">Social Links</h2>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Twitter
-                </label>
+                <label className="block text-sm font-medium text-gray-200 mb-2">Twitter</label>
                 <input
                   type="url"
                   {...register('socialLinks.twitter')}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="https://twitter.com/yourusername"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  GitHub
-                </label>
+                <label className="block text-sm font-medium text-gray-200 mb-2">GitHub</label>
                 <input
                   type="url"
                   {...register('socialLinks.github')}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="https://github.com/yourusername"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Discord
-                </label>
+                <label className="block text-sm font-medium text-gray-200 mb-2">Discord</label>
                 <input
                   type="text"
                   {...register('socialLinks.discord')}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="yourusername#1234"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Website
-                </label>
+                <label className="block text-sm font-medium text-gray-200 mb-2">Website</label>
                 <input
                   type="url"
                   {...register('socialLinks.website')}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="https://yourwebsite.com"
                 />
               </div>
 
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Telegram
-                </label>
+                <label className="block text-sm font-medium text-gray-200 mb-2">Telegram</label>
                 <input
                   type="text"
                   {...register('socialLinks.telegram')}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="@yourusername"
                 />
               </div>
@@ -408,7 +396,7 @@ const EditProfile: NextPage = () => {
             <button
               type="button"
               onClick={() => router.push(`/profile/${stxAddress}`)}
-              className="border border-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+              className="border border-gray-600/20 text-gray-200 px-6 py-2 rounded-lg hover:bg-gray-600/20 transition-colors"
             >
               Cancel
             </button>

@@ -27,7 +27,7 @@ export const useUserInfo = () => {
         setUserInfo({
           username: data.user.username,
           displayName: data.user.displayName,
-          avatar: data.user.avatar
+          avatar: data.user.avatar,
         });
       }
     } catch (error) {
@@ -43,10 +43,10 @@ export const useUserInfo = () => {
 
   const getDisplayName = () => {
     if (!userInfo || !stxAddress) return '';
-    
+
     if (userInfo.displayName) return userInfo.displayName;
     if (userInfo.username) return `@${userInfo.username}`;
-    
+
     // Fallback to truncated address
     return `${stxAddress.slice(0, 6)}...${stxAddress.slice(-4)}`;
   };
@@ -55,7 +55,7 @@ export const useUserInfo = () => {
     userInfo,
     loading,
     displayName: getDisplayName(),
-    refetch: fetchUserInfo
+    refetch: fetchUserInfo,
   };
 };
 

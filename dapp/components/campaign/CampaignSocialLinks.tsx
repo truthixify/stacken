@@ -22,9 +22,7 @@ const CampaignSocialLinks: React.FC<Props> = ({ register }) => {
       </label>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Twitter
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Twitter</label>
           <input
             type="url"
             {...register('socialLinks.twitter')}
@@ -34,9 +32,7 @@ const CampaignSocialLinks: React.FC<Props> = ({ register }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Discord
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Discord</label>
           <input
             type="url"
             {...register('socialLinks.discord')}
@@ -46,9 +42,7 @@ const CampaignSocialLinks: React.FC<Props> = ({ register }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Website
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Website</label>
           <input
             type="url"
             {...register('socialLinks.website')}
@@ -58,9 +52,7 @@ const CampaignSocialLinks: React.FC<Props> = ({ register }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Telegram
-          </label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">Telegram</label>
           <input
             type="url"
             {...register('socialLinks.telegram')}

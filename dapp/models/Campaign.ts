@@ -1,60 +1,61 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface ICampaign extends Document {
-    // On-chain data
-    campaignId: number;
-    campaignAddress: string; // Contract address + campaign ID
-    creatorAddress: string;
+  // On-chain data
+  campaignId: number;
+  campaignAddress: string; // Contract address + campaign ID
+  creatorAddress: string;
 
-    // Campaign details
+  // Campaign details
+  title: string;
+  summary: string; // Brief summary for cards
+  description: string;
+  details: string; // Rich text content with formatting
+  imageUrl?: string;
+  category: string;
+  tags: string[];
+
+  // Campaign configuration
+  tokenAddress?: string;
+  tokenAmount?: number;
+  totalPoints: number;
+
+  // Time configuration
+  startTime: Date;
+  endTime: Date;
+
+  // Status
+  status: 'DRAFT' | 'ACTIVE' | 'PAUSED' | 'COMPLETED' | 'CANCELLED';
+  isFinalized: boolean;
+
+  // Metrics
+  totalParticipants: number;
+  pointsDistributed: number;
+  tokenDistributed: number;
+
+  // Task-specific links
+  taskLinks: Array<{
     title: string;
-    summary: string; // Brief summary for cards
-    description: string;
-    details: string; // Rich text content with formatting
-    imageUrl?: string;
-    category: string;
-    tags: string[];
+    url: string;
+    type: 'GITHUB' | 'TWITTER' | 'DISCORD' | 'WEBSITE' | 'DOCUMENT' | 'OTHER';
+    required: boolean;
+    description?: string;
+  }>;
+  // Social links
+  socialLinks: {
+    twitter?: string;
+    discord?: string;
+    website?: string;
+    telegram?: string;
+  };
 
-    // Campaign configuration
-    tokenAddress?: string;
-    tokenAmount?: number;
-    totalPoints: number;
-
-    // Time configuration
-    startTime: Date;
-    endTime: Date;
-
-    // Status
-    status: 'DRAFT' | 'ACTIVE' | 'PAUSED' | 'COMPLETED' | 'CANCELLED';
-    isFinalized: boolean;
-
-    // Metrics
-    totalParticipants: number;
-    pointsDistributed: number;
-    tokenDistributed: number;
-
-    // Task-specific links
-    taskLinks: Array<{
-        title: string;
-        url: string;
-        type: 'GITHUB' | 'TWITTER' | 'DISCORD' | 'WEBSITE' | 'DOCUMENT' | 'OTHER';
-        required: boolean;
-        description?: string;
-    }>;
-    // Social links
-    socialLinks: {
-        twitter?: string;
-        discord?: string;
-        website?: string;
-        telegram?: string;
-    };
-
-    // Metadata
-    createdAt: Date;
-    updatedAt: Date;
+  // Metadata
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const CampaignSchema = new Schema<ICampaign>({
+const CampaignSchema = new Schema<ICampaign>(
+  {
     campaignId: { type: Number, unique: true, sparse: true },
     campaignAddress: { type: String, unique: true, sparse: true },
     creatorAddress: { type: String, required: true, index: true },
@@ -75,9 +76,9 @@ const CampaignSchema = new Schema<ICampaign>({
     endTime: { type: Date, required: true },
 
     status: {
-        type: String,
-        enum: ['DRAFT', 'ACTIVE', 'PAUSED', 'COMPLETED', 'CANCELLED'],
-        default: 'DRAFT'
+      type: String,
+      enum: ['DRAFT', 'ACTIVE', 'PAUSED', 'COMPLETED', 'CANCELLED'],
+      default: 'DRAFT',
     },
     isFinalized: { type: Boolean, default: false },
 
@@ -85,27 +86,31 @@ const CampaignSchema = new Schema<ICampaign>({
     pointsDistributed: { type: Number, default: 0 },
     tokenDistributed: { type: Number, default: 0 },
 
-    taskLinks: [{
+    taskLinks: [
+      {
         title: { type: String, required: true },
         url: { type: String, required: true },
         type: {
-            type: String,
-            enum: ['GITHUB', 'TWITTER', 'DISCORD', 'WEBSITE', 'DOCUMENT', 'OTHER'],
-            required: true
+          type: String,
+          enum: ['GITHUB', 'TWITTER', 'DISCORD', 'WEBSITE', 'DOCUMENT', 'OTHER'],
+          required: true,
         },
         required: { type: Boolean, default: false },
-        description: { type: String }
-    }],
+        description: { type: String },
+      },
+    ],
 
     socialLinks: {
-        twitter: { type: String },
-        discord: { type: String },
-        website: { type: String },
-        telegram: { type: String }
-    }
-}, {
-    timestamps: true
-});
+      twitter: { type: String },
+      discord: { type: String },
+      website: { type: String },
+      telegram: { type: String },
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
 // Indexes
 CampaignSchema.index({ creatorAddress: 1, status: 1 });

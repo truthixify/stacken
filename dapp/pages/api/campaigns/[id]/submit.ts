@@ -13,11 +13,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   try {
     const { id } = req.query;
-    const {
-      userAddress,
-      submissionType,
-      content
-    } = req.body;
+    const { userAddress, submissionType, content } = req.body;
 
     // Validation
     if (!userAddress || !submissionType || !content) {
@@ -54,7 +50,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ message: 'File URL is required for file submissions' });
     }
     if (submissionType === 'SOCIAL_PROOF' && !content.socialHandle) {
-      return res.status(400).json({ message: 'Social handle is required for social proof submissions' });
+      return res
+        .status(400)
+        .json({ message: 'Social handle is required for social proof submissions' });
     }
 
     // Validate URL if provided
@@ -69,7 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Check if user already submitted
     const existingSubmission = await Submission.findOne({
       campaignId: id,
-      userAddress
+      userAddress,
     });
 
     if (existingSubmission) {
@@ -82,7 +80,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       userAddress,
       submissionType,
       content,
-      status: 'PENDING'
+      status: 'PENDING',
     });
 
     await submission.save();
@@ -91,9 +89,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       await User.findOneAndUpdate(
         { stacksAddress: userAddress },
-        { 
+        {
           $addToSet: { participatedCampaigns: id },
-          $set: { lastActiveAt: new Date() }
+          $set: { lastActiveAt: new Date() },
         },
         { upsert: true, new: true }
       );
@@ -105,25 +103,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     // Update campaign participant count
     try {
       await Campaign.findByIdAndUpdate(id, {
-        $inc: { totalParticipants: 1 }
+        $inc: { totalParticipants: 1 },
       });
     } catch (campaignUpdateError: any) {
       console.warn('Failed to update campaign participant count:', campaignUpdateError.message);
     }
 
-    res.status(201).json({ 
+    res.status(201).json({
       submission,
-      message: 'Submission created successfully! It will be reviewed by the campaign creator.' 
+      message: 'Submission created successfully! It will be reviewed by the campaign creator.',
     });
-
   } catch (error: any) {
     console.error('Error creating submission:', error);
-    
+
     // Handle duplicate submission error
     if (error.code === 11000) {
       return res.status(400).json({ message: 'You have already submitted to this campaign' });
     }
-    
+
     res.status(500).json({ message: 'Failed to create submission. Please try again.' });
   }
 }

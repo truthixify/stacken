@@ -22,8 +22,8 @@ const Docs: NextPage = () => {
         { title: 'What is Stacken Rewards?', href: '#what-is-stacken' },
         { title: 'Connecting Your Wallet', href: '#connect-wallet' },
         { title: 'Your First Campaign', href: '#first-campaign' },
-        { title: 'Earning Points', href: '#earning-points' }
-      ]
+        { title: 'Earning Points', href: '#earning-points' },
+      ],
     },
     {
       title: 'Campaign Creation',
@@ -32,8 +32,8 @@ const Docs: NextPage = () => {
         { title: 'Campaign Types', href: '#campaign-types' },
         { title: 'Setting Up Activities', href: '#activities' },
         { title: 'Reward Distribution', href: '#rewards' },
-        { title: 'Best Practices', href: '#best-practices' }
-      ]
+        { title: 'Best Practices', href: '#best-practices' },
+      ],
     },
     {
       title: 'Smart Contracts',
@@ -42,8 +42,8 @@ const Docs: NextPage = () => {
         { title: 'Factory Contract', href: '#factory-contract' },
         { title: 'Campaign Contract', href: '#campaign-contract' },
         { title: 'Points System', href: '#points-system' },
-        { title: 'Integration Guide', href: '#integration' }
-      ]
+        { title: 'Integration Guide', href: '#integration' },
+      ],
     },
     {
       title: 'API Reference',
@@ -52,9 +52,9 @@ const Docs: NextPage = () => {
         { title: 'Authentication', href: '#api-auth' },
         { title: 'Campaigns API', href: '#api-campaigns' },
         { title: 'Users API', href: '#api-users' },
-        { title: 'Activities API', href: '#api-activities' }
-      ]
-    }
+        { title: 'Activities API', href: '#api-activities' },
+      ],
+    },
   ];
 
   return (
@@ -72,15 +72,26 @@ const Docs: NextPage = () => {
         <div className="bg-primary-50 border border-primary-200 rounded-lg p-6 mb-8">
           <h2 className="text-lg font-semibold text-primary-900 mb-4">Quick Links</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <a href="#getting-started" className="flex items-center text-primary-700 hover:text-primary-900 transition-colors">
+            <a
+              href="#getting-started"
+              className="flex items-center text-primary-700 hover:text-primary-900 transition-colors"
+            >
               <Book className="mr-2" size={16} />
               <span>Getting Started Guide</span>
             </a>
-            <a href="#api-reference" className="flex items-center text-primary-700 hover:text-primary-900 transition-colors">
+            <a
+              href="#api-reference"
+              className="flex items-center text-primary-700 hover:text-primary-900 transition-colors"
+            >
               <Code className="mr-2" size={16} />
               <span>API Reference</span>
             </a>
-            <a href="https://github.com/stacken-rewards" target="_blank" rel="noopener noreferrer" className="flex items-center text-primary-700 hover:text-primary-900 transition-colors">
+            <a
+              href="https://github.com/stacken-rewards"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center text-primary-700 hover:text-primary-900 transition-colors"
+            >
               <ExternalLink className="mr-2" size={16} />
               <span>GitHub Repository</span>
             </a>
@@ -121,14 +132,17 @@ const Docs: NextPage = () => {
         {/* Content Sections */}
         <div className="mt-12 space-y-12">
           {/* What is Stacken */}
-          <section id="what-is-stacken" className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+          <section
+            id="what-is-stacken"
+            className="bg-white rounded-lg shadow-sm border border-gray-200 p-8"
+          >
             <h2 className="text-2xl font-bold text-gray-900 mb-4">What is Stacken Rewards?</h2>
             <div className="prose max-w-none text-gray-700">
               <p>
-                Stacken Rewards is a decentralized platform built on the Stacks blockchain that enables 
-                creators and communities to design, deploy, and manage reward campaigns. Our platform 
-                combines the security of Bitcoin with the flexibility of smart contracts to create 
-                transparent and trustless reward distribution systems.
+                Stacken Rewards is a decentralized platform built on the Stacks blockchain that
+                enables creators and communities to design, deploy, and manage reward campaigns. Our
+                platform combines the security of Bitcoin with the flexibility of smart contracts to
+                create transparent and trustless reward distribution systems.
               </p>
               <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Key Features:</h3>
               <ul className="list-disc list-inside space-y-2">
@@ -142,11 +156,15 @@ const Docs: NextPage = () => {
           </section>
 
           {/* Connect Wallet */}
-          <section id="connect-wallet" className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+          <section
+            id="connect-wallet"
+            className="bg-white rounded-lg shadow-sm border border-gray-200 p-8"
+          >
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Connecting Your Wallet</h2>
             <div className="prose max-w-none text-gray-700">
               <p>
-                To participate in campaigns or create your own, you'll need to connect a Stacks-compatible wallet:
+                To participate in campaigns or create your own, you'll need to connect a
+                Stacks-compatible wallet:
               </p>
               <ol className="list-decimal list-inside space-y-2 mt-4">
                 <li>Install a Stacks wallet (Hiro Wallet, Xverse, or Leather)</li>
@@ -158,21 +176,24 @@ const Docs: NextPage = () => {
           </section>
 
           {/* Campaign Types */}
-          <section id="campaign-types" className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+          <section
+            id="campaign-types"
+            className="bg-white rounded-lg shadow-sm border border-gray-200 p-8"
+          >
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Campaign Types</h2>
             <div className="prose max-w-none text-gray-700">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">Points Campaigns</h3>
               <p>
-                Points campaigns reward participants with platform points that can be used for 
-                leaderboards, achievements, and future token distributions. These campaigns are 
+                Points campaigns reward participants with platform points that can be used for
+                leaderboards, achievements, and future token distributions. These campaigns are
                 ideal for community building and engagement.
               </p>
-              
+
               <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Token Campaigns</h3>
               <p>
-                Token campaigns distribute actual cryptocurrency tokens to participants. 
-                Campaign creators must deposit tokens upfront, which are then distributed 
-                automatically based on activity completion.
+                Token campaigns distribute actual cryptocurrency tokens to participants. Campaign
+                creators must deposit tokens upfront, which are then distributed automatically based
+                on activity completion.
               </p>
             </div>
           </section>
@@ -185,18 +206,18 @@ const Docs: NextPage = () => {
             Join our community for support, updates, and discussions
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href="https://discord.gg/stacken" 
-              target="_blank" 
+            <a
+              href="https://discord.gg/stacken"
+              target="_blank"
               rel="noopener noreferrer"
               className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors inline-flex items-center justify-center"
             >
               Join Discord
               <ExternalLink className="ml-2" size={16} />
             </a>
-            <a 
-              href="https://github.com/stacken-rewards" 
-              target="_blank" 
+            <a
+              href="https://github.com/stacken-rewards"
+              target="_blank"
               rel="noopener noreferrer"
               className="border border-gray-600 text-gray-300 px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors inline-flex items-center justify-center"
             >

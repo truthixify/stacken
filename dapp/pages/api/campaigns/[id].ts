@@ -22,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 async function getCampaign(req: NextApiRequest, res: NextApiResponse, id: string) {
   try {
     const campaign = await Campaign.findById(id).lean();
-    
+
     if (!campaign) {
       return res.status(404).json({ message: 'Campaign not found' });
     }
@@ -39,7 +39,7 @@ async function updateCampaign(req: NextApiRequest, res: NextApiResponse, id: str
     const { userAddress, ...updateData } = req.body;
 
     const campaign = await Campaign.findById(id);
-    
+
     if (!campaign) {
       return res.status(404).json({ message: 'Campaign not found' });
     }
@@ -53,10 +53,10 @@ async function updateCampaign(req: NextApiRequest, res: NextApiResponse, id: str
     if (campaign.status === 'ACTIVE') {
       const restrictedFields = ['startTime', 'endTime', 'totalPoints', 'tokenAmount'];
       const hasRestrictedUpdates = restrictedFields.some(field => field in updateData);
-      
+
       if (hasRestrictedUpdates) {
-        return res.status(400).json({ 
-          message: 'Cannot update time or reward settings for active campaigns' 
+        return res.status(400).json({
+          message: 'Cannot update time or reward settings for active campaigns',
         });
       }
     }
@@ -79,7 +79,7 @@ async function deleteCampaign(req: NextApiRequest, res: NextApiResponse, id: str
     const { userAddress } = req.body;
 
     const campaign = await Campaign.findById(id);
-    
+
     if (!campaign) {
       return res.status(404).json({ message: 'Campaign not found' });
     }

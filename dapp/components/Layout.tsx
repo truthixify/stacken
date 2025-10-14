@@ -11,10 +11,10 @@ interface LayoutProps {
   description?: string;
 }
 
-const Layout: React.FC<LayoutProps> = ({ 
-  children, 
+const Layout: React.FC<LayoutProps> = ({
+  children,
   title = 'Stacken Rewards',
-  description = 'Decentralized reward campaigns on Stacks blockchain'
+  description = 'Decentralized reward campaigns on Stacks blockchain',
 }) => {
   return (
     <>
@@ -24,9 +24,9 @@ const Layout: React.FC<LayoutProps> = ({
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
-      <div className="min-h-screen bg-gray-50 flex flex-col">
-        <Toaster 
+
+      <div className="min-h-screen bg-background flex flex-col bg-gray-950/95">
+        <Toaster
           position="top-right"
           toastOptions={{
             duration: 4000,
@@ -51,11 +51,9 @@ const Layout: React.FC<LayoutProps> = ({
           }}
         />
         <Navbar />
-        
-        <main className="flex-1">
-          {children}
-        </main>
-        
+
+        <main className="flex-1 mt-48">{children}</main>
+
         <Footer />
       </div>
     </>

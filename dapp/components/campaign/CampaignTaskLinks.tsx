@@ -22,21 +22,19 @@ const linkTypes = [
   { value: 'DISCORD', label: 'Discord' },
   { value: 'WEBSITE', label: 'Website' },
   { value: 'DOCUMENT', label: 'Document' },
-  { value: 'OTHER', label: 'Other' }
+  { value: 'OTHER', label: 'Other' },
 ];
 
 const CampaignTaskLinks: React.FC<Props> = ({
   taskLinks,
   addTaskLink,
   removeTaskLink,
-  updateTaskLink
+  updateTaskLink,
 }) => {
   return (
     <div>
       <div className="flex items-center justify-between mb-3">
-        <label className="block text-sm font-medium text-gray-700">
-          Task Links (Optional)
-        </label>
+        <label className="block text-sm font-medium text-gray-700">Task Links (Optional)</label>
         <button
           type="button"
           onClick={addTaskLink}
@@ -52,7 +50,8 @@ const CampaignTaskLinks: React.FC<Props> = ({
           <LinkIcon className="mx-auto h-8 w-8 text-gray-400 mb-2" />
           <p className="text-gray-600 mb-3">No task links added yet</p>
           <p className="text-sm text-gray-500 mb-3">
-            Add links to GitHub repos, Twitter accounts, Discord servers, or other resources participants need
+            Add links to GitHub repos, Twitter accounts, Discord servers, or other resources
+            participants need
           </p>
           <button
             type="button"
@@ -79,41 +78,37 @@ const CampaignTaskLinks: React.FC<Props> = ({
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Title *
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Title *</label>
                   <input
                     type="text"
                     value={link.title}
-                    onChange={(e) => updateTaskLink(index, 'title', e.target.value)}
+                    onChange={e => updateTaskLink(index, 'title', e.target.value)}
                     placeholder="e.g., GitHub Repository"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Type *
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Type *</label>
                   <select
                     value={link.type}
-                    onChange={(e) => updateTaskLink(index, 'type', e.target.value)}
+                    onChange={e => updateTaskLink(index, 'type', e.target.value)}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   >
                     {linkTypes.map(type => (
-                      <option key={type.value} value={type.value}>{type.label}</option>
+                      <option key={type.value} value={type.value}>
+                        {type.label}
+                      </option>
                     ))}
                   </select>
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    URL *
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">URL *</label>
                   <input
                     type="url"
                     value={link.url}
-                    onChange={(e) => updateTaskLink(index, 'url', e.target.value)}
+                    onChange={e => updateTaskLink(index, 'url', e.target.value)}
                     placeholder="https://github.com/your-repo"
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
@@ -125,7 +120,7 @@ const CampaignTaskLinks: React.FC<Props> = ({
                   </label>
                   <textarea
                     value={link.description || ''}
-                    onChange={(e) => updateTaskLink(index, 'description', e.target.value)}
+                    onChange={e => updateTaskLink(index, 'description', e.target.value)}
                     placeholder="Brief description of what participants need to do with this link"
                     rows={2}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
@@ -137,7 +132,7 @@ const CampaignTaskLinks: React.FC<Props> = ({
                     <input
                       type="checkbox"
                       checked={link.required}
-                      onChange={(e) => updateTaskLink(index, 'required', e.target.checked)}
+                      onChange={e => updateTaskLink(index, 'required', e.target.checked)}
                       className="rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                     />
                     <span className="ml-2 text-sm text-gray-700">Required for participation</span>
@@ -150,7 +145,8 @@ const CampaignTaskLinks: React.FC<Props> = ({
       )}
 
       <p className="text-sm text-gray-500 mt-2">
-        Add relevant links for your campaign (GitHub repos for code contributions, Twitter for social campaigns, etc.)
+        Add relevant links for your campaign (GitHub repos for code contributions, Twitter for
+        social campaigns, etc.)
       </p>
     </div>
   );

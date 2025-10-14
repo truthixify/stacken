@@ -39,21 +39,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       settings: {
         emailNotifications: true,
         publicProfile: true,
-        showAchievements: true
+        showAchievements: true,
       },
-      lastActiveAt: new Date()
+      lastActiveAt: new Date(),
     });
 
     await user.save();
 
-    res.status(201).json({ 
-      user, 
-      message: 'User registered successfully' 
+    res.status(201).json({
+      user,
+      message: 'User registered successfully',
     });
-
   } catch (error: any) {
     console.error('Error registering user:', error);
-    
+
     // Handle duplicate key errors
     if (error.code === 11000) {
       // User already exists, fetch and return
@@ -64,7 +63,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(500).json({ message: 'Error fetching existing user' });
       }
     }
-    
+
     res.status(500).json({ message: 'Internal server error' });
   }
 }

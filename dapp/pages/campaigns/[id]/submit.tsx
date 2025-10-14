@@ -4,15 +4,15 @@ import { useAuth, useAccount } from '@micro-stacks/react';
 import Layout from '../../../components/Layout';
 import { getDehydratedStateFromSession } from '../../../common/session-helpers';
 import toast from 'react-hot-toast';
-import { 
-  ArrowLeft, 
-  Link as LinkIcon, 
-  FileText, 
-  Upload, 
+import {
+  ArrowLeft,
+  Link as LinkIcon,
+  FileText,
+  Upload,
   Share2,
   Send,
   AlertCircle,
-  CheckCircle
+  CheckCircle,
 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
@@ -66,10 +66,16 @@ const SubmitToCampaign: NextPage = () => {
   const [submitting, setSubmitting] = useState(false);
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<SubmissionFormData>({
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm<SubmissionFormData>({
     defaultValues: {
-      submissionType: 'LINK'
-    }
+      submissionType: 'LINK',
+    },
   });
 
   const submissionType = watch('submissionType');
@@ -101,7 +107,7 @@ const SubmitToCampaign: NextPage = () => {
 
   const checkExistingSubmission = async () => {
     if (!stxAddress) return;
-    
+
     try {
       const response = await fetch(`/api/campaigns/${id}/submissions?userAddress=${stxAddress}`);
       if (response.ok) {
@@ -134,8 +140,8 @@ const SubmitToCampaign: NextPage = () => {
           text: data.text,
           fileUrl: data.fileUrl,
           socialHandle: data.socialHandle,
-          description: data.description
-        }
+          description: data.description,
+        },
       };
 
       const response = await fetch(`/api/campaigns/${id}/submit`, {
@@ -168,17 +174,22 @@ const SubmitToCampaign: NextPage = () => {
       day: 'numeric',
       year: 'numeric',
       hour: '2-digit',
-      minute: '2-digit'
+      minute: '2-digit',
     });
   };
 
   const getSubmissionTypeIcon = (type: string) => {
     switch (type) {
-      case 'LINK': return <LinkIcon size={20} />;
-      case 'TEXT': return <FileText size={20} />;
-      case 'FILE': return <Upload size={20} />;
-      case 'SOCIAL_PROOF': return <Share2 size={20} />;
-      default: return <FileText size={20} />;
+      case 'LINK':
+        return <LinkIcon size={20} />;
+      case 'TEXT':
+        return <FileText size={20} />;
+      case 'FILE':
+        return <Upload size={20} />;
+      case 'SOCIAL_PROOF':
+        return <Share2 size={20} />;
+      default:
+        return <FileText size={20} />;
     }
   };
 
@@ -187,8 +198,10 @@ const SubmitToCampaign: NextPage = () => {
       <Layout title="Submit to Campaign">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Connect Your Wallet</h1>
-            <p className="text-gray-600 mb-8">You need to connect your wallet to submit to campaigns.</p>
+            <h1 className="text-2xl font-bold text-gray-200 mb-4">Connect Your Wallet</h1>
+            <p className="text-gray-200 mb-8">
+              You need to connect your wallet to submit to campaigns.
+            </p>
             <button
               onClick={() => router.push(`/campaigns/${id}`)}
               className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
@@ -207,7 +220,7 @@ const SubmitToCampaign: NextPage = () => {
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded w-1/3 mb-4"></div>
-            <div className="h-64 bg-gray-200 rounded"></div>
+            <div className="h-64 bg-gray-700/20 rounded"></div>
           </div>
         </div>
       </Layout>
@@ -219,8 +232,10 @@ const SubmitToCampaign: NextPage = () => {
       <Layout title="Campaign Not Found">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Campaign Not Found</h1>
-            <p className="text-gray-600 mb-8">The campaign you're trying to submit to doesn't exist.</p>
+            <h1 className="text-2xl font-bold text-gray-200 mb-4">Campaign Not Found</h1>
+            <p className="text-gray-200 mb-8">
+              The campaign you're trying to submit to doesn't exist.
+            </p>
             <button
               onClick={() => router.push('/campaigns')}
               className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors"
@@ -239,9 +254,10 @@ const SubmitToCampaign: NextPage = () => {
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
             <CheckCircle className="mx-auto h-16 w-16 text-green-500 mb-4" />
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Submission Complete!</h1>
-            <p className="text-gray-600 mb-8">
-              You have already submitted to this campaign. Your submission is being reviewed by the campaign creator.
+            <h1 className="text-2xl font-bold text-gray-200 mb-4">Submission Complete!</h1>
+            <p className="text-gray-200 mb-8">
+              You have already submitted to this campaign. Your submission is being reviewed by the
+              campaign creator.
             </p>
             <div className="flex space-x-4 justify-center">
               <button
@@ -252,7 +268,7 @@ const SubmitToCampaign: NextPage = () => {
               </button>
               <button
                 onClick={() => router.push(`/campaigns/${id}/submissions`)}
-                className="border border-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-50 transition-colors"
+                className="border border-gray-600/20 text-gray-200 px-6 py-3 rounded-lg hover:bg-gray-600/20 transition-colors"
               >
                 View Submissions
               </button>
@@ -273,8 +289,8 @@ const SubmitToCampaign: NextPage = () => {
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
             <AlertCircle className="mx-auto h-16 w-16 text-yellow-500 mb-4" />
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Campaign Not Started</h1>
-            <p className="text-gray-600 mb-8">
+            <h1 className="text-2xl font-bold text-gray-200 mb-4">Campaign Not Started</h1>
+            <p className="text-gray-200 mb-8">
               This campaign starts on {formatDate(campaign.startTime)}. Come back then to submit!
             </p>
             <button
@@ -295,9 +311,10 @@ const SubmitToCampaign: NextPage = () => {
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center">
             <AlertCircle className="mx-auto h-16 w-16 text-red-500 mb-4" />
-            <h1 className="text-2xl font-bold text-gray-900 mb-4">Campaign Ended</h1>
-            <p className="text-gray-600 mb-8">
-              This campaign ended on {formatDate(campaign.endTime)}. Submissions are no longer accepted.
+            <h1 className="text-2xl font-bold text-gray-200 mb-4">Campaign Ended</h1>
+            <p className="text-gray-200 mb-8">
+              This campaign ended on {formatDate(campaign.endTime)}. Submissions are no longer
+              accepted.
             </p>
             <button
               onClick={() => router.push(`/campaigns/${id}`)}
@@ -318,25 +335,26 @@ const SubmitToCampaign: NextPage = () => {
         <div className="mb-8">
           <button
             onClick={() => router.push(`/campaigns/${id}`)}
-            className="flex items-center text-gray-600 hover:text-gray-900 mb-4"
+            className="flex items-center text-gray-200 hover:text-gray-300 mb-4"
           >
             <ArrowLeft className="mr-2" size={20} />
             Back to Campaign
           </button>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Submit to Campaign</h1>
-          <h2 className="text-xl text-gray-600">{campaign.title}</h2>
+          <h1 className="text-3xl font-bold text-gray-200 mb-2">Submit to Campaign</h1>
+          <h2 className="text-xl text-gray-200">{campaign.title}</h2>
         </div>
 
         {/* Campaign Info */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+        <div className="bg-gray-700/20 border border-gray-600/20 rounded-lg p-4 mb-8">
           <div className="flex items-start">
             <AlertCircle className="text-blue-500 mr-3 mt-0.5" size={20} />
             <div>
-              <h3 className="font-semibold text-blue-900 mb-1">Submission Guidelines</h3>
-              <p className="text-blue-700 text-sm mb-2">
-                Make sure your submission follows the campaign requirements. Your submission will be reviewed by the campaign creator.
+              <h3 className="font-semibold text-gray-200 mb-1">Submission Guidelines</h3>
+              <p className="text-gray-200 text-sm mb-2">
+                Make sure your submission follows the campaign requirements. Your submission will be
+                reviewed by the campaign creator.
               </p>
-              <p className="text-blue-600 text-sm">
+              <p className="text-gray-200 text-sm">
                 <strong>Reward:</strong> Up to {campaign.totalPoints} points available
               </p>
             </div>
@@ -345,14 +363,17 @@ const SubmitToCampaign: NextPage = () => {
 
         {/* Task Links */}
         {campaign.taskLinks && campaign.taskLinks.length > 0 && (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Required Resources</h3>
+          <div className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-6 mb-8">
+            <h3 className="text-lg font-semibold text-gray-200 mb-4">Required Resources</h3>
             <div className="space-y-3">
               {campaign.taskLinks.map((link, index) => (
-                <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div
+                  key={index}
+                  className="flex items-center justify-between p-3 bg-gray-700/30 rounded-lg"
+                >
                   <div className="flex-1">
                     <div className="flex items-center space-x-2 mb-1">
-                      <h4 className="font-medium text-gray-900">{link.title}</h4>
+                      <h4 className="font-medium text-gray-200">{link.title}</h4>
                       {link.required && (
                         <span className="text-xs bg-red-100 text-red-700 px-2 py-1 rounded">
                           Required
@@ -360,7 +381,7 @@ const SubmitToCampaign: NextPage = () => {
                       )}
                     </div>
                     {link.description && (
-                      <p className="text-sm text-gray-600">{link.description}</p>
+                      <p className="text-sm text-gray-200">{link.description}</p>
                     )}
                   </div>
                   <a
@@ -378,13 +399,13 @@ const SubmitToCampaign: NextPage = () => {
         )}
 
         {/* Submission Form */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-6">Your Submission</h3>
-          
+        <div className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-6">
+          <h3 className="text-lg font-semibold text-gray-200 mb-6">Your Submission</h3>
+
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Submission Type */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">
+              <label className="block text-sm font-medium text-gray-200 mb-3">
                 Submission Type *
               </label>
               <div className="grid grid-cols-2 gap-3">
@@ -392,14 +413,18 @@ const SubmitToCampaign: NextPage = () => {
                   { value: 'LINK', label: 'Link/URL', description: 'Share a link to your work' },
                   { value: 'TEXT', label: 'Text', description: 'Write your submission' },
                   { value: 'FILE', label: 'File', description: 'Upload a file' },
-                  { value: 'SOCIAL_PROOF', label: 'Social Proof', description: 'Social media handle/proof' }
-                ].map((type) => (
+                  {
+                    value: 'SOCIAL_PROOF',
+                    label: 'Social Proof',
+                    description: 'Social media handle/proof',
+                  },
+                ].map(type => (
                   <label
                     key={type.value}
                     className={`flex items-start p-3 border-2 rounded-lg cursor-pointer transition-colors ${
                       submissionType === type.value
                         ? 'border-primary-500 bg-primary-50'
-                        : 'border-gray-200 hover:border-gray-300'
+                        : 'border-gray-600/20 hover:border-gray-500/20'
                     }`}
                   >
                     <input
@@ -409,12 +434,10 @@ const SubmitToCampaign: NextPage = () => {
                       className="sr-only"
                     />
                     <div className="flex items-center">
-                      <div className="mr-3">
-                        {getSubmissionTypeIcon(type.value)}
-                      </div>
+                      <div className="mr-3">{getSubmissionTypeIcon(type.value)}</div>
                       <div>
-                        <div className="font-medium text-gray-900">{type.label}</div>
-                        <div className="text-sm text-gray-600">{type.description}</div>
+                        <div className="font-medium text-gray-200">{type.label}</div>
+                        <div className="text-sm text-gray-200">{type.description}</div>
                       </div>
                     </div>
                   </label>
@@ -425,15 +448,13 @@ const SubmitToCampaign: NextPage = () => {
             {/* Dynamic Fields Based on Type */}
             {submissionType === 'LINK' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  URL *
-                </label>
+                <label className="block text-sm font-medium text-gray-200 mb-2">URL *</label>
                 <input
                   type="url"
-                  {...register('url', { 
-                    required: submissionType === 'LINK' ? 'URL is required' : false 
+                  {...register('url', {
+                    required: submissionType === 'LINK' ? 'URL is required' : false,
                   })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="https://example.com/your-work"
                 />
                 {errors.url && <p className="text-red-500 text-sm mt-1">{errors.url.message}</p>}
@@ -442,16 +463,16 @@ const SubmitToCampaign: NextPage = () => {
 
             {submissionType === 'TEXT' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-200 mb-2">
                   Your Submission *
                 </label>
                 <textarea
-                  {...register('text', { 
+                  {...register('text', {
                     required: submissionType === 'TEXT' ? 'Text is required' : false,
-                    maxLength: { value: 2000, message: 'Maximum 2000 characters' }
+                    maxLength: { value: 2000, message: 'Maximum 2000 characters' },
                   })}
                   rows={6}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
                   placeholder="Describe your work, provide details about your contribution..."
                 />
                 {errors.text && <p className="text-red-500 text-sm mt-1">{errors.text.message}</p>}
@@ -460,55 +481,61 @@ const SubmitToCampaign: NextPage = () => {
 
             {submissionType === 'FILE' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  File URL *
-                </label>
+                <label className="block text-sm font-medium text-gray-200 mb-2">File URL *</label>
                 <input
                   type="url"
-                  {...register('fileUrl', { 
-                    required: submissionType === 'FILE' ? 'File URL is required' : false 
+                  {...register('fileUrl', {
+                    required: submissionType === 'FILE' ? 'File URL is required' : false,
                   })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="https://drive.google.com/... or https://github.com/..."
                 />
-                {errors.fileUrl && <p className="text-red-500 text-sm mt-1">{errors.fileUrl.message}</p>}
-                <p className="text-sm text-gray-500 mt-1">
-                  Upload your file to Google Drive, GitHub, or another file sharing service and paste the link here.
+                {errors.fileUrl && (
+                  <p className="text-red-500 text-sm mt-1">{errors.fileUrl.message}</p>
+                )}
+                <p className="text-sm text-gray-400 mt-1">
+                  Upload your file to Google Drive, GitHub, or another file sharing service and
+                  paste the link here.
                 </p>
               </div>
             )}
 
             {submissionType === 'SOCIAL_PROOF' && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-200 mb-2">
                   Social Handle/Proof *
                 </label>
                 <input
                   type="text"
-                  {...register('socialHandle', { 
-                    required: submissionType === 'SOCIAL_PROOF' ? 'Social handle is required' : false 
+                  {...register('socialHandle', {
+                    required:
+                      submissionType === 'SOCIAL_PROOF' ? 'Social handle is required' : false,
                   })}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   placeholder="@yourusername or link to your social media post"
                 />
-                {errors.socialHandle && <p className="text-red-500 text-sm mt-1">{errors.socialHandle.message}</p>}
+                {errors.socialHandle && (
+                  <p className="text-red-500 text-sm mt-1">{errors.socialHandle.message}</p>
+                )}
               </div>
             )}
 
             {/* Description (optional for all types) */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-200 mb-2">
                 Additional Description (Optional)
               </label>
               <textarea
                 {...register('description', {
-                  maxLength: { value: 1000, message: 'Maximum 1000 characters' }
+                  maxLength: { value: 1000, message: 'Maximum 1000 characters' },
                 })}
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
+                className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none"
                 placeholder="Any additional context or information about your submission..."
               />
-              {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>}
+              {errors.description && (
+                <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
+              )}
             </div>
 
             {/* Submit Button */}
@@ -516,7 +543,7 @@ const SubmitToCampaign: NextPage = () => {
               <button
                 type="button"
                 onClick={() => router.push(`/campaigns/${id}`)}
-                className="border border-gray-300 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-50 transition-colors"
+                className="border border-gray-600/20 text-gray-200 px-6 py-2 rounded-lg hover:bg-gray-600/20 transition-colors"
               >
                 Cancel
               </button>

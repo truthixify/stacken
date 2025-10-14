@@ -18,17 +18,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
 async function getCampaigns(req: NextApiRequest, res: NextApiResponse) {
   try {
-    const { 
-      status, 
-      category, 
-      creator, 
-      page = 1, 
-      limit = 10,
-      search 
-    } = req.query;
+    const { status, category, creator, page = 1, limit = 10, search } = req.query;
 
     const query: any = {};
-    
+
     if (status) query.status = status;
     if (category) query.category = category;
     if (creator) query.creatorAddress = creator;
@@ -36,12 +29,12 @@ async function getCampaigns(req: NextApiRequest, res: NextApiResponse) {
       query.$or = [
         { title: { $regex: search, $options: 'i' } },
         { description: { $regex: search, $options: 'i' } },
-        { tags: { $in: [new RegExp(search as string, 'i')] } }
+        { tags: { $in: [new RegExp(search as string, 'i')] } },
       ];
     }
 
     const skip = (Number(page) - 1) * Number(limit);
-    
+
     const campaigns = await Campaign.find(query)
       .sort({ createdAt: -1 })
       .skip(skip)
@@ -56,8 +49,8 @@ async function getCampaigns(req: NextApiRequest, res: NextApiResponse) {
         page: Number(page),
         limit: Number(limit),
         total,
-        pages: Math.ceil(total / Number(limit))
-      }
+        pages: Math.ceil(total / Number(limit)),
+      },
     });
   } catch (error) {
     console.error('Error fetching campaigns:', error);
@@ -83,7 +76,7 @@ async function createCampaign(req: NextApiRequest, res: NextApiResponse) {
       endTime,
       socialLinks,
       taskLinks,
-      rewardDistribution
+      rewardDistribution,
     } = req.body;
 
     // Validation
@@ -107,7 +100,10 @@ async function createCampaign(req: NextApiRequest, res: NextApiResponse) {
       if (!rewardDistribution.tiers || rewardDistribution.tiers.length === 0) {
         return res.status(400).json({ message: 'Tiered rewards require at least one tier' });
       }
-      const totalPercentage = rewardDistribution.tiers.reduce((sum: number, tier: any) => sum + tier.percentage, 0);
+      const totalPercentage = rewardDistribution.tiers.reduce(
+        (sum: number, tier: any) => sum + tier.percentage,
+        0
+      );
       if (totalPercentage !== 100) {
         return res.status(400).json({ message: 'Tier percentages must add up to 100%' });
       }
@@ -148,9 +144,9 @@ async function createCampaign(req: NextApiRequest, res: NextApiResponse) {
       rewardDistribution: rewardDistribution || {
         type: 'LINEAR',
         maxWinners: 10,
-        tiers: []
+        tiers: [],
       },
-      status: 'DRAFT'
+      status: 'DRAFT',
     });
 
     await campaign.save();
@@ -159,9 +155,9 @@ async function createCampaign(req: NextApiRequest, res: NextApiResponse) {
     try {
       await User.findOneAndUpdate(
         { stacksAddress: creatorAddress },
-        { 
+        {
           $push: { createdCampaigns: campaign._id },
-          $set: { lastActiveAt: new Date() }
+          $set: { lastActiveAt: new Date() },
         },
         { upsert: true, new: true }
       );

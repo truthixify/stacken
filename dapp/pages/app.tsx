@@ -8,7 +8,10 @@ import { ArrowRight, Trophy, Users, Zap, Star, Plus } from 'lucide-react';
 // Utility function to strip HTML tags
 const stripHtml = (html: string) => {
   if (!html) return '';
-  return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+  return html
+    .replace(/<[^>]*>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .trim();
 };
 
 import type { NextPage, GetServerSidePropsContext } from 'next';
@@ -42,7 +45,7 @@ const AppPage: NextPage = () => {
   const [stats, setStats] = useState({
     totalCampaigns: 0,
     totalUsers: 0,
-    totalRewards: 0
+    totalRewards: 0,
   });
 
   useEffect(() => {
@@ -66,7 +69,7 @@ const AppPage: NextPage = () => {
       setStats({
         totalCampaigns: 150,
         totalUsers: 2500,
-        totalRewards: 50000
+        totalRewards: 50000,
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -77,17 +80,22 @@ const AppPage: NextPage = () => {
     return new Date(dateString).toLocaleDateString('en-US', {
       month: 'short',
       day: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     });
   };
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'ACTIVE': return 'bg-green-100 text-green-800';
-      case 'DRAFT': return 'bg-gray-100 text-gray-800';
-      case 'COMPLETED': return 'bg-blue-100 text-blue-800';
-      case 'CANCELLED': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'ACTIVE':
+        return 'bg-green-100 text-green-800';
+      case 'DRAFT':
+        return 'bg-gray-100 text-gray-800';
+      case 'COMPLETED':
+        return 'bg-blue-100 text-blue-800';
+      case 'CANCELLED':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
     }
   };
 
@@ -101,7 +109,8 @@ const AppPage: NextPage = () => {
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Connect Your Wallet</h2>
             <p className="text-gray-600 mb-6">
-              Connect your Stacks wallet to access campaigns, create rewards, and manage your community.
+              Connect your Stacks wallet to access campaigns, create rewards, and manage your
+              community.
             </p>
             <button
               onClick={openAuthRequest}
@@ -127,7 +136,9 @@ const AppPage: NextPage = () => {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to Stacken</h1>
-            <p className="text-gray-600">Create campaigns, reward your community, and track your impact</p>
+            <p className="text-gray-600">
+              Create campaigns, reward your community, and track your impact
+            </p>
           </div>
           <Link href="/campaigns/create">
             <a className="mt-4 md:mt-0 bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors inline-flex items-center">
@@ -167,7 +178,9 @@ const AppPage: NextPage = () => {
                 <Zap className="text-yellow-600" size={24} />
               </div>
               <div className="ml-4">
-                <h3 className="text-2xl font-bold text-gray-900">{stats.totalRewards.toLocaleString()}</h3>
+                <h3 className="text-2xl font-bold text-gray-900">
+                  {stats.totalRewards.toLocaleString()}
+                </h3>
                 <p className="text-gray-600">Rewards Distributed</p>
               </div>
             </div>
@@ -218,7 +231,9 @@ const AppPage: NextPage = () => {
             <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
               <Trophy className="mx-auto h-12 w-12 text-gray-400 mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">No active campaigns</h3>
-              <p className="text-gray-600 mb-4">Be the first to create a campaign and start rewarding your community!</p>
+              <p className="text-gray-600 mb-4">
+                Be the first to create a campaign and start rewarding your community!
+              </p>
               <Link href="/campaigns/create">
                 <a className="bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors inline-flex items-center">
                   <Plus className="mr-2" size={16} />
@@ -228,24 +243,31 @@ const AppPage: NextPage = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {campaigns.map((campaign) => (
-                <div key={campaign._id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden card-hover">
+              {campaigns.map(campaign => (
+                <div
+                  key={campaign._id}
+                  className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden card-hover"
+                >
                   {campaign.imageUrl && (
                     <div className="h-48 bg-gray-200">
-                      <img 
-                        src={campaign.imageUrl} 
+                      <img
+                        src={campaign.imageUrl}
                         alt={campaign.title}
                         className="w-full h-full object-cover"
                       />
                     </div>
                   )}
-                  
+
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-3">
                       <span className="bg-primary-100 text-primary-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
                         {campaign.category}
                       </span>
-                      <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${getStatusColor(campaign.status)}`}>
+                      <span
+                        className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${getStatusColor(
+                          campaign.status
+                        )}`}
+                      >
                         {campaign.status}
                       </span>
                     </div>
@@ -253,7 +275,7 @@ const AppPage: NextPage = () => {
                     <h3 className="text-xl font-semibold text-gray-900 mb-2 line-clamp-1">
                       {campaign.title}
                     </h3>
-                    
+
                     <p className="text-gray-600 mb-4 line-clamp-2">
                       {campaign.summary || stripHtml(campaign.description)}
                     </p>

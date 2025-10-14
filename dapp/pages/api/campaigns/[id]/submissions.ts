@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     // Check if user is the campaign creator
     const isCreator = userAddress && campaign.creatorAddress === userAddress;
-    
+
     // Only creators can see all submissions
     // Regular users can only see their own submissions
     if (!isCreator) {
@@ -35,12 +35,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         query.userAddress = userAddress; // Only show user's own submissions
       } else {
         // Anonymous users can't see any submissions
-        return res.status(403).json({ message: 'Access denied. Only campaign creators can view all submissions.' });
+        return res
+          .status(403)
+          .json({ message: 'Access denied. Only campaign creators can view all submissions.' });
       }
     }
 
     const skip = (Number(page) - 1) * Number(limit);
-    
+
     // Get submissions with user info
     const submissions = await Submission.aggregate([
       { $match: query },
@@ -49,13 +51,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           from: 'users',
           localField: 'userAddress',
           foreignField: 'stacksAddress',
-          as: 'user'
-        }
+          as: 'user',
+        },
       },
       {
         $addFields: {
-          user: { $arrayElemAt: ['$user', 0] }
-        }
+          user: { $arrayElemAt: ['$user', 0] },
+        },
       },
       {
         $project: {
@@ -69,12 +71,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           submittedAt: 1,
           'user.username': 1,
           'user.displayName': 1,
-          'user.avatar': 1
-        }
+          'user.avatar': 1,
+        },
       },
       { $sort: { submittedAt: -1 } },
       { $skip: skip },
-      { $limit: Number(limit) }
+      { $limit: Number(limit) },
     ]);
 
     const total = await Submission.countDocuments(query);
@@ -85,11 +87,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         page: Number(page),
         limit: Number(limit),
         total,
-        pages: Math.ceil(total / Number(limit))
+        pages: Math.ceil(total / Number(limit)),
       },
-      isCreator
+      isCreator,
     });
-
   } catch (error) {
     console.error('Error fetching submissions:', error);
     res.status(500).json({ message: 'Internal server error' });

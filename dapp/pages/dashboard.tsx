@@ -27,7 +27,7 @@ const Dashboard: NextPage = () => {
       router.push('/');
       return;
     }
-    
+
     if (stxAddress) {
       fetchUserData();
     }
@@ -73,7 +73,7 @@ const Dashboard: NextPage = () => {
     totalCampaignsCreated: 0,
     totalCampaignsParticipated: 0,
     totalPoints: 0,
-    totalActivitiesCompleted: 0
+    totalActivitiesCompleted: 0,
   };
 
   return (
@@ -82,11 +82,11 @@ const Dashboard: NextPage = () => {
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">Dashboard</h1>
-            <p className="text-gray-600">Welcome back! Here's your activity overview.</p>
+            <h1 className="text-3xl font-bold text-foreground mb-2">Dashboard</h1>
+            <p className="text-muted-foreground">Welcome back! Here's your activity overview.</p>
           </div>
           <Link href="/campaigns/create">
-            <a className="mt-4 md:mt-0 bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition-colors inline-flex items-center">
+            <a className="mt-4 md:mt-0 bg-primary text-primary-foreground px-6 py-3 rounded-lg hover:bg-primary/90 transition-colors inline-flex items-center">
               <Plus className="mr-2" size={16} />
               Create Campaign
             </a>
@@ -102,7 +102,9 @@ const Dashboard: NextPage = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Total Points</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.totalPoints.toLocaleString()}</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {stats.totalPoints.toLocaleString()}
+                </p>
               </div>
             </div>
           </div>
@@ -126,7 +128,9 @@ const Dashboard: NextPage = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Campaigns Joined</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.totalCampaignsParticipated}</p>
+                <p className="text-2xl font-bold text-gray-900">
+                  {stats.totalCampaignsParticipated}
+                </p>
               </div>
             </div>
           </div>
@@ -154,13 +158,20 @@ const Dashboard: NextPage = () => {
               {userData?.recentActivities?.length > 0 ? (
                 <div className="space-y-4">
                   {userData.recentActivities.slice(0, 5).map((activity: any, index: number) => (
-                    <div key={index} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
+                    <div
+                      key={index}
+                      className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0"
+                    >
                       <div>
                         <p className="font-medium text-gray-900">{activity.activityName}</p>
-                        <p className="text-sm text-gray-600">{activity.campaignId?.title || 'Campaign'}</p>
+                        <p className="text-sm text-gray-600">
+                          {activity.campaignId?.title || 'Campaign'}
+                        </p>
                       </div>
                       <div className="text-right">
-                        <p className="font-medium text-primary-600">+{activity.pointsEarned} points</p>
+                        <p className="font-medium text-primary-600">
+                          +{activity.pointsEarned} points
+                        </p>
                         <p className="text-sm text-gray-500">
                           {new Date(activity.completedAt).toLocaleDateString()}
                         </p>
@@ -195,21 +206,26 @@ const Dashboard: NextPage = () => {
             <div className="p-6">
               {userData?.user?.createdCampaigns?.length > 0 ? (
                 <div className="space-y-4">
-                  {userData.user.createdCampaigns.slice(0, 5).map((campaign: any, index: number) => (
-                    <div key={index} className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0">
-                      <div>
-                        <p className="font-medium text-gray-900">{campaign.title}</p>
-                        <p className="text-sm text-gray-600">
-                          {campaign.status} • {campaign.totalParticipants || 0} participants
-                        </p>
+                  {userData.user.createdCampaigns
+                    .slice(0, 5)
+                    .map((campaign: any, index: number) => (
+                      <div
+                        key={index}
+                        className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0"
+                      >
+                        <div>
+                          <p className="font-medium text-gray-900">{campaign.title}</p>
+                          <p className="text-sm text-gray-600">
+                            {campaign.status} • {campaign.totalParticipants || 0} participants
+                          </p>
+                        </div>
+                        <Link href={`/campaigns/${campaign._id}`}>
+                          <a className="text-primary-600 hover:text-primary-700">
+                            <ArrowRight size={16} />
+                          </a>
+                        </Link>
                       </div>
-                      <Link href={`/campaigns/${campaign._id}`}>
-                        <a className="text-primary-600 hover:text-primary-700">
-                          <ArrowRight size={16} />
-                        </a>
-                      </Link>
-                    </div>
-                  ))}
+                    ))}
                 </div>
               ) : (
                 <div className="text-center py-8">
