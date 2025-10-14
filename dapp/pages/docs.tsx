@@ -101,7 +101,10 @@ const Docs: NextPage = () => {
         {/* Documentation Sections */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {sections.map((section, index) => (
-            <div key={index} className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-6">
+            <div
+              key={index}
+              className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-6"
+            >
               <div className="flex items-center mb-4">
                 <div className="w-10 h-10 bg-primary-100/20 rounded-lg flex items-center justify-center mr-3">
                   <Book className="text-primary-600" size={20} />

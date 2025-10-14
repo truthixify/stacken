@@ -553,7 +553,8 @@ const CreateCampaign: NextPage = () => {
 
         {/* Progress Steps */}
         <div className="mb-8">
-          <div className="flex items-center justify-between">
+          {/* Desktop Progress Steps */}
+          <div className="hidden md:flex items-center justify-between">
             {steps.map((step, index) => (
               <div key={step.number} className="flex items-center">
                 <div
@@ -584,6 +585,40 @@ const CreateCampaign: NextPage = () => {
                 )}
               </div>
             ))}
+          </div>
+
+          {/* Mobile Progress Steps */}
+          <div className="md:hidden">
+            <div className="flex items-center justify-center mb-4">
+              <div className="flex items-center space-x-2">
+                {steps.map((step, index) => (
+                  <div key={step.number} className="flex items-center">
+                    <div
+                      className={`flex items-center justify-center w-8 h-8 rounded-full border-2 text-sm ${
+                        currentStep >= step.number
+                          ? 'bg-primary-600 border-primary-600 text-white'
+                          : 'border-gray-300 text-gray-400'
+                      }`}
+                    >
+                      {step.number}
+                    </div>
+                    {index < steps.length - 1 && (
+                      <div
+                        className={`w-8 h-0.5 mx-2 ${
+                          currentStep > step.number ? 'bg-primary-600' : 'bg-gray-300'
+                        }`}
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="text-center">
+              <p className="text-sm font-medium text-primary-600">
+                Step {currentStep}: {steps[currentStep - 1]?.title}
+              </p>
+              <p className="text-xs text-gray-400">{steps[currentStep - 1]?.description}</p>
+            </div>
           </div>
         </div>
 
@@ -625,7 +660,7 @@ const CreateCampaign: NextPage = () => {
                   <label className="block text-sm font-medium text-gray-200 mb-3">
                     Campaign Type *
                   </label>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div
                       className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
                         campaignType === 'TOKEN'
@@ -815,7 +850,7 @@ const CreateCampaign: NextPage = () => {
                             : false,
                       })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
-                      placeholder="2.5"
+                      placeholder="1000"
                     />
                     {errors.tokenAmount && (
                       <p className="text-red-500 text-sm mt-1">{errors.tokenAmount.message}</p>
@@ -1103,7 +1138,7 @@ const CreateCampaign: NextPage = () => {
                 </div>
 
                 {/* Social Links */}
-                <div>
+                <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-gray-200 mb-3">
                     Mission Social Links (Optional)
                   </label>
