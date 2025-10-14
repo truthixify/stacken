@@ -2,7 +2,7 @@
 
 *Empowering Bitcoin builders through missions, rewards, and open collaboration.*
 
-**The Bitcoin-native bounty platform that turns open-source contributions into crypto rewards**
+**The Bitcoin-native bounty platform that turns all types of building contributions into crypto rewards**
 
 [![Live Demo](https://img.shields.io/badge/🌐_Live_Demo-Visit_Stacken-orange)](https://stacken.vercel.app)
 [![Stacks Testnet](https://img.shields.io/badge/⚡_Stacks-Testnet-purple)](https://explorer.stacks.co/txid/0x...)
@@ -15,12 +15,12 @@
 **The Web3 talent crisis is real.** While Bitcoin's ecosystem is exploding with innovation, builders struggle to find meaningful work and fair compensation. Traditional bounty platforms are fragmented, lack transparency, and don't leverage Bitcoin's programmable layer.
 
 ### **The Current Reality:**
-- **Builders**: Struggle to find quality projects and fair compensation
-- **Project Owners**: Can't efficiently distribute work or attract top talent  
-- **Bitcoin Ecosystem**: Missing a native platform to coordinate and incentivize development
-- **Open Source**: Contributors work for free while projects need sustainable funding models
+- **Builders**: Developers, designers, creators struggle to find quality projects and fair compensation
+- **Project Owners**: Can't efficiently distribute work or attract top talent across all disciplines
+- **Bitcoin Ecosystem**: Missing a native platform to coordinate and incentivize all types of building
+- **Contributors**: Work for free while projects need sustainable funding for development, design, content, and community work
 
-**Result:** Talented developers leave for other ecosystems with better incentive structures.
+**Result:** Talented builders leave for other ecosystems with better incentive structures.
 
 ---
 
@@ -30,15 +30,15 @@
 
 ### **Market Evidence:**
 - **$2.3B+** bounty rewards distributed across Web3 (2023)
-- **67%** of developers want crypto-native compensation
-- **1,200%** Bitcoin DeFi TVL growth creating builder demand
-- **200+** Stacks projects needing development talent
+- **67%** of builders want crypto-native compensation
+- **1,200%** Bitcoin DeFi TVL growth creating demand for all types of talent
+- **200+** Stacks projects needing development, design, content, and community talent
 
 ### **Validated User Segments:**
 - **DAO Builders** → Transparent, programmable reward distribution
-- **Open Source Contributors** → Fair compensation for quality work  
-- **Bitcoin Developers** → Native tools extending Bitcoin's utility
-- **Project Founders** → Efficient development crowdsourcing
+- **Developers & Designers** → Fair compensation for technical and creative work
+- **Content Creators** → Native tools for monetizing Bitcoin ecosystem contributions
+- **Project Founders** → Efficient crowdsourcing across all building disciplines
 
 ### **Perfect Bitcoin/Stacks Fit:**
 Leverages **Bitcoin's security** + **Stacks' programmability** = first truly Bitcoin-native bounty platform extending Bitcoin beyond store-of-value into productive economic activity.
@@ -132,21 +132,21 @@ A Bitcoin-native bounty platform that combines:
 
 #### **For Builders:**
 - **Guaranteed Payment**: Smart contracts eliminate payment risk
-- **Fair Compensation**: Market-driven pricing for quality work
-- **Skill Development**: Access to cutting-edge Bitcoin/Stacks projects
-- **Reputation Building**: On-chain track record of contributions
+- **Fair Compensation**: Market-driven pricing for development, design, content, and community work
+- **Skill Development**: Access to cutting-edge Bitcoin/Stacks projects across all disciplines
+- **Reputation Building**: On-chain track record of technical and creative contributions
 
 #### **For Project Owners:**
-- **Quality Talent**: Attract skilled developers with crypto incentives
+- **Quality Talent**: Attract skilled builders across development, design, content, and community
 - **Efficient Distribution**: Automated reward distribution saves time
 - **Transparent Process**: All activities visible and auditable
 - **Cost Effective**: No platform fees on core functionality
 
 #### **For Bitcoin Ecosystem:**
-- **Talent Retention**: Keep builders in Bitcoin ecosystem
-- **Innovation Acceleration**: Faster development cycles
+- **Talent Retention**: Keep all types of builders in Bitcoin ecosystem
+- **Innovation Acceleration**: Faster development, design, and community growth cycles
 - **Economic Activity**: Productive use of Bitcoin beyond speculation
-- **Network Effects**: More builders → more projects → more adoption
+- **Network Effects**: More builders → more diverse projects → broader adoption
 
 ### **Impact Potential**
 
@@ -187,7 +187,7 @@ A Bitcoin-native bounty platform that combines:
 
 ## 👥 **Team**
 
-**Built by the StrawHatCrew** — passionate Bitcoin developers who believe in extending Bitcoin's utility through programmable smart contracts and seamless user experiences.
+**Built by the StrawHatCrew** — passionate Bitcoin builders who believe in extending Bitcoin's utility through programmable smart contracts and seamless user experiences for all types of contributors.
 
 ---
 

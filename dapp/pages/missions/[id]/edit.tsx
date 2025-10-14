@@ -7,6 +7,8 @@ import { Calendar, Plus, X, Upload, Save, ArrowLeft } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import dynamic from 'next/dynamic';
+import { DEPLOYER_ADDRESS, isDeployerAddress } from '../../../lib/constants';
+import { useAllowedTokens } from '../../../hooks/useAllowedTokens';
 
 // Dynamically import ReactQuill to avoid SSR issues
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
@@ -30,7 +32,7 @@ interface MissionFormData {
   details: string;
   category: string;
   imageUrl?: string;
-  tokenAddress?: string;
+  selectedToken?: string; // Contract address of selected token
   tokenAmount?: number;
   totalPoints: number;
   startTime: string;
@@ -73,6 +75,12 @@ const EditMission: NextPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
 
+  // Check if current user is the deployer (can create point-only campaigns)
+  const isDeployer = isDeployerAddress(stxAddress);
+
+  // Fetch allowed tokens
+  const { tokens: allowedTokens, loading: tokensLoading } = useAllowedTokens();
+
   const {
     register,
     handleSubmit,
@@ -83,13 +91,17 @@ const EditMission: NextPage = () => {
   } = useForm<MissionFormData>();
 
   const categories = [
+    'Development',
+    'Design',
+    'Content',
+    'Community',
+    'Marketing',
+    'Research',
+    'Testing',
     'DeFi',
     'NFT',
     'Gaming',
-    'Social',
     'Education',
-    'Community',
-    'Marketing',
     'Other',
   ];
 
@@ -121,8 +133,9 @@ const EditMission: NextPage = () => {
         // Populate form with existing data
         reset({
           title: mission.title,
+          summary: mission.summary || '',
           category: mission.category,
-          tokenAddress: mission.tokenAddress || '',
+          selectedToken: mission.tokenAddress || '',
           tokenAmount: mission.tokenAmount || 0,
           totalPoints: mission.totalPoints,
           startTime: new Date(mission.startTime).toISOString().slice(0, 16),
@@ -330,7 +343,7 @@ const EditMission: NextPage = () => {
                   type="text"
                   {...register('title', { required: 'Title is required' })}
                   className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
-                  placeholder="Enter mission title"
+                  placeholder="Build a DeFi dashboard, Design a logo, Write documentation, Create video content..."
                 />
                 {errors.title && (
                   <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
@@ -368,7 +381,7 @@ const EditMission: NextPage = () => {
                       'link',
                       'code-block',
                     ]}
-                    placeholder="Describe your mission, provide detailed instructions, requirements, and guidelines for participants."
+                    placeholder="Describe your mission, provide detailed instructions, requirements, and guidelines for contributors. Include deliverables, timeline, and success criteria. You can format text, add links, and create lists."
                     className="text-gray-500"
                     style={{ minHeight: '250px' }}
                   />
@@ -393,9 +406,46 @@ const EditMission: NextPage = () => {
                 )}
               </div>
 
+              {allowedTokens.length > 0 && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-200 mb-2">
+                    Token Type *
+                  </label>
+                  <select
+                    {...register('selectedToken')}
+                    className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
+                  >
+                    <option value="">STX (Default)</option>
+                    {allowedTokens.map(token => (
+                      <option key={token._id} value={token.contractAddress}>
+                        {token.name} ({token.symbol})
+                      </option>
+                    ))}
+                  </select>
+                  <p className="text-sm text-gray-400 mt-1">
+                    Choose STX or select from approved tokens for rewards
+                  </p>
+                </div>
+              )}
+
               <div>
                 <label className="block text-sm font-medium text-gray-200 mb-2">
-                  Total Points Pool *
+                  Token Reward Amount *
+                </label>
+                <input
+                  type="number"
+                  {...register('tokenAmount', { min: 0 })}
+                  className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
+                  placeholder="2.5"
+                />
+                <p className="text-sm text-gray-400 mt-1">
+                  How many tokens will you distribute to contributors?
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-200 mb-2">
+                  Total Reward Points *
                 </label>
                 <input
                   type="number"
@@ -406,6 +456,9 @@ const EditMission: NextPage = () => {
                 {errors.totalPoints && (
                   <p className="text-red-500 text-sm mt-1">{errors.totalPoints.message}</p>
                 )}
+                <p className="text-sm text-gray-400 mt-1">
+                  Total points to distribute among contributors
+                </p>
               </div>
 
               <div className="md:col-span-2">
@@ -504,6 +557,170 @@ const EditMission: NextPage = () => {
                     Add
                   </button>
                 </div>
+              </div>
+
+              {/* Social Links */}
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-gray-200 mb-3">
+                  Mission Social Links (Optional)
+                </label>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-200 mb-2">Twitter</label>
+                    <input
+                      type="url"
+                      {...register('socialLinks.twitter')}
+                      className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
+                      placeholder="https://twitter.com/yourmission"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-200 mb-2">Discord</label>
+                    <input
+                      type="url"
+                      {...register('socialLinks.discord')}
+                      className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
+                      placeholder="https://discord.gg/yourmission"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-200 mb-2">Website</label>
+                    <input
+                      type="url"
+                      {...register('socialLinks.website')}
+                      className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
+                      placeholder="https://yourproject.com"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-200 mb-2">Telegram</label>
+                    <input
+                      type="url"
+                      {...register('socialLinks.telegram')}
+                      className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
+                      placeholder="https://t.me/yourmission"
+                    />
+                  </div>
+                </div>
+                <p className="text-sm text-gray-400 mt-2">
+                  Add social media links for your mission to help contributors connect and stay
+                  updated
+                </p>
+              </div>
+
+              {/* Task Links */}
+              <div className="md:col-span-2">
+                <div className="flex justify-between items-center mb-3">
+                  <label className="block text-sm font-medium text-gray-200">Task Links</label>
+                  <button
+                    type="button"
+                    onClick={addTaskLink}
+                    className="bg-primary-600 text-white px-3 py-1 rounded text-sm hover:bg-primary-700 transition-colors inline-flex items-center"
+                  >
+                    <Plus className="mr-1" size={14} />
+                    Add Link
+                  </button>
+                </div>
+
+                {taskLinks.length > 0 ? (
+                  <div className="space-y-4">
+                    {taskLinks.map((link, index) => (
+                      <div key={index} className="border border-gray-600/20 rounded-lg p-4">
+                        <div className="flex justify-between items-start mb-3">
+                          <h4 className="text-sm font-medium text-gray-200">Link {index + 1}</h4>
+                          <button
+                            type="button"
+                            onClick={() => removeTaskLink(index)}
+                            className="text-red-400 hover:text-red-300"
+                          >
+                            <X size={16} />
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-200 mb-1">
+                              Title *
+                            </label>
+                            <input
+                              type="text"
+                              value={link.title}
+                              onChange={e => updateTaskLink(index, 'title', e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
+                              placeholder="GitHub Repository"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-medium text-gray-200 mb-1">
+                              Type *
+                            </label>
+                            <select
+                              value={link.type}
+                              onChange={e => updateTaskLink(index, 'type', e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
+                            >
+                              <option value="GITHUB">GitHub</option>
+                              <option value="TWITTER">Twitter</option>
+                              <option value="DISCORD">Discord</option>
+                              <option value="WEBSITE">Website</option>
+                              <option value="DOCUMENT">Document</option>
+                              <option value="OTHER">Other</option>
+                            </select>
+                          </div>
+
+                          <div className="md:col-span-2">
+                            <label className="block text-sm font-medium text-gray-200 mb-1">
+                              URL *
+                            </label>
+                            <input
+                              type="url"
+                              value={link.url}
+                              onChange={e => updateTaskLink(index, 'url', e.target.value)}
+                              className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
+                              placeholder="https://github.com/yourproject/repo"
+                            />
+                          </div>
+
+                          <div className="md:col-span-2">
+                            <label className="block text-sm font-medium text-gray-200 mb-1">
+                              Description
+                            </label>
+                            <textarea
+                              value={link.description}
+                              onChange={e => updateTaskLink(index, 'description', e.target.value)}
+                              rows={2}
+                              className="w-full px-3 py-2 border border-gray-600/20 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
+                              placeholder="Brief description of this resource"
+                            />
+                          </div>
+
+                          <div className="md:col-span-2">
+                            <label className="flex items-center">
+                              <input
+                                type="checkbox"
+                                checked={link.required}
+                                onChange={e => updateTaskLink(index, 'required', e.target.checked)}
+                                className="mr-2"
+                              />
+                              <span className="text-sm text-gray-200">Required for submission</span>
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-8 border-2 border-dashed border-gray-600/20 rounded-lg">
+                    <p className="text-gray-400">No task links added yet</p>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Add links to help contributors understand requirements
+                    </p>
+                  </div>
+                )}
               </div>
             </div>
           </div>

@@ -233,7 +233,7 @@ const EditProfile: NextPage = () => {
             <div className="flex items-center space-x-6">
               <div className="flex-shrink-0">
                 {avatarPreview ? (
-                  <Image
+                  <img
                     src={avatarPreview}
                     alt="Avatar"
                     className="w-24 h-24 rounded-full object-cover border-4 border-gray-600/20"

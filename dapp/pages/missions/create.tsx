@@ -131,13 +131,17 @@ const CreateCampaign: NextPage = () => {
     }
   }, [tokenAmount, isDeployer, campaignType, setValue]);
   const categories = [
+    'Development',
+    'Design',
+    'Content',
+    'Community',
+    'Marketing',
+    'Research',
+    'Testing',
     'DeFi',
     'NFT',
     'Gaming',
-    'Social',
     'Education',
-    'Community',
-    'Marketing',
     'Other',
   ];
 
@@ -658,7 +662,7 @@ const CreateCampaign: NextPage = () => {
               {isDeployer && (
                 <div className="mb-6">
                   <label className="block text-sm font-medium text-gray-200 mb-3">
-                    Campaign Type *
+                    Reward Type *
                   </label>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div
@@ -678,10 +682,10 @@ const CreateCampaign: NextPage = () => {
                           onChange={() => setCampaignType('TOKEN')}
                           className="mr-2"
                         />
-                        <h3 className="font-medium text-white">Token Mission</h3>
+                        <h3 className="font-medium text-white">Token Reward</h3>
                       </div>
                       <p className="text-sm text-gray-600">
-                        Distribute tokens/STX to winners. Points will match token amount.
+                        Distribute tokens/STX to contributors. Points will match token amount.
                       </p>
                     </div>
 
@@ -702,10 +706,10 @@ const CreateCampaign: NextPage = () => {
                           onChange={() => setCampaignType('POINTS')}
                           className="mr-2"
                         />
-                        <h3 className="font-medium text-white">Points-Only Mission</h3>
+                        <h3 className="font-medium text-white">Points-Only Reward</h3>
                       </div>
                       <p className="text-sm text-gray-600">
-                        Award only points to winners. No token distribution.
+                        Award only points to contributors. No token distribution.
                       </p>
                     </div>
                   </div>
@@ -721,7 +725,7 @@ const CreateCampaign: NextPage = () => {
                     type="text"
                     {...register('title', { required: 'Title is required' })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
-                    placeholder="Build a DeFi dashboard, Create viral content, Fix critical bugs..."
+                    placeholder="Build a DeFi dashboard, Design a logo, Write documentation, Create video content..."
                   />
                   {errors.title && (
                     <p className="text-red-500 text-sm mt-1">{errors.title.message}</p>
@@ -736,7 +740,7 @@ const CreateCampaign: NextPage = () => {
                     {...register('summary', { required: 'Summary is required' })}
                     rows={3}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
-                    placeholder="What challenge are you posting? Keep it short and exciting..."
+                    placeholder="What work do you need done? Development, design, content, community - keep it short and exciting..."
                   />
                   {errors.summary && (
                     <p className="text-red-500 text-sm mt-1">{errors.summary.message}</p>
@@ -777,7 +781,7 @@ const CreateCampaign: NextPage = () => {
                         'link',
                         'code-block',
                       ]}
-                      placeholder="Describe your mission, provide detailed instructions, requirements, and guidelines for builders. You can format text, add links, and create lists."
+                      placeholder="Describe your mission, provide detailed instructions, requirements, and guidelines for contributors. Include deliverables, timeline, and success criteria. You can format text, add links, and create lists."
                       style={{
                         minHeight: '250px',
                         height: '250px',
@@ -787,8 +791,8 @@ const CreateCampaign: NextPage = () => {
                   </div>
 
                   <p className="text-sm text-gray-400 mt-1">
-                    Spell out exactly what builders need to deliver, how you&apos;ll judge
-                    submissions, and any special requirements.
+                    Spell out exactly what contributors need to deliver, how you&apos;ll judge
+                    submissions, and any special requirements for the work.
                   </p>
                 </div>
 
@@ -800,7 +804,7 @@ const CreateCampaign: NextPage = () => {
                     {...register('category', { required: 'Category is required' })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500 text-gray-500"
                   >
-                    <option value="">What kind of work is this?</option>
+                    <option value="">What kind of mission is this?</option>
                     {categories.map(category => (
                       <option key={category} value={category}>
                         {category}
@@ -857,8 +861,8 @@ const CreateCampaign: NextPage = () => {
                     )}
                     <p className="text-sm text-gray-400 mt-1">
                       {isDeployer
-                        ? 'How many tokens will you distribute? Points will automatically match this amount.'
-                        : 'How many tokens will you distribute? This will also set your points amount.'}
+                        ? 'How many tokens will you distribute to contributors? Points will automatically match this amount.'
+                        : 'How many tokens will you distribute to contributors? This will also set your points amount.'}
                     </p>
                   </div>
                 )}
@@ -882,7 +886,7 @@ const CreateCampaign: NextPage = () => {
                         <p className="text-red-500 text-sm mt-1">{errors.totalPoints.message}</p>
                       )}
                       <p className="text-sm text-gray-400 mt-1">
-                        Set the total points to distribute among winners (points-only campaign)
+                        Set the total points to distribute among contributors (points-only campaign)
                       </p>
                     </>
                   ) : (

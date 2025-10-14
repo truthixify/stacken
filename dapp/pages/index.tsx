@@ -35,7 +35,7 @@ const HomePage = () => {
       icon: <Users className="h-8 w-8 text-orange-600" />,
       title: 'Builder Community',
       description:
-        'Join thousands of creators, developers, and innovators earning rewards for great work.',
+        'Join thousands of builders, creators, and innovators earning rewards for great work.',
     },
     {
       icon: <Zap className="h-8 w-8 text-orange-600" />,
