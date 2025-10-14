@@ -115,6 +115,20 @@
                 ERR_INVALID_AMOUNT
             )
 
+            ;; For point-only campaigns, ensure caller is contract owner
+            (if (and (is-eq token-amount u0) (> total-points u0))
+                (asserts! (is-eq tx-sender (var-get contract-owner))
+                    ERR_UNAUTHORIZED
+                )
+                true
+            )
+
+            ;; For campaigns with tokens, assert total points equals total amount
+            (if (> token-amount u0)
+                (asserts! (is-eq total-points token-amount) ERR_INVALID_AMOUNT)
+                true
+            )
+
             ;; Handle funding if token-amount > 0
             (if (> token-amount u0)
                 (match token

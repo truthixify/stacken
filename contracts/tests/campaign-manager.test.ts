@@ -87,7 +87,7 @@ describe('Campaign Manager Contract', () => {
                 [
                     Cl.some(Cl.contractPrincipal(deployer, 'mock-token')),
                     Cl.uint(tokenAmount),
-                    Cl.uint(0), // no points for token campaign
+                    Cl.uint(tokenAmount), // points must equal token amount
                     Cl.uint(startTime),
                     Cl.uint(endTime),
                 ],
@@ -111,7 +111,7 @@ describe('Campaign Manager Contract', () => {
                 [
                     Cl.none(), // no token means STX
                     Cl.uint(stxAmount),
-                    Cl.uint(0), // no points
+                    Cl.uint(stxAmount), // points must equal token amount
                     Cl.uint(startTime),
                     Cl.uint(endTime),
                 ],
@@ -132,7 +132,7 @@ describe('Campaign Manager Contract', () => {
                 'campaign-id': Cl.uint(1),
                 'creator': Cl.principal(deployer),
 
-                'total-points': Cl.uint(0),
+                'total-points': Cl.uint(stxAmount),
                 'points-distributed': Cl.uint(0),
                 'is-finalized': Cl.bool(false),
                 'is-active': Cl.bool(false),
@@ -225,21 +225,113 @@ describe('Campaign Manager Contract', () => {
             const startTime = currentBlock + 10;
             const endTime = startTime + MIN_CAMPAIGN_DURATION + 100;
 
-            // Try to create campaign with mock-token but expect it to fail due to transfer
+            // Try to create campaign with mock-token but expect it to fail due to validation
             const response = simnet.callPublicFn(
                 'campaign-manager',
                 'create-campaign',
                 [
-                    Cl.some(Cl.contractPrincipal(deployer, 'mock-token')), // allowed but transfer will fail
+                    Cl.some(Cl.contractPrincipal(deployer, 'mock-token')), // allowed but validation will fail
                     Cl.uint(1000),
-                    Cl.uint(0),
+                    Cl.uint(0), // points don't match token amount
                     Cl.uint(startTime),
                     Cl.uint(endTime),
                 ],
                 deployer
             );
 
-            expect(response.result).toBeErr(Cl.uint(1)); // Transfer will fail
+            expect(response.result).toBeErr(Cl.uint(105)); // ERR_INVALID_AMOUNT due to points/token mismatch
+        });
+
+        it('should fail when non-owner tries to create point-only campaign', () => {
+            const currentBlock = simnet.blockHeight;
+            const startTime = currentBlock + 10;
+            const endTime = startTime + MIN_CAMPAIGN_DURATION + 100;
+
+            const response = simnet.callPublicFn(
+                'campaign-manager',
+                'create-campaign',
+                [
+                    Cl.none(), // no token for points campaign
+                    Cl.uint(0), // no token amount for points campaign
+                    Cl.uint(1000), // points only
+                    Cl.uint(startTime),
+                    Cl.uint(endTime),
+                ],
+                wallet1 // non-owner trying to create point-only campaign
+            );
+
+            expect(response.result).toBeErr(Cl.uint(100)); // ERR_UNAUTHORIZED
+        });
+
+        it('should allow owner to create point-only campaign', () => {
+            const currentBlock = simnet.blockHeight;
+            const startTime = currentBlock + 10;
+            const endTime = startTime + MIN_CAMPAIGN_DURATION + 100;
+
+            const response = simnet.callPublicFn(
+                'campaign-manager',
+                'create-campaign',
+                [
+                    Cl.none(), // no token for points campaign
+                    Cl.uint(0), // no token amount for points campaign
+                    Cl.uint(1000), // points only
+                    Cl.uint(startTime),
+                    Cl.uint(endTime),
+                ],
+                deployer // owner creating point-only campaign
+            );
+
+            expect(response.result).toBeOk(Cl.uint(1));
+        });
+
+        it('should fail when token campaign has mismatched points and token amounts', () => {
+            // First add mock token to allowed list
+            simnet.callPublicFn(
+                'campaign-manager',
+                'add-allowed-token',
+                [Cl.principal(`${deployer}.mock-token`)],
+                deployer
+            );
+
+            const currentBlock = simnet.blockHeight;
+            const startTime = currentBlock + 10;
+            const endTime = startTime + MIN_CAMPAIGN_DURATION + 100;
+
+            const response = simnet.callPublicFn(
+                'campaign-manager',
+                'create-campaign',
+                [
+                    Cl.some(Cl.contractPrincipal(deployer, 'mock-token')),
+                    Cl.uint(1000), // token amount
+                    Cl.uint(500), // different points amount
+                    Cl.uint(startTime),
+                    Cl.uint(endTime),
+                ],
+                deployer
+            );
+
+            expect(response.result).toBeErr(Cl.uint(105)); // ERR_INVALID_AMOUNT
+        });
+
+        it('should fail when STX campaign has mismatched points and STX amounts', () => {
+            const currentBlock = simnet.blockHeight;
+            const startTime = currentBlock + 10;
+            const endTime = startTime + MIN_CAMPAIGN_DURATION + 100;
+
+            const response = simnet.callPublicFn(
+                'campaign-manager',
+                'create-campaign',
+                [
+                    Cl.none(), // STX campaign
+                    Cl.uint(1000000), // 1 STX in microSTX
+                    Cl.uint(500000), // different points amount
+                    Cl.uint(startTime),
+                    Cl.uint(endTime),
+                ],
+                deployer
+            );
+
+            expect(response.result).toBeErr(Cl.uint(105)); // ERR_INVALID_AMOUNT
         });
     });
 
@@ -569,7 +661,7 @@ describe('Campaign Manager Contract', () => {
                     Cl.uint(startTime2),
                     Cl.uint(endTime2),
                 ],
-                wallet1
+                deployer // Change to deployer since only owner can create point-only campaigns
             );
         });
 
