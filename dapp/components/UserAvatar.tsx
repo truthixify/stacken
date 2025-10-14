@@ -1,42 +1,44 @@
 import React from 'react';
 import Avatar from 'boring-avatars';
+import Image from 'next/image';
 
 interface UserAvatarProps {
-  userAddress: string;
-  avatar?: string;
-  displayName?: string;
-  size?: number;
-  className?: string;
+    userAddress: string;
+    avatar?: string;
+    displayName?: string;
+    size?: number;
+    className?: string;
 }
 
 const UserAvatar: React.FC<UserAvatarProps> = ({
-  userAddress,
-  avatar,
-  displayName,
-  size = 32,
-  className = '',
+    userAddress,
+    avatar,
+    displayName,
+    size = 32,
+    className = '',
 }) => {
-  if (avatar) {
-    return (
-      <img
-        src={avatar}
-        alt={displayName || 'User avatar'}
-        className={`rounded-full object-cover ${className}`}
-        style={{ width: size, height: size }}
-      />
-    );
-  }
+    if (avatar) {
+        return (
+            <Image
+                src={avatar}
+                alt={displayName || 'User avatar'}
+                width={size}
+                height={size}
+                className={`rounded-full object-cover ${className}`}
+            />
+        );
+    }
 
-  // Generate consistent avatar based on address
-  return (
-    <Avatar
-      size={size}
-      name={userAddress || displayName || 'anon'}
-      variant="beam"
-      colors={['#EA580C', '#FDBA74', '#F97316', '#FB923C', '#FED7AA']}
-      className={className}
-    />
-  );
+    // Generate consistent avatar based on address
+    return (
+        <Avatar
+            size={size}
+            name={userAddress || displayName || 'anon'}
+            variant="beam"
+            colors={['#EA580C', '#FDBA74', '#F97316', '#FB923C', '#FED7AA']}
+            className={className}
+        />
+    );
 };
 
 export default UserAvatar;

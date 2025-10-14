@@ -3,6 +3,7 @@ import dbConnect from '../../../lib/mongodb';
 import Mission from '../../../models/Mission';
 import User from '../../../models/User';
 import { DEPLOYER_ADDRESS, isDeployerAddress } from '../../../lib/constants';
+import AllowedToken from '../../../models/AllowedToken';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
@@ -129,6 +130,20 @@ async function createmission(req: NextApiRequest, res: NextApiResponse) {
     if (!totalPoints || totalPoints <= 0) {
       return res.status(400).json({ message: 'Total points must be greater than 0' });
     }
+
+    // Validate token address if provided
+    // TODO: Re-enable when AllowedToken schema is fixed
+    // if (tokenAddress) {
+    //   const allowedToken = await AllowedToken.findOne({ 
+    //     contractAddress: tokenAddress, 
+    //     isActive: true 
+    //   });
+    //   if (!allowedToken) {
+    //     return res.status(400).json({ 
+    //       message: 'Selected token is not in the allowed tokens list' 
+    //     });
+    //   }
+    // }
 
     // Validate deployer vs regular user permissions
     const isDeployer = isDeployerAddress(creatorAddress);

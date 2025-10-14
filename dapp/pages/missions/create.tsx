@@ -10,6 +10,8 @@ import dynamic from 'next/dynamic';
 import { useOpenContractCall } from '@micro-stacks/react';
 import { uintCV, stringUtf8CV, noneCV, someCV, contractPrincipalCV } from 'micro-stacks/clarity';
 import { DEPLOYER_ADDRESS, isDeployerAddress } from '../../lib/constants';
+import { useAllowedTokens } from '../../hooks/useAllowedTokens';
+import { stxToMicroStx, scaleTokenAmount } from '../../lib/stx-utils';
 
 // Dynamically import ReactQuill to avoid SSR issues
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
@@ -33,7 +35,7 @@ interface CampaignFormData {
   details: string;
   category: string;
   imageUrl?: string;
-  tokenAddress?: string;
+  selectedToken?: string; // Contract address of selected token
   tokenAmount?: number;
   totalPoints: number;
   startTime: string;
@@ -74,14 +76,6 @@ const CreateCampaign: NextPage = () => {
   // Check if current user is the deployer (can create point-only campaigns)
   const isDeployer = isDeployerAddress(stxAddress);
 
-  // Debug logging
-  React.useEffect(() => {
-    console.log('=== DEPLOYER CHECK DEBUG ===');
-    console.log('Current stxAddress:', stxAddress);
-    console.log('Deployer address:', DEPLOYER_ADDRESS);
-    console.log('Is deployer?', isDeployer);
-    console.log('===========================');
-  }, [stxAddress, isDeployer]);
   const [currentStep, setCurrentStep] = useState(1);
   const [tags, setTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState('');
@@ -98,6 +92,9 @@ const CreateCampaign: NextPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
   const [campaignType, setCampaignType] = useState<'TOKEN' | 'POINTS'>('TOKEN');
+  
+  // Fetch allowed tokens
+  const { tokens: allowedTokens, loading: tokensLoading } = useAllowedTokens();
 
   const {
     register,
@@ -358,6 +355,9 @@ const CreateCampaign: NextPage = () => {
         details,
         imageUrl,
         description: details, // Use details as description for API compatibility
+        tokenAddress: data.selectedToken || null, // Use selectedToken as tokenAddress
+        // Store the user-entered amount (unscaled) for display purposes
+        tokenAmount: data.tokenAmount || 0,
       };
 
       try {
@@ -394,9 +394,33 @@ const CreateCampaign: NextPage = () => {
 
         console.log('Calculated blocks:', { startBlock, endBlock, currentBlock });
 
-        // For now, we'll pass none for token since we need trait implementation
-        // TODO: Implement proper SIP-010 trait handling
-        const tokenArg = noneCV();
+        // Helper function to get scaled token amount
+        const getScaledTokenAmount = (amount: number, selectedToken?: string): number => {
+          if (!selectedToken) {
+            // STX - scale by 10^6 (1 STX = 1,000,000 microSTX)
+            return stxToMicroStx(amount);
+          } else {
+            // Custom token - find decimals from allowedTokens
+            const tokenData = allowedTokens.find(token => token.contractAddress === selectedToken);
+            const decimals = tokenData?.decimals || 6; // Default to 6 if not found
+            return scaleTokenAmount(amount, decimals);
+          }
+        };
+
+        // Handle token argument based on selected token
+        let tokenArg: any = noneCV(); // Default to none (STX)
+        
+        if (data.selectedToken && allowedTokens.length > 0) {
+          // Find the selected token to get the contract address
+          const selectedTokenData = allowedTokens.find(token => token.contractAddress === data.selectedToken);
+          if (selectedTokenData) {
+            // Parse contract address (format: SP1ABC...XYZ.token-name)
+            const [address, contractName] = selectedTokenData.contractAddress.split('.');
+            if (address && contractName) {
+              tokenArg = someCV(contractPrincipalCV(address, contractName));
+            }
+          }
+        }
 
         try {
           await openContractCall({
@@ -405,8 +429,8 @@ const CreateCampaign: NextPage = () => {
             functionName: 'create-mission',
             functionArgs: [
               tokenArg,
-              uintCV(data.tokenAmount || 0),
-              uintCV(data.totalPoints),
+              uintCV(getScaledTokenAmount(data.tokenAmount || 0, data.selectedToken)),
+              uintCV(data.totalPoints), // Points remain unscaled - they equal the user input amount
               uintCV(startBlock), // Use calculated start block
               uintCV(endBlock), // Use calculated end block
             ],
@@ -726,7 +750,7 @@ const CreateCampaign: NextPage = () => {
                   </div>
 
                   <p className="text-sm text-gray-400 mt-1">
-                    Spell out exactly what builders need to deliver, how you'll judge submissions,
+                    Spell out exactly what builders need to deliver, how you&apos;ll judge submissions,
                     and any special requirements.
                   </p>
                 </div>
@@ -751,20 +775,27 @@ const CreateCampaign: NextPage = () => {
                   )}
                 </div>
 
-                <div>
-                  <label className="block text-sm font-medium text-gray-200 mb-2">
-                    Custom Token Contract (Optional)
-                  </label>
-                  <input
-                    type="text"
-                    {...register('tokenAddress')}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
-                    placeholder="SP1ABC...XYZ.token-name (or leave empty for STX rewards)"
-                  />
-                  <p className="text-sm text-gray-400 mt-1">
-                    Want to pay in your own token? Add the contract address here
-                  </p>
-                </div>
+                {allowedTokens.length > 0 && (campaignType === 'TOKEN' || !isDeployer) && (
+                  <div>
+                    <label className="block text-sm font-medium text-gray-200 mb-2">
+                      Token Type *
+                    </label>
+                    <select
+                      {...register('selectedToken')}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
+                    >
+                      <option value="">STX (Default)</option>
+                      {allowedTokens.map((token) => (
+                        <option key={token._id} value={token.contractAddress}>
+                          {token.name} ({token.symbol})
+                        </option>
+                      ))}
+                    </select>
+                    <p className="text-sm text-gray-400 mt-1">
+                      Choose STX or select from approved tokens for rewards
+                    </p>
+                  </div>
+                )}
 
                 {(campaignType === 'TOKEN' || !isDeployer) && (
                   <div>
@@ -782,7 +813,7 @@ const CreateCampaign: NextPage = () => {
                             : false,
                       })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
-                      placeholder="1000"
+                      placeholder="2.5"
                     />
                     {errors.tokenAmount && (
                       <p className="text-red-500 text-sm mt-1">{errors.tokenAmount.message}</p>

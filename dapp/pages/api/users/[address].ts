@@ -48,13 +48,13 @@ async function getUser(req: NextApiRequest, res: NextApiResponse, address: strin
 
     // Compute stats safely
     const stats = {
-      totalMissionsCreated: Array.isArray(user.createdMissions) ? user.createdMissions.length : 0,
-      totalMissionsParticipated: Array.isArray(user.participatedMissions)
-        ? user.participatedMissions.length
+      totalMissionsCreated: Array.isArray((user as any).createdMissions) ? (user as any).createdMissions.length : 0,
+      totalMissionsParticipated: Array.isArray((user as any).participatedMissions)
+        ? (user as any).participatedMissions.length
         : 0,
-      totalPoints: user.totalPoints || 0,
+      totalPoints: (user as any).totalPoints || 0,
       totalSubmissions: recentSubmissions.length,
-      achievements: user.achievements || [],
+      achievements: (user as any).achievements || [],
     };
 
     return res.status(200).json({

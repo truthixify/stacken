@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
 import type { NextPage, GetServerSidePropsContext } from 'next';
+import Image from 'next/image';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   return {
@@ -232,7 +233,7 @@ const EditProfile: NextPage = () => {
             <div className="flex items-center space-x-6">
               <div className="flex-shrink-0">
                 {avatarPreview ? (
-                  <img
+                  <Image
                     src={avatarPreview}
                     alt="Avatar"
                     className="w-24 h-24 rounded-full object-cover border-4 border-gray-600/20"

@@ -113,7 +113,7 @@ const AppPage: NextPage = () => {
               community.
             </p>
             <button
-              onClick={openAuthRequest}
+              onClick={() => openAuthRequest()}
               className="w-full bg-primary-600 text-white py-3 px-4 rounded-lg hover:bg-primary-700 transition-colors font-semibold"
             >
               Connect Wallet

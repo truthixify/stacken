@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@micro-stacks/react';
+import { useAuth, useAccount } from '@micro-stacks/react';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
 import { getDehydratedStateFromSession } from '../common/session-helpers';
@@ -17,7 +17,8 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 }
 
 const Dashboard: NextPage = () => {
-  const { isSignedIn, stxAddress } = useAuth();
+  const { isSignedIn } = useAuth();
+  const { stxAddress } = useAccount();
   const router = useRouter();
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState(true);

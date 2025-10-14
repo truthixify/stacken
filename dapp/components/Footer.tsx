@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
             <Link href="/" className="flex items-center gap-2">
               <div className="flex items-center gap-2">
                 <div className="relative w-8 h-8">
-                  <Image src={Logo} alt="Stacken Logo" className="object-contain" priority />
+                  <Image src={Logo} alt="Stacken Logo" width={32} height={32} className="object-contain" priority />
                 </div>
                 <span className="text-white text-base font-bold leading-tight cursor-pointer">
                   Stacken
