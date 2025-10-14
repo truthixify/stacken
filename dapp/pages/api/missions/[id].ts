@@ -3,6 +3,37 @@ import dbConnect from '../../../lib/mongodb';
 import Mission from '../../../models/Mission';
 import mongoose from 'mongoose';
 
+// Helper function to update mission status based on current time
+async function updateMissionStatus(mission: any) {
+  const now = new Date();
+  let shouldUpdate = false;
+  let newStatus = mission.status;
+
+  // Check if mission should transition from DRAFT to ACTIVE
+  if (mission.status === 'DRAFT' && mission.startTime <= now && mission.endTime > now) {
+    newStatus = 'ACTIVE';
+    shouldUpdate = true;
+  }
+
+  // Check if mission should transition from ACTIVE to COMPLETED
+  else if (mission.status === 'ACTIVE' && mission.endTime <= now) {
+    newStatus = 'COMPLETED';
+    shouldUpdate = true;
+  }
+
+  // Update in database if status changed
+  if (shouldUpdate) {
+    try {
+      await Mission.findByIdAndUpdate(mission._id, { status: newStatus });
+      mission.status = newStatus; // Update the in-memory object
+    } catch (error) {
+      console.error('Error updating mission status:', error);
+    }
+  }
+
+  return mission;
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
 
@@ -73,11 +104,14 @@ async function getMission(req: NextApiRequest, res: NextApiResponse, id: string)
       },
     ]);
 
-    const mission = missions[0];
+    let mission = missions[0];
 
     if (!mission) {
       return res.status(404).json({ message: 'Mission not found' });
     }
+
+    // Update mission status based on current time
+    mission = await updateMissionStatus(mission);
 
     res.status(200).json({ mission });
   } catch (error) {

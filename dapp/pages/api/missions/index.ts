@@ -5,6 +5,37 @@ import User from '../../../models/User';
 import { DEPLOYER_ADDRESS, isDeployerAddress } from '../../../lib/constants';
 import AllowedToken from '../../../models/AllowedToken';
 
+// Helper function to update mission status based on current time
+async function updateMissionStatus(mission: any) {
+  const now = new Date();
+  let shouldUpdate = false;
+  let newStatus = mission.status;
+
+  // Check if mission should transition from DRAFT to ACTIVE
+  if (mission.status === 'DRAFT' && mission.startTime <= now && mission.endTime > now) {
+    newStatus = 'ACTIVE';
+    shouldUpdate = true;
+  }
+
+  // Check if mission should transition from ACTIVE to COMPLETED
+  else if (mission.status === 'ACTIVE' && mission.endTime <= now) {
+    newStatus = 'COMPLETED';
+    shouldUpdate = true;
+  }
+
+  // Update in database if status changed
+  if (shouldUpdate) {
+    try {
+      await Mission.findByIdAndUpdate(mission._id, { status: newStatus });
+      mission.status = newStatus; // Update the in-memory object
+    } catch (error) {
+      console.error('Error updating mission status:', error);
+    }
+  }
+
+  return mission;
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
 
@@ -80,10 +111,15 @@ async function getmissions(req: NextApiRequest, res: NextApiResponse) {
       { $limit: Number(limit) },
     ]);
 
+    // Update mission statuses based on current time
+    const updatedMissions = await Promise.all(
+      missions.map(mission => updateMissionStatus(mission))
+    );
+
     const total = await Mission.countDocuments(query);
 
     res.status(200).json({
-      missions,
+      missions: updatedMissions,
       pagination: {
         page: Number(page),
         limit: Number(limit),
@@ -208,6 +244,18 @@ async function createmission(req: NextApiRequest, res: NextApiResponse) {
       }
     }
 
+    // Determine initial status based on start time
+    const now = new Date();
+    const missionStartTime = new Date(startTime);
+    const missionEndTime = new Date(endTime);
+
+    let initialStatus = 'DRAFT';
+    if (missionStartTime <= now && missionEndTime > now) {
+      initialStatus = 'ACTIVE';
+    } else if (missionEndTime <= now) {
+      initialStatus = 'COMPLETED';
+    }
+
     // Create mission
     const mission = new Mission({
       creatorAddress,
@@ -221,8 +269,8 @@ async function createmission(req: NextApiRequest, res: NextApiResponse) {
       tokenAddress,
       tokenAmount: tokenAmount || 0,
       totalPoints,
-      startTime: new Date(startTime),
-      endTime: new Date(endTime),
+      startTime: missionStartTime,
+      endTime: missionEndTime,
       socialLinks: socialLinks || {},
       taskLinks: taskLinks || [],
       rewardDistribution: rewardDistribution || {
@@ -230,7 +278,7 @@ async function createmission(req: NextApiRequest, res: NextApiResponse) {
         maxWinners: 10,
         tiers: [],
       },
-      status: 'DRAFT',
+      status: initialStatus,
     });
 
     await mission.save();
