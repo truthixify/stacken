@@ -44,10 +44,7 @@ const Footer: React.FC = () => {
             <h3 className="text-lg font-semibold mb-4">Start Building</h3>
             <ul className="space-y-2">
               <li>
-                <Link
-                  href="/missions"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
+                <Link href="/missions" className="text-gray-400 hover:text-white transition-colors">
                   Find Your Mission
                 </Link>
               </li>

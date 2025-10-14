@@ -15,6 +15,8 @@ import {
   Award,
   Coins,
 } from 'lucide-react';
+import Chrome from '../assets/chrome.png';
+import Image from 'next/image';
 
 const HomePage = () => {
   const router = useRouter();
@@ -28,7 +30,7 @@ const HomePage = () => {
 
   const handleGetStarted = () => {
     if (isSignedIn) {
-      router.push('/missions');
+      router.push('/campaigns');
     } else {
       openAuthRequest();
     }
@@ -73,9 +75,8 @@ const HomePage = () => {
         {/* Hero Section */}
         <section className="relative overflow-hidden">
           {/* Background Effects */}
-          <div className="absolute inset-0">
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-[800px] h-[400px] bg-orange-600/10 rounded-full blur-3xl"></div>
-            <div className="absolute top-20 right-0 w-[600px] h-[300px] bg-orange-500/5 rounded-full blur-3xl"></div>
+          <div className="absolute inset-0 bg-[url('/chrome.png')] bg-center bg-cover opacity-20">
+            <div className="absolute top-0 right-0 w-[600px] h-[300px] bg-orange-500/5 rounded-full blur-3xl"></div>
           </div>
 
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-32">
@@ -246,7 +247,7 @@ const HomePage = () => {
                 <Button
                   variant="gradient"
                   size="lg"
-                  onClick={() => router.push('/missions/create')}
+                  onClick={() => router.push('/campaigns/create')}
                   className="text-lg px-8 py-4 h-auto"
                 >
                   Launch a Bounty
@@ -254,7 +255,7 @@ const HomePage = () => {
                 <Button
                   variant="outline"
                   size="lg"
-                  onClick={() => router.push('/missions')}
+                  onClick={() => router.push('/campaigns')}
                   className="text-lg px-8 py-4 h-auto border-gray-600 text-gray-300 hover:bg-gray-800"
                 >
                   Find Missions

@@ -206,26 +206,24 @@ const Dashboard: NextPage = () => {
             <div className="p-6">
               {userData?.user?.createdCampaigns?.length > 0 ? (
                 <div className="space-y-4">
-                  {userData.user.createdCampaigns
-                    .slice(0, 5)
-                    .map((mission: any, index: number) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0"
-                      >
-                        <div>
-                          <p className="font-medium text-gray-900">{mission.title}</p>
-                          <p className="text-sm text-gray-600">
-                            {mission.status} • {mission.totalParticipants || 0} participants
-                          </p>
-                        </div>
-                        <Link href={`/missions/${mission._id}`}>
-                          <a className="text-primary-600 hover:text-primary-700">
-                            <ArrowRight size={16} />
-                          </a>
-                        </Link>
+                  {userData.user.createdCampaigns.slice(0, 5).map((mission: any, index: number) => (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0"
+                    >
+                      <div>
+                        <p className="font-medium text-gray-900">{mission.title}</p>
+                        <p className="text-sm text-gray-600">
+                          {mission.status} • {mission.totalParticipants || 0} participants
+                        </p>
                       </div>
-                    ))}
+                      <Link href={`/missions/${mission._id}`}>
+                        <a className="text-primary-600 hover:text-primary-700">
+                          <ArrowRight size={16} />
+                        </a>
+                      </Link>
+                    </div>
+                  ))}
                 </div>
               ) : (
                 <div className="text-center py-8">

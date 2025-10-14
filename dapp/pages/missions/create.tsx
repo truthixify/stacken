@@ -70,10 +70,10 @@ const CreateCampaign: NextPage = () => {
   const router = useRouter();
   const { openContractCall } = useOpenContractCall();
   const [loading, setLoading] = useState(false);
-  
+
   // Check if current user is the deployer (can create point-only campaigns)
   const isDeployer = isDeployerAddress(stxAddress);
-  
+
   // Debug logging
   React.useEffect(() => {
     console.log('=== DEPLOYER CHECK DEBUG ===');
@@ -124,9 +124,9 @@ const CreateCampaign: NextPage = () => {
     maxWinners: 10,
     tiers: [],
   };
-  
+
   const tokenAmount = watch('tokenAmount');
-  
+
   // Auto-calculate points for non-deployer users or token campaigns
   React.useEffect(() => {
     if ((!isDeployer || campaignType === 'TOKEN') && tokenAmount) {
@@ -571,14 +571,23 @@ const CreateCampaign: NextPage = () => {
                 <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
                   <div className="flex items-start">
                     <div className="flex-shrink-0">
-                      <svg className="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
-                        <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                      <svg
+                        className="h-5 w-5 text-blue-400"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                          clipRule="evenodd"
+                        />
                       </svg>
                     </div>
                     <div className="ml-3">
                       <h3 className="text-sm font-medium text-blue-800">Token-Based Campaigns</h3>
                       <p className="text-sm text-blue-700 mt-1">
-                        Participants also earn points equal to their reward amount, which will be used for future incentives and rewards.
+                        Participants also earn points equal to their reward amount, which will be
+                        used for future incentives and rewards.
                       </p>
                     </div>
                   </div>
@@ -614,7 +623,7 @@ const CreateCampaign: NextPage = () => {
                         Distribute tokens/STX to winners. Points will match token amount.
                       </p>
                     </div>
-                    
+
                     <div
                       className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
                         campaignType === 'POINTS'
@@ -760,13 +769,17 @@ const CreateCampaign: NextPage = () => {
                 {(campaignType === 'TOKEN' || !isDeployer) && (
                   <div>
                     <label className="block text-sm font-medium text-gray-200 mb-2">
-                      Token Reward Amount {(!isDeployer || campaignType === 'TOKEN') ? '*' : '(Optional)'}
+                      Token Reward Amount{' '}
+                      {!isDeployer || campaignType === 'TOKEN' ? '*' : '(Optional)'}
                     </label>
                     <input
                       type="number"
-                      {...register('tokenAmount', { 
+                      {...register('tokenAmount', {
                         min: 0,
-                        required: (!isDeployer || campaignType === 'TOKEN') ? 'Token amount is required' : false
+                        required:
+                          !isDeployer || campaignType === 'TOKEN'
+                            ? 'Token amount is required'
+                            : false,
                       })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
                       placeholder="1000"
@@ -775,10 +788,9 @@ const CreateCampaign: NextPage = () => {
                       <p className="text-red-500 text-sm mt-1">{errors.tokenAmount.message}</p>
                     )}
                     <p className="text-sm text-gray-400 mt-1">
-                      {isDeployer 
-                        ? "How many tokens will you distribute? Points will automatically match this amount."
-                        : "How many tokens will you distribute? This will also set your points amount."
-                      }
+                      {isDeployer
+                        ? 'How many tokens will you distribute? Points will automatically match this amount.'
+                        : 'How many tokens will you distribute? This will also set your points amount.'}
                     </p>
                   </div>
                 )}
@@ -791,7 +803,10 @@ const CreateCampaign: NextPage = () => {
                     <>
                       <input
                         type="number"
-                        {...register('totalPoints', { required: 'Total points is required', min: 1 })}
+                        {...register('totalPoints', {
+                          required: 'Total points is required',
+                          min: 1,
+                        })}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent text-gray-500"
                         placeholder="1000"
                       />
@@ -809,7 +824,10 @@ const CreateCampaign: NextPage = () => {
                       </div>
                       <input
                         type="hidden"
-                        {...register('totalPoints', { required: 'Total points is required', min: 1 })}
+                        {...register('totalPoints', {
+                          required: 'Total points is required',
+                          min: 1,
+                        })}
                         value={tokenAmount || 0}
                       />
                       <p className="text-sm text-gray-400 mt-1">

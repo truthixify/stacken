@@ -269,3 +269,69 @@ All colors MUST be HSL.
   font-style: italic;
   color: hsl(var(--muted-foreground));
 }
+
+/* Custom Toaster Styles */
+.toast-enter {
+  animation: toast-enter 0.35s cubic-bezier(0.21, 1.02, 0.73, 1) forwards;
+}
+
+.toast-exit {
+  animation: toast-exit 0.4s cubic-bezier(0.06, 0.71, 0.55, 1) forwards;
+}
+
+@keyframes toast-enter {
+  0% {
+    transform: translate3d(100%, 0, 0) scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes toast-exit {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(100%, 0, 0) scale(0.7);
+    opacity: 0;
+  }
+}
+
+/* Custom toast container */
+[data-sonner-toaster] {
+  --width: 356px;
+  --font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Toast hover effects */
+[data-sonner-toast]:hover {
+  transform: scale(1.02);
+  transition: transform 0.2s ease;
+}
+
+/* Loading spinner customization */
+[data-sonner-toast] [data-icon] {
+  margin-right: 12px;
+}
+
+/* Success toast glow effect */
+[data-sonner-toast][data-type='success'] {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(34, 197, 94, 0.1), 0 0 20px rgba(34, 197, 94, 0.15) !important;
+}
+
+/* Error toast glow effect */
+[data-sonner-toast][data-type='error'] {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(239, 68, 68, 0.1), 0 0 20px rgba(239, 68, 68, 0.15) !important;
+}
+
+/* Loading toast glow effect */
+[data-sonner-toast][data-type='loading'] {
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04),
+    0 0 0 1px rgba(234, 88, 12, 0.1), 0 0 20px rgba(234, 88, 12, 0.15) !important;
+}

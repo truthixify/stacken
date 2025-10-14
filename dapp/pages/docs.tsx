@@ -87,7 +87,7 @@ const Docs: NextPage = () => {
               <span>API Reference</span>
             </a>
             <a
-              href="https://github.com/stacken-rewards"
+              href="https://github.com/truthixify/stacken"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center text-primary-700 hover:text-primary-900 transition-colors"
@@ -185,8 +185,8 @@ const Docs: NextPage = () => {
               <h3 className="text-lg font-semibold text-gray-900 mb-3">Points Missions</h3>
               <p>
                 Points missions reward participants with platform points that can be used for
-                leaderboards, achievements, and future token distributions. These missions are
-                ideal for community building and engagement.
+                leaderboards, achievements, and future token distributions. These missions are ideal
+                for community building and engagement.
               </p>
 
               <h3 className="text-lg font-semibold text-gray-900 mt-6 mb-3">Token Missions</h3>
@@ -216,7 +216,7 @@ const Docs: NextPage = () => {
               <ExternalLink className="ml-2" size={16} />
             </a>
             <a
-              href="https://github.com/stacken-rewards"
+              href="https://github.com/truthixify/stacken"
               target="_blank"
               rel="noopener noreferrer"
               className="border border-gray-600 text-gray-300 px-6 py-3 rounded-lg hover:bg-gray-800 transition-colors inline-flex items-center justify-center"

@@ -265,7 +265,7 @@ const MissionDetail: NextPage = () => {
               )}
 
               <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
+                <div className="flex flex-wrap gap-4 items-center justify-between mb-4">
                   <div className="flex items-center space-x-3">
                     <span className="bg-primary-100 text-primary-800 text-sm font-medium px-3 py-1 rounded-full">
                       {mission.category}
@@ -278,7 +278,7 @@ const MissionDetail: NextPage = () => {
                       {mission.status}
                     </span>
                   </div>
-                  <div className="flex items-center space-x-2">
+                  <div className="flex items-center space-x-2 gap-2">
                     {/* Show edit button only for mission creator */}
                     {isSignedIn && stxAddress === mission.creatorAddress && (
                       <button
@@ -288,7 +288,7 @@ const MissionDetail: NextPage = () => {
                         Edit Mission
                       </button>
                     )}
-                    <LikeButton targetType="MISSION" targetId={mission._id} className="p-2" />
+                    <LikeButton targetType="MISSION" targetId={mission._id} />
                     <ShareButton
                       title={mission.title}
                       text={
@@ -300,7 +300,6 @@ const MissionDetail: NextPage = () => {
                           ? `${window.location.origin}/missions/${mission._id}`
                           : ''
                       }
-                      className="p-2"
                       showDropdown={true}
                     />
                   </div>
@@ -308,12 +307,11 @@ const MissionDetail: NextPage = () => {
 
                 <h1 className="text-3xl font-bold text-gray-200 mb-4">{mission.title}</h1>
 
-                <div className="flex items-center space-x-6 text-sm text-gray-200 mb-6">
+                <div className="flex flex-col md:flex-row items-start md:items-center flex-wrap gap-y-2 md:gap-y-0 md:gap-x-6 text-sm text-gray-200 mb-6">
                   <div className="flex items-center">
                     <Users className="mr-1" size={16} />
                     <span>
-                      {mission.stats?.uniqueParticipants || mission.totalParticipants}{' '}
-                      participants
+                      {mission.stats?.uniqueParticipants || mission.totalParticipants} participants
                     </span>
                   </div>
                   <div className="flex items-center">
@@ -492,9 +490,7 @@ const MissionDetail: NextPage = () => {
                   <p className="font-medium text-gray-200">
                     {mission.creator?.displayName ||
                       mission.creator?.username ||
-                      `${mission.creatorAddress.slice(0, 6)}...${mission.creatorAddress.slice(
-                        -4
-                      )}`}
+                      `${mission.creatorAddress.slice(0, 6)}...${mission.creatorAddress.slice(-4)}`}
                   </p>
                   <p className="text-sm text-gray-400">
                     {mission.creatorAddress.slice(0, 8)}...{mission.creatorAddress.slice(-6)}

@@ -48,9 +48,7 @@ async function getUser(req: NextApiRequest, res: NextApiResponse, address: strin
 
     // Compute stats safely
     const stats = {
-      totalMissionsCreated: Array.isArray(user.createdMissions)
-        ? user.createdMissions.length
-        : 0,
+      totalMissionsCreated: Array.isArray(user.createdMissions) ? user.createdMissions.length : 0,
       totalMissionsParticipated: Array.isArray(user.participatedMissions)
         ? user.participatedMissions.length
         : 0,
