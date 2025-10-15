@@ -250,9 +250,7 @@ const MissionDetail: NextPage = () => {
   const ogTitle = `${mission.title} - Stacken`;
   const ogDescription =
     mission.summary || createExcerpt(mission.description || mission.details || '', 160);
-  const ogImage =
-    mission.imageUrl ||
-    (typeof window !== 'undefined' ? `${window.location.origin}/stacken.svg` : '');
+  const ogImage = mission.imageUrl; // Let Layout handle the default fallback
   const ogUrl =
     typeof window !== 'undefined' ? `${window.location.origin}/missions/${mission._id}` : '';
 
