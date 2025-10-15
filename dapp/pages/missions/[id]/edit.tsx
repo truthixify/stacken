@@ -74,6 +74,7 @@ const EditMission: NextPage = () => {
   const [details, setDetails] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
+  const [currentMission, setCurrentMission] = useState<any>(null);
 
   // Check if current user is the deployer (can create point-only missions)
   const isDeployer = isDeployerAddress(stxAddress);
@@ -147,6 +148,7 @@ const EditMission: NextPage = () => {
         setTags(mission.tags || []);
         setTaskLinks(mission.taskLinks || []);
         setImagePreview(mission.imageUrl || '');
+        setCurrentMission(mission);
       } else {
         toast.error('Mission not found');
         router.push('/missions');
@@ -267,8 +269,19 @@ const EditMission: NextPage = () => {
       }
 
       toast.loading('Updating mission...', { id: loadingToast });
+
+      // Filter out restricted fields for active missions
+      const { startTime, endTime, totalPoints, tokenAmount, ...allowedData } = data;
+
       const missionData = {
-        ...data,
+        ...allowedData,
+        // Only include time/reward fields if mission is not active
+        ...(currentMission?.status !== 'ACTIVE' && {
+          startTime,
+          endTime,
+          totalPoints,
+          tokenAmount,
+        }),
         tags,
         taskLinks,
         details,
