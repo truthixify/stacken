@@ -20,6 +20,7 @@ import LikeButton from '../../components/LikeButton';
 import ShareButton from '../../components/ShareButton';
 import UserAvatar from '../../components/UserAvatar';
 import { createExcerpt } from '../../lib/textUtils';
+import { formatDistanceToNow, isPast, isFuture } from 'date-fns';
 
 import type { NextPage, GetServerSidePropsContext } from 'next';
 
@@ -187,6 +188,24 @@ const MissionDetail: NextPage<MissionDetailProps> = ({ mission: initialMission }
     } finally {
       setLoading(false);
     }
+  };
+
+  const getTimeUntilStart = (startTime: string) => {
+    const start = new Date(startTime);
+    const distance = formatDistanceToNow(start, { addSuffix: false });
+    return `Starts in ${distance}`;
+  };
+
+  const getTimeUntilEnd = (endTime: string) => {
+    const end = new Date(endTime);
+    const distance = formatDistanceToNow(end, { addSuffix: false });
+    return `Ends in ${distance}`;
+  };
+
+  const getTimeSinceEnd = (endTime: string) => {
+    const end = new Date(endTime);
+    const distance = formatDistanceToNow(end, { addSuffix: true });
+    return `Ended ${distance}`;
   };
 
   const completeActivity = async (activityId: string) => {
@@ -413,10 +432,28 @@ const MissionDetail: NextPage<MissionDetailProps> = ({ mission: initialMission }
                     <Trophy className="mr-1" size={16} />
                     <span>{mission.totalPoints} total points</span>
                   </div>
-                  <div className="flex items-center">
-                    <Calendar className="mr-1" size={16} />
-                    <span>Ends {formatDate(mission.endTime)}</span>
-                  </div>
+
+                  {/* Smart date display based on mission status */}
+                  {mission.status === 'DRAFT' && (
+                    <div className="flex items-center">
+                      <Calendar className="mr-1" size={16} />
+                      <span className="text-blue-400">{getTimeUntilStart(mission.startTime)}</span>
+                    </div>
+                  )}
+
+                  {mission.status === 'ACTIVE' && (
+                    <div className="flex items-center">
+                      <Calendar className="mr-1" size={16} />
+                      <span className="text-green-400">{getTimeUntilEnd(mission.endTime)}</span>
+                    </div>
+                  )}
+
+                  {mission.status === 'COMPLETED' && (
+                    <div className="flex items-center">
+                      <Calendar className="mr-1" size={16} />
+                      <span className="text-gray-400">{getTimeSinceEnd(mission.endTime)}</span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Progress Bar */}

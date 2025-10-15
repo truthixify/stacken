@@ -83,6 +83,20 @@ async function updateUser(req: NextApiRequest, res: NextApiResponse, address: st
       updateData.stacksAddress = address;
     }
 
+    // Handle empty email field - remove it to avoid unique constraint issues
+    if (updateData.email === '' || updateData.email === null || updateData.email === undefined) {
+      delete updateData.email;
+    }
+
+    // Handle empty username field - remove it to avoid unique constraint issues
+    if (
+      updateData.username === '' ||
+      updateData.username === null ||
+      updateData.username === undefined
+    ) {
+      delete updateData.username;
+    }
+
     // Handle social links properly
     if (updateData.socialLinks) {
       // Ensure socialLinks is an object

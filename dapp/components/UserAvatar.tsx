@@ -1,6 +1,5 @@
 import React from 'react';
 import Avatar from 'boring-avatars';
-import Image from 'next/image';
 
 interface UserAvatarProps {
   userAddress: string;
@@ -19,7 +18,7 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
 }) => {
   if (avatar) {
     return (
-      <Image
+      <img
         src={avatar}
         alt={displayName || 'User avatar'}
         width={size}
