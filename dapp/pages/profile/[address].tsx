@@ -34,8 +34,8 @@ interface UserProfile {
   avatar?: string;
   totalPoints: number;
   achievements: string[];
-  participatedCampaigns: any[];
-  createdCampaigns: any[];
+  participatedMissions: any[];
+  createdMissions: any[];
   socialLinks?: {
     twitter?: string;
     discord?: string;
@@ -48,8 +48,8 @@ interface UserProfile {
     showAchievements: boolean;
   };
   stats: {
-    totalCampaignsCreated: number;
-    totalCampaignsParticipated: number;
+    totalMissionsCreated: number;
+    totalMissionsParticipated: number;
     totalPoints: number;
     totalSubmissions: number;
   };
@@ -273,7 +273,7 @@ const ProfilePage: NextPage = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-200">Missions Joined</p>
                 <p className="text-2xl font-bold text-gray-200">
-                  {profile.stats?.totalCampaignsParticipated || 0}
+                  {profile.stats?.totalMissionsParticipated || 0}
                 </p>
               </div>
             </div>
@@ -287,7 +287,7 @@ const ProfilePage: NextPage = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-200">Missions Created</p>
                 <p className="text-2xl font-bold text-gray-200">
-                  {profile.stats?.totalCampaignsCreated || 0}
+                  {profile.stats?.totalMissionsCreated || 0}
                 </p>
               </div>
             </div>

@@ -63,7 +63,7 @@ Leverages **Bitcoin's security** + **Stacks' programmability** = first truly Bit
 ### **Core Features:**
 
 #### **🎯 Mission Creation**
-- **Token-Agnostic Rewards**: STX, custom SIP-010 tokens, or points-only campaigns
+- **Token-Agnostic Rewards**: STX, custom SIP-010 tokens, or points-only missions
 - **Flexible Timeframes**: From 1-week sprints to multi-month projects
 - **Rich Content**: Markdown support, file attachments, social links
 - **Transparent Escrow**: Funds locked in smart contracts until completion

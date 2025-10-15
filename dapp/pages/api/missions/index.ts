@@ -189,16 +189,16 @@ async function createmission(req: NextApiRequest, res: NextApiResponse) {
       if (!tokenAmount || tokenAmount <= 0) {
         return res.status(400).json({
           message:
-            'Token amount is required. Only the contract deployer can create point-only campaigns.',
+            'Token amount is required. Only the contract deployer can create point-only missions.',
         });
       }
       if (totalPoints !== tokenAmount) {
         return res.status(400).json({
-          message: 'Points must equal token amount for token-based campaigns.',
+          message: 'Points must equal token amount for token-based missions.',
         });
       }
     } else {
-      // Deployer can create point-only campaigns or token campaigns
+      // Deployer can create point-only missions or token missions
       if ((!tokenAmount || tokenAmount <= 0) && (!totalPoints || totalPoints <= 0)) {
         return res.status(400).json({
           message: 'You must specify either token amount or points.',
@@ -207,7 +207,7 @@ async function createmission(req: NextApiRequest, res: NextApiResponse) {
       // If deployer has both token amount and points, they must be equal
       if (tokenAmount && tokenAmount > 0 && totalPoints !== tokenAmount) {
         return res.status(400).json({
-          message: 'For token campaigns, points must equal token amount.',
+          message: 'For token missions, points must equal token amount.',
         });
       }
     }

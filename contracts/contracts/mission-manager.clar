@@ -39,20 +39,20 @@
 (define-constant CONTRACT_OWNER tx-sender)
 (define-constant ERR_UNAUTHORIZED (err u100))
 (define-constant ERR_INVALID_ADDRESS (err u101))
-(define-constant ERR_CAMPAIGN_NOT_FOUND (err u104))
+(define-constant ERR_MISSION_NOT_FOUND (err u104))
 (define-constant ERR_INVALID_AMOUNT (err u105))
 
 (define-constant ERR_INVALID_TIME_RANGE (err u107))
 (define-constant ERR_TRANSFER_FAILED (err u108))
 (define-constant ERR_TOKEN_NOT_ALLOWED (err u109))
-(define-constant ERR_CAMPAIGN_FINALIZED (err u110))
-(define-constant ERR_CAMPAIGN_NOT_ACTIVE (err u111))
+(define-constant ERR_MISSION_FINALIZED (err u110))
+(define-constant ERR_MISSION_NOT_ACTIVE (err u111))
 (define-constant ERR_INSUFFICIENT_FUNDS (err u112))
 (define-constant ERR_START_TIME_IN_PAST (err u113))
-(define-constant ERR_CAMPAIGN_TOO_SHORT (err u114))
+(define-constant ERR_MISSION_TOO_SHORT (err u114))
 
 ;; Mission must run for at least 7 days (assuming ~144 blocks per day)
-(define-constant MIN_CAMPAIGN_DURATION u1008) ;; 7 days * 144 blocks/day
+(define-constant MIN_MISSION_DURATION u1008) ;; 7 days * 144 blocks/day
 
 ;; data vars
 (define-data-var contract-owner principal CONTRACT_OWNER)
@@ -108,8 +108,8 @@
         (begin
             (asserts! (< start-time end-time) ERR_INVALID_TIME_RANGE)
             (asserts! (>= start-time stacks-block-height) ERR_START_TIME_IN_PAST)
-            (asserts! (>= (- end-time start-time) MIN_CAMPAIGN_DURATION)
-                ERR_CAMPAIGN_TOO_SHORT
+            (asserts! (>= (- end-time start-time) MIN_MISSION_DURATION)
+                ERR_MISSION_TOO_SHORT
             )
             (asserts! (or (> token-amount u0) (> total-points u0))
                 ERR_INVALID_AMOUNT
@@ -200,9 +200,9 @@
         ))
     )
     (let (
-            (mission (unwrap! (map-get? missions mission-id) ERR_CAMPAIGN_NOT_FOUND))
+            (mission (unwrap! (map-get? missions mission-id) ERR_MISSION_NOT_FOUND))
             (token-balance (unwrap! (map-get? mission-token-balances mission-id)
-                ERR_CAMPAIGN_NOT_FOUND
+                ERR_MISSION_NOT_FOUND
             ))
             (total-token-amount (fold sum-token-amounts distributions u0))
             (total-points-amount (fold sum-point-amounts distributions u0))
@@ -213,8 +213,8 @@
             (asserts! (is-eq tx-sender (var-get reward-distributor))
                 ERR_UNAUTHORIZED
             )
-            (asserts! (not (get is-finalized mission)) ERR_CAMPAIGN_FINALIZED)
-            (asserts! (is-mission-active mission-id) ERR_CAMPAIGN_NOT_ACTIVE)
+            (asserts! (not (get is-finalized mission)) ERR_MISSION_FINALIZED)
+            (asserts! (is-mission-active mission-id) ERR_MISSION_NOT_ACTIVE)
             (asserts! (or has-token-rewards has-points-rewards)
                 ERR_INVALID_AMOUNT
             )
@@ -292,7 +292,7 @@
 
 ;; Finalize mission
 (define-public (finalize-mission (mission-id uint))
-    (let ((mission (unwrap! (map-get? missions mission-id) ERR_CAMPAIGN_NOT_FOUND)))
+    (let ((mission (unwrap! (map-get? missions mission-id) ERR_MISSION_NOT_FOUND)))
         (begin
             (asserts!
                 (or
@@ -301,7 +301,7 @@
                 )
                 ERR_UNAUTHORIZED
             )
-            (asserts! (not (get is-finalized mission)) ERR_CAMPAIGN_FINALIZED)
+            (asserts! (not (get is-finalized mission)) ERR_MISSION_FINALIZED)
 
             ;; Update mission as finalized
             (map-set missions mission-id
@@ -371,14 +371,14 @@
         (amount uint)
     )
     (let (
-            (mission (unwrap! (map-get? missions mission-id) ERR_CAMPAIGN_NOT_FOUND))
+            (mission (unwrap! (map-get? missions mission-id) ERR_MISSION_NOT_FOUND))
             (token-balance (unwrap! (map-get? mission-token-balances mission-id)
-                ERR_CAMPAIGN_NOT_FOUND
+                ERR_MISSION_NOT_FOUND
             ))
         )
         (begin
             (asserts! (is-eq tx-sender (var-get contract-owner)) ERR_UNAUTHORIZED)
-            (asserts! (get is-finalized mission) ERR_CAMPAIGN_NOT_ACTIVE)
+            (asserts! (get is-finalized mission) ERR_MISSION_NOT_ACTIVE)
 
             (match token
                 some-token

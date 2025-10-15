@@ -1,6 +1,6 @@
 // Contract and system constants
 
-// Deployer address - can create point-only campaigns
+// Deployer address - can create point-only missions
 export const DEPLOYER_ADDRESS = 'ST1FZXTTFT9J4YPJ17Z9T914PGZH2WJ6F8JGBNM0T';
 
 // Helper function to check if an address is the deployer
@@ -12,8 +12,8 @@ export const isDeployerAddress = (address: string | undefined): boolean => {
 export const CONTRACTS = {
   POINTS:
     process.env.NEXT_PUBLIC_POINTS_CONTRACT || 'ST1FZXTTFT9J4YPJ17Z9T914PGZH2WJ6F8JGBNM0T.points',
-  CAMPAIGN_MANAGER:
-    process.env.NEXT_PUBLIC_CAMPAIGN_MANAGER_CONTRACT ||
+  MISSION_MANAGER:
+    process.env.NEXT_PUBLIC_MISSION_MANAGER_CONTRACT ||
     'ST1FZXTTFT9J4YPJ17Z9T914PGZH2WJ6F8JGBNM0T.mission-manager',
   MOCK_TOKEN:
     process.env.NEXT_PUBLIC_MOCK_TOKEN_CONTRACT ||

@@ -75,7 +75,7 @@ const EditMission: NextPage = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
 
-  // Check if current user is the deployer (can create point-only campaigns)
+  // Check if current user is the deployer (can create point-only missions)
   const isDeployer = isDeployerAddress(stxAddress);
 
   // Fetch allowed tokens

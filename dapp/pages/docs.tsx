@@ -19,7 +19,7 @@ const Docs: NextPage = () => {
       title: 'Getting Started',
       description: 'Learn the basics of creating and participating in missions',
       items: [
-        { title: 'What is Stacken Rewards?', href: '#what-is-stacken' },
+        { title: 'What is Stacken?', href: '#what-is-stacken' },
         { title: 'Connecting Your Wallet', href: '#connect-wallet' },
         { title: 'Your First Mission', href: '#first-mission' },
         { title: 'Earning Points', href: '#earning-points' },
@@ -58,13 +58,13 @@ const Docs: NextPage = () => {
   ];
 
   return (
-    <Layout title="Documentation - Stacken Rewards">
+    <Layout title="Documentation - Stacken">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-200 mb-4">Documentation</h1>
           <p className="text-xl text-gray-200 max-w-2xl mx-auto">
-            Everything you need to know about using and building with Stacken Rewards
+            Everything you need to know about using and building with Stacken
           </p>
         </div>
 
@@ -139,13 +139,13 @@ const Docs: NextPage = () => {
             id="what-is-stacken"
             className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-8"
           >
-            <h2 className="text-2xl font-bold text-gray-200 mb-4">What is Stacken Rewards?</h2>
+            <h2 className="text-2xl font-bold text-gray-200 mb-4">What is Stacken?</h2>
             <div className="prose max-w-none text-gray-200">
               <p>
-                Stacken Rewards is a decentralized platform built on the Stacks blockchain that
-                enables creators and communities to design, deploy, and manage reward missions. Our
-                platform combines the security of Bitcoin with the flexibility of smart contracts to
-                create transparent and trustless reward distribution systems.
+                Stacken is a decentralized platform built on the Stacks blockchain that enables
+                creators and communities to design, deploy, and manage reward missions. Our platform
+                combines the security of Bitcoin with the flexibility of smart contracts to create
+                transparent and trustless reward distribution systems.
               </p>
               <h3 className="text-lg font-semibold text-gray-200 mt-6 mb-3">Key Features:</h3>
               <ul className="list-disc list-inside space-y-2">

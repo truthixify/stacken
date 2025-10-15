@@ -22,8 +22,8 @@ interface LeaderboardUser {
   displayName?: string;
   avatar?: string;
   totalPoints: number;
-  campaignsParticipated: number;
-  campaignsWon: number;
+  missionsParticipated: number;
+  missionsWon: number;
   lastActiveAt: string;
   rank: number;
 }
@@ -36,7 +36,7 @@ const Leaderboard: NextPage = () => {
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalPoints: 0,
-    activeCampaigns: 0,
+    activeMissions: 0,
   });
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const Leaderboard: NextPage = () => {
           totalPoints:
             data.stats?.totalPointsDistributed ||
             data.users.reduce((sum: number, user: LeaderboardUser) => sum + user.totalPoints, 0),
-          activeCampaigns: data.stats?.activeCampaigns || 0,
+          activeMissions: data.stats?.activeMissions || 0,
         });
       }
     } catch (error) {
@@ -99,7 +99,7 @@ const Leaderboard: NextPage = () => {
   ];
 
   return (
-    <Layout title="Leaderboard - Stacken Rewards">
+    <Layout title="Leaderboard - Stacken">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="text-center mb-8">
@@ -146,7 +146,7 @@ const Leaderboard: NextPage = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-200">Active Missions</p>
-                <p className="text-2xl font-bold text-gray-200">{stats.activeCampaigns}</p>
+                <p className="text-2xl font-bold text-gray-200">{stats.activeMissions}</p>
               </div>
             </div>
           </div>
@@ -238,8 +238,8 @@ const Leaderboard: NextPage = () => {
                         {formatAddress(user.stacksAddress)}
                       </p>
                       <div className="flex items-center space-x-4 text-sm text-gray-200">
-                        <span>{user.campaignsParticipated} missions</span>
-                        <span>{user.campaignsWon} wins</span>
+                        <span>{user.missionsParticipated} missions</span>
+                        <span>{user.missionsWon} wins</span>
                         <span>Last active {new Date(user.lastActiveAt).toLocaleDateString()}</span>
                       </div>
                     </div>
@@ -289,8 +289,8 @@ const Leaderboard: NextPage = () => {
                         )}
                       </div>
                       <div className="flex items-center space-x-3 text-sm text-gray-200">
-                        <span>{user.campaignsParticipated} missions</span>
-                        <span>{user.campaignsWon} wins</span>
+                        <span>{user.missionsParticipated} missions</span>
+                        <span>{user.missionsWon} wins</span>
                       </div>
                     </div>
 

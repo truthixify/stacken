@@ -207,7 +207,7 @@ const EditProfile: NextPage = () => {
   }
 
   return (
-    <Layout title="Edit Profile - Stacken Rewards">
+    <Layout title="Edit Profile - Stacken">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">

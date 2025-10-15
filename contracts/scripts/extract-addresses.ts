@@ -93,8 +93,8 @@ function updateDappEnv(addresses: Record<string, string>, network: string): bool
     const lines = envContent.split('\n').filter(line => 
       !line.startsWith('NEXT_PUBLIC_FACTORY_CONTRACT=') &&
       !line.startsWith('NEXT_PUBLIC_POINTS_CONTRACT=') &&
-      !line.startsWith('NEXT_PUBLIC_CAMPAIGN_CONTRACT=') &&
-      !line.startsWith('NEXT_PUBLIC_CAMPAIGN_MANAGER_CONTRACT=') &&
+      !line.startsWith('NEXT_PUBLIC_MISSION_CONTRACT=') &&
+      !line.startsWith('NEXT_PUBLIC_MISSION_MANAGER_CONTRACT=') &&
       !line.startsWith('NEXT_PUBLIC_MOCK_TOKEN_CONTRACT=') &&
       !line.startsWith('NEXT_PUBLIC_MOCK-TOKEN_CONTRACT=') &&
       !line.startsWith('NEXT_PUBLIC_STACKS_NETWORK=')
@@ -111,7 +111,7 @@ function updateDappEnv(addresses: Record<string, string>, network: string): bool
       if (contractName === 'MOCK-TOKEN') {
         envVarName = 'MOCK_TOKEN';
       } else if (contractName === 'MISSION-MANAGER') {
-        envVarName = 'CAMPAIGN_MANAGER';
+        envVarName = 'MISSION_MANAGER';
       }
       lines.push(`NEXT_PUBLIC_${envVarName}_CONTRACT=${address}`);
     });

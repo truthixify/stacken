@@ -38,9 +38,9 @@ interface Mission {
   imageUrl?: string;
 }
 
-const CampaignsPage: NextPage = () => {
+const MissionsPage: NextPage = () => {
   const { isSignedIn } = useAuth();
-  const [missions, setCampaigns] = useState<Mission[]>([]);
+  const [missions, setMissions] = useState<Mission[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
@@ -49,10 +49,10 @@ const CampaignsPage: NextPage = () => {
   const categories = ['DeFi', 'NFT', 'Gaming', 'Social', 'Education', 'Community'];
 
   useEffect(() => {
-    fetchCampaigns();
+    fetchMissions();
   }, [selectedCategory, selectedStatus]);
 
-  const fetchCampaigns = async () => {
+  const fetchMissions = async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams();
@@ -62,7 +62,7 @@ const CampaignsPage: NextPage = () => {
 
       const response = await fetch(`/api/missions?${params.toString()}`);
       const data = await response.json();
-      setCampaigns(data.missions || []);
+      setMissions(data.missions || []);
     } catch (error) {
       console.error('Error fetching missions:', error);
     } finally {
@@ -72,7 +72,7 @@ const CampaignsPage: NextPage = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    fetchCampaigns();
+    fetchMissions();
   };
 
   const formatDate = (dateString: string) =>
@@ -293,4 +293,4 @@ const CampaignsPage: NextPage = () => {
   );
 };
 
-export default CampaignsPage;
+export default MissionsPage;

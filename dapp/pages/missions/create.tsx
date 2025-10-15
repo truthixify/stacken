@@ -29,7 +29,7 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
   };
 }
 
-interface CampaignFormData {
+interface MissionFormData {
   title: string;
   summary: string;
   details: string;
@@ -66,14 +66,14 @@ interface CampaignFormData {
   };
 }
 
-const CreateCampaign: NextPage = () => {
+const CreateMission: NextPage = () => {
   const { isSignedIn } = useAuth();
   const { stxAddress } = useAccount();
   const router = useRouter();
   const { openContractCall } = useOpenContractCall();
   const [loading, setLoading] = useState(false);
 
-  // Check if current user is the deployer (can create point-only campaigns)
+  // Check if current user is the deployer (can create point-only missions)
   const isDeployer = isDeployerAddress(stxAddress);
 
   const [currentStep, setCurrentStep] = useState(1);
@@ -91,7 +91,7 @@ const CreateCampaign: NextPage = () => {
   const [details, setDetails] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>('');
-  const [campaignType, setCampaignType] = useState<'TOKEN' | 'POINTS'>('TOKEN');
+  const [missionType, setMissionType] = useState<'TOKEN' | 'POINTS'>('TOKEN');
 
   // Fetch allowed tokens
   const { tokens: allowedTokens, loading: tokensLoading } = useAllowedTokens();
@@ -102,7 +102,7 @@ const CreateCampaign: NextPage = () => {
     watch,
     setValue,
     formState: { errors },
-  } = useForm<CampaignFormData>({
+  } = useForm<MissionFormData>({
     defaultValues: {
       totalPoints: 1000,
       tags: [],
@@ -124,12 +124,12 @@ const CreateCampaign: NextPage = () => {
 
   const tokenAmount = watch('tokenAmount');
 
-  // Auto-calculate points for non-deployer users or token campaigns
+  // Auto-calculate points for non-deployer users or token missions
   React.useEffect(() => {
-    if ((!isDeployer || campaignType === 'TOKEN') && tokenAmount) {
+    if ((!isDeployer || missionType === 'TOKEN') && tokenAmount) {
       setValue('totalPoints', tokenAmount);
     }
-  }, [tokenAmount, isDeployer, campaignType, setValue]);
+  }, [tokenAmount, isDeployer, missionType, setValue]);
   const categories = [
     'Development',
     'Design',
@@ -269,7 +269,7 @@ const CreateCampaign: NextPage = () => {
     }
   };
 
-  const onSubmit = async (data: CampaignFormData) => {
+  const onSubmit = async (data: MissionFormData) => {
     if (!isSignedIn || !stxAddress) {
       toast.error('Link your Stacks wallet to launch bounties');
       return;
@@ -301,27 +301,27 @@ const CreateCampaign: NextPage = () => {
         return;
       }
       if (data.totalPoints !== data.tokenAmount) {
-        toast.error('Points must equal token amount for token-based campaigns.');
+        toast.error('Points must equal token amount for token-based missions.');
         return;
       }
     } else {
-      // Deployer validation based on campaign type
-      if (campaignType === 'POINTS') {
-        // Points-only campaign
+      // Deployer validation based on mission type
+      if (missionType === 'POINTS') {
+        // Points-only mission
         if (!data.totalPoints || data.totalPoints <= 0) {
-          toast.error('You must specify points for a points-only campaign.');
+          toast.error('You must specify points for a points-only mission.');
           return;
         }
-        // Set token amount to 0 for points-only campaigns
+        // Set token amount to 0 for points-only missions
         data.tokenAmount = 0;
       } else {
-        // Token campaign
+        // Token mission
         if (!data.tokenAmount || data.tokenAmount <= 0) {
-          toast.error('You must specify a token amount for token campaigns.');
+          toast.error('You must specify a token amount for token missions.');
           return;
         }
         if (data.totalPoints !== data.tokenAmount) {
-          toast.error('For token campaigns, points must equal token amount.');
+          toast.error('For token missions, points must equal token amount.');
           return;
         }
       }
@@ -348,10 +348,10 @@ const CreateCampaign: NextPage = () => {
       // First create mission on smart contract
       toast.loading('Publishing to Stacks blockchain...', { id: loadingToast });
 
-      let campaignId: string | null = null;
+      let missionId: string | null = null;
 
       // Prepare mission data for later database save
-      const campaignData = {
+      const missionData = {
         ...data,
         creatorAddress: stxAddress,
         tags,
@@ -365,7 +365,7 @@ const CreateCampaign: NextPage = () => {
       };
 
       try {
-        const contractFullAddress = process.env.NEXT_PUBLIC_CAMPAIGN_MANAGER_CONTRACT;
+        const contractFullAddress = process.env.NEXT_PUBLIC_MISSION_MANAGER_CONTRACT;
 
         if (!contractFullAddress) {
           throw new Error('Contract address not found in environment variables');
@@ -447,7 +447,7 @@ const CreateCampaign: NextPage = () => {
               try {
                 // Generate mission address (contract address + mission ID)
                 // For now, we'll use a placeholder mission ID that will be updated later
-                const campaignAddress = `${contractAddress}.mission-manager::mission-${Date.now()}`;
+                const missionAddress = `${contractAddress}.mission-manager::mission-${Date.now()}`;
 
                 // Now save to database after successful blockchain transaction
                 const response = await fetch('/api/missions', {
@@ -456,8 +456,8 @@ const CreateCampaign: NextPage = () => {
                     'Content-Type': 'application/json',
                   },
                   body: JSON.stringify({
-                    ...campaignData,
-                    campaignAddress,
+                    ...missionData,
+                    missionAddress,
                     status: 'ACTIVE', // Set as active since blockchain transaction succeeded
                     txId: txData.txId,
                   }),
@@ -469,12 +469,12 @@ const CreateCampaign: NextPage = () => {
                 }
 
                 const result = await response.json();
-                campaignId = result.mission._id;
+                missionId = result.mission._id;
 
                 toast.success('Mission launched! Your bounty is live and ready for builders.', {
                   id: loadingToast,
                 });
-                router.push(`/missions/${campaignId}`);
+                router.push(`/missions/${missionId}`);
               } catch (dbError: any) {
                 console.error('Database save error:', dbError);
                 // More user-friendly error message
@@ -517,7 +517,7 @@ const CreateCampaign: NextPage = () => {
         toast.error('Failed to publish to blockchain. Mission saved as draft.', {
           id: loadingToast,
         });
-        router.push(`/missions/${campaignId}`);
+        router.push(`/missions/${missionId}`);
       }
     } catch (error) {
       console.error('Error creating mission:', error);
@@ -649,7 +649,7 @@ const CreateCampaign: NextPage = () => {
                       </svg>
                     </div>
                     <div className="ml-3">
-                      <h3 className="text-sm font-medium text-blue-800">Token-Based Campaigns</h3>
+                      <h3 className="text-sm font-medium text-blue-800">Token-Based Missions</h3>
                       <p className="text-sm text-blue-700 mt-1">
                         Participants also earn points equal to their reward amount, which will be
                         used for future incentives and rewards.
@@ -667,19 +667,19 @@ const CreateCampaign: NextPage = () => {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div
                       className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
-                        campaignType === 'TOKEN'
+                        missionType === 'TOKEN'
                           ? 'border-primary-500'
                           : 'border-gray-300 hover:border-gray-400'
                       }`}
-                      onClick={() => setCampaignType('TOKEN')}
+                      onClick={() => setMissionType('TOKEN')}
                     >
                       <div className="flex items-center mb-2">
                         <input
                           type="radio"
-                          name="campaignType"
+                          name="missionType"
                           value="TOKEN"
-                          checked={campaignType === 'TOKEN'}
-                          onChange={() => setCampaignType('TOKEN')}
+                          checked={missionType === 'TOKEN'}
+                          onChange={() => setMissionType('TOKEN')}
                           className="mr-2"
                         />
                         <h3 className="font-medium text-white">Token Reward</h3>
@@ -691,19 +691,19 @@ const CreateCampaign: NextPage = () => {
 
                     <div
                       className={`p-4 border-2 rounded-lg cursor-pointer transition-colors ${
-                        campaignType === 'POINTS'
+                        missionType === 'POINTS'
                           ? 'border-primary-500'
                           : 'border-gray-300 hover:border-gray-400'
                       }`}
-                      onClick={() => setCampaignType('POINTS')}
+                      onClick={() => setMissionType('POINTS')}
                     >
                       <div className="flex items-center mb-2">
                         <input
                           type="radio"
-                          name="campaignType"
+                          name="missionType"
                           value="POINTS"
-                          checked={campaignType === 'POINTS'}
-                          onChange={() => setCampaignType('POINTS')}
+                          checked={missionType === 'POINTS'}
+                          onChange={() => setMissionType('POINTS')}
                           className="mr-2"
                         />
                         <h3 className="font-medium text-white">Points-Only Reward</h3>
@@ -816,7 +816,7 @@ const CreateCampaign: NextPage = () => {
                   )}
                 </div>
 
-                {allowedTokens.length > 0 && (campaignType === 'TOKEN' || !isDeployer) && (
+                {allowedTokens.length > 0 && (missionType === 'TOKEN' || !isDeployer) && (
                   <div>
                     <label className="block text-sm font-medium text-gray-200 mb-2">
                       Token Type *
@@ -838,18 +838,18 @@ const CreateCampaign: NextPage = () => {
                   </div>
                 )}
 
-                {(campaignType === 'TOKEN' || !isDeployer) && (
+                {(missionType === 'TOKEN' || !isDeployer) && (
                   <div>
                     <label className="block text-sm font-medium text-gray-200 mb-2">
                       Token Reward Amount{' '}
-                      {!isDeployer || campaignType === 'TOKEN' ? '*' : '(Optional)'}
+                      {!isDeployer || missionType === 'TOKEN' ? '*' : '(Optional)'}
                     </label>
                     <input
                       type="number"
                       {...register('tokenAmount', {
                         min: 0,
                         required:
-                          !isDeployer || campaignType === 'TOKEN'
+                          !isDeployer || missionType === 'TOKEN'
                             ? 'Token amount is required'
                             : false,
                       })}
@@ -871,7 +871,7 @@ const CreateCampaign: NextPage = () => {
                   <label className="block text-sm font-medium text-gray-200 mb-2">
                     Total Reward Points *
                   </label>
-                  {isDeployer && campaignType === 'POINTS' ? (
+                  {isDeployer && missionType === 'POINTS' ? (
                     <>
                       <input
                         type="number"
@@ -886,7 +886,7 @@ const CreateCampaign: NextPage = () => {
                         <p className="text-red-500 text-sm mt-1">{errors.totalPoints.message}</p>
                       )}
                       <p className="text-sm text-gray-400 mt-1">
-                        Set the total points to distribute among contributors (points-only campaign)
+                        Set the total points to distribute among contributors (points-only mission)
                       </p>
                     </>
                   ) : (
@@ -1701,4 +1701,4 @@ const CreateCampaign: NextPage = () => {
   );
 };
 
-export default CreateCampaign;
+export default CreateMission;

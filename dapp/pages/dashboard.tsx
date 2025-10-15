@@ -52,7 +52,7 @@ const Dashboard: NextPage = () => {
 
   if (loading) {
     return (
-      <Layout title="Dashboard - Stacken Rewards">
+      <Layout title="Dashboard - Stacken">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="animate-pulse">
             <div className="h-8 bg-gray-200 rounded w-1/4 mb-8"></div>
@@ -71,14 +71,14 @@ const Dashboard: NextPage = () => {
   }
 
   const stats = userData?.user?.stats || {
-    totalCampaignsCreated: 0,
-    totalCampaignsParticipated: 0,
+    totalMissionsCreated: 0,
+    totalMissionsParticipated: 0,
     totalPoints: 0,
     totalActivitiesCompleted: 0,
   };
 
   return (
-    <Layout title="Dashboard - Stacken Rewards">
+    <Layout title="Dashboard - Stacken">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
@@ -130,7 +130,7 @@ const Dashboard: NextPage = () => {
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Missions Joined</p>
                 <p className="text-2xl font-bold text-gray-900">
-                  {stats.totalCampaignsParticipated}
+                  {stats.totalMissionsParticipated}
                 </p>
               </div>
             </div>
@@ -143,7 +143,7 @@ const Dashboard: NextPage = () => {
               </div>
               <div className="ml-4">
                 <p className="text-sm font-medium text-gray-600">Missions Created</p>
-                <p className="text-2xl font-bold text-gray-900">{stats.totalCampaignsCreated}</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.totalMissionsCreated}</p>
               </div>
             </div>
           </div>
@@ -166,7 +166,7 @@ const Dashboard: NextPage = () => {
                       <div>
                         <p className="font-medium text-gray-900">{activity.activityName}</p>
                         <p className="text-sm text-gray-600">
-                          {activity.campaignId?.title || 'Mission'}
+                          {activity.missionId?.title || 'Mission'}
                         </p>
                       </div>
                       <div className="text-right">
@@ -205,9 +205,9 @@ const Dashboard: NextPage = () => {
               </Link>
             </div>
             <div className="p-6">
-              {userData?.user?.createdCampaigns?.length > 0 ? (
+              {userData?.user?.createdMissions?.length > 0 ? (
                 <div className="space-y-4">
-                  {userData.user.createdCampaigns.slice(0, 5).map((mission: any, index: number) => (
+                  {userData.user.createdMissions.slice(0, 5).map((mission: any, index: number) => (
                     <div
                       key={index}
                       className="flex items-center justify-between py-3 border-b border-gray-100 last:border-b-0"

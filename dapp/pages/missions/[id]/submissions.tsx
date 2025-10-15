@@ -57,29 +57,29 @@ interface Mission {
   creatorAddress: string;
 }
 
-const CampaignSubmissions: NextPage = () => {
+const MissionSubmissions: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
   const { isSignedIn } = useAuth();
   const { stxAddress } = useAccount();
-  const [mission, setCampaign] = useState<Mission | null>(null);
+  const [mission, setMission] = useState<Mission | null>(null);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('ALL');
 
   useEffect(() => {
     if (id) {
-      fetchCampaign();
+      fetchMission();
       fetchSubmissions();
     }
   }, [id, stxAddress, filter]);
 
-  const fetchCampaign = async () => {
+  const fetchMission = async () => {
     try {
       const response = await fetch(`/api/missions/${id}`);
       if (response.ok) {
         const data = await response.json();
-        setCampaign(data.mission);
+        setMission(data.mission);
       }
     } catch (error) {
       console.error('Error fetching mission:', error);
@@ -432,4 +432,4 @@ const CampaignSubmissions: NextPage = () => {
   );
 };
 
-export default CampaignSubmissions;
+export default MissionSubmissions;

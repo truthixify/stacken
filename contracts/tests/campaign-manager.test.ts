@@ -6,7 +6,7 @@ const deployer = accounts.get('deployer')!;
 const wallet1 = accounts.get('wallet_1')!;
 const wallet2 = accounts.get('wallet_2')!
 
-const MIN_CAMPAIGN_DURATION = 1008; // 7 days in blocks
+const MIN_MISSION_DURATION = 1008; // 7 days in blocks
 
 describe('Mission Manager Contract', () => {
     beforeEach(() => {
@@ -21,7 +21,7 @@ describe('Mission Manager Contract', () => {
             const totalPoints = 1000;
             const currentBlock = simnet.blockHeight;
             const startTime = currentBlock + 10;
-            const endTime = startTime + MIN_CAMPAIGN_DURATION + 100;
+            const endTime = startTime + MIN_MISSION_DURATION + 100;
 
             const response = simnet.callPublicFn(
                 'mission-manager',
@@ -39,14 +39,14 @@ describe('Mission Manager Contract', () => {
             expect(response.result).toBeOk(Cl.uint(1));
 
             // Verify mission was created
-            const campaignInfo = simnet.callReadOnlyFn(
+            const missionInfo = simnet.callReadOnlyFn(
                 'mission-manager',
                 'get-mission-info',
                 [Cl.uint(1)],
                 deployer
             );
 
-            expect(campaignInfo.result).toBeSome(Cl.tuple({
+            expect(missionInfo.result).toBeSome(Cl.tuple({
                 'mission-id': Cl.uint(1),
                 'creator': Cl.principal(deployer),
                 'total-points': Cl.uint(totalPoints),
@@ -79,7 +79,7 @@ describe('Mission Manager Contract', () => {
             const tokenAmount = 5000;
             const currentBlock = simnet.blockHeight;
             const startTime = currentBlock + 10;
-            const endTime = startTime + MIN_CAMPAIGN_DURATION + 100;
+            const endTime = startTime + MIN_MISSION_DURATION + 100;
 
             const response = simnet.callPublicFn(
                 'mission-manager',
@@ -103,7 +103,7 @@ describe('Mission Manager Contract', () => {
             const stxAmount = 1000000; // 1 STX in microSTX
             const currentBlock = simnet.blockHeight;
             const startTime = currentBlock + 10;
-            const endTime = startTime + MIN_CAMPAIGN_DURATION + 100;
+            const endTime = startTime + MIN_MISSION_DURATION + 100;
 
             const response = simnet.callPublicFn(
                 'mission-manager',
@@ -121,14 +121,14 @@ describe('Mission Manager Contract', () => {
             expect(response.result).toBeOk(Cl.uint(1));
 
             // Verify mission was created
-            const campaignInfo = simnet.callReadOnlyFn(
+            const missionInfo = simnet.callReadOnlyFn(
                 'mission-manager',
                 'get-mission-info',
                 [Cl.uint(1)],
                 deployer
             );
 
-            expect(campaignInfo.result).toBeSome(Cl.tuple({
+            expect(missionInfo.result).toBeSome(Cl.tuple({
                 'mission-id': Cl.uint(1),
                 'creator': Cl.principal(deployer),
 
@@ -152,7 +152,7 @@ describe('Mission Manager Contract', () => {
         it('should fail to create mission with start time in the past', () => {
             const currentBlock = simnet.blockHeight;
             const startTime = currentBlock; // current block, should be >= current block
-            const endTime = currentBlock + MIN_CAMPAIGN_DURATION + 100;
+            const endTime = currentBlock + MIN_MISSION_DURATION + 100;
 
             const response = simnet.callPublicFn(
                 'mission-manager',
@@ -209,7 +209,7 @@ describe('Mission Manager Contract', () => {
                 deployer
             );
 
-            expect(response.result).toBeErr(Cl.uint(114)); // ERR_CAMPAIGN_TOO_SHORT
+            expect(response.result).toBeErr(Cl.uint(114)); // ERR_MISSION_TOO_SHORT
         });
 
         it('should fail to create token mission with unallowed token', () => {
@@ -223,7 +223,7 @@ describe('Mission Manager Contract', () => {
 
             const currentBlock = simnet.blockHeight;
             const startTime = currentBlock + 10;
-            const endTime = startTime + MIN_CAMPAIGN_DURATION + 100;
+            const endTime = startTime + MIN_MISSION_DURATION + 100;
 
             // Try to create mission with mock-token but expect it to fail due to validation
             const response = simnet.callPublicFn(
@@ -245,7 +245,7 @@ describe('Mission Manager Contract', () => {
         it('should fail when non-owner tries to create point-only mission', () => {
             const currentBlock = simnet.blockHeight;
             const startTime = currentBlock + 10;
-            const endTime = startTime + MIN_CAMPAIGN_DURATION + 100;
+            const endTime = startTime + MIN_MISSION_DURATION + 100;
 
             const response = simnet.callPublicFn(
                 'mission-manager',
@@ -266,7 +266,7 @@ describe('Mission Manager Contract', () => {
         it('should allow owner to create point-only mission', () => {
             const currentBlock = simnet.blockHeight;
             const startTime = currentBlock + 10;
-            const endTime = startTime + MIN_CAMPAIGN_DURATION + 100;
+            const endTime = startTime + MIN_MISSION_DURATION + 100;
 
             const response = simnet.callPublicFn(
                 'mission-manager',
@@ -295,7 +295,7 @@ describe('Mission Manager Contract', () => {
 
             const currentBlock = simnet.blockHeight;
             const startTime = currentBlock + 10;
-            const endTime = startTime + MIN_CAMPAIGN_DURATION + 100;
+            const endTime = startTime + MIN_MISSION_DURATION + 100;
 
             const response = simnet.callPublicFn(
                 'mission-manager',
@@ -316,7 +316,7 @@ describe('Mission Manager Contract', () => {
         it('should fail when STX mission has mismatched points and STX amounts', () => {
             const currentBlock = simnet.blockHeight;
             const startTime = currentBlock + 10;
-            const endTime = startTime + MIN_CAMPAIGN_DURATION + 100;
+            const endTime = startTime + MIN_MISSION_DURATION + 100;
 
             const response = simnet.callPublicFn(
                 'mission-manager',
@@ -410,7 +410,7 @@ describe('Mission Manager Contract', () => {
             // Create a points mission instead since token funding is complex
             const currentBlock = simnet.blockHeight;
             const startTime = currentBlock + 10;
-            const endTime = startTime + MIN_CAMPAIGN_DURATION + 100;
+            const endTime = startTime + MIN_MISSION_DURATION + 100;
 
             const response = simnet.callPublicFn(
                 'mission-manager',
@@ -440,7 +440,7 @@ describe('Mission Manager Contract', () => {
             // Create a points mission
             const currentBlock = simnet.blockHeight;
             const startTime = currentBlock + 1;
-            const endTime = startTime + MIN_CAMPAIGN_DURATION + 100;
+            const endTime = startTime + MIN_MISSION_DURATION + 100;
 
             simnet.callPublicFn(
                 'mission-manager',
@@ -487,14 +487,14 @@ describe('Mission Manager Contract', () => {
             expect(response.result).toBeOk(Cl.bool(true));
 
             // Verify mission rewards were updated
-            const campaignInfo = simnet.callReadOnlyFn(
+            const missionInfo = simnet.callReadOnlyFn(
                 'mission-manager',
                 'get-mission-info',
                 [Cl.uint(1)],
                 deployer
             );
 
-            expect(campaignInfo.result).not.toBeNone();
+            expect(missionInfo.result).not.toBeNone();
         });
 
         it('should fail when non-distributor tries to distribute rewards', () => {
@@ -549,7 +549,7 @@ describe('Mission Manager Contract', () => {
             // Create a mission
             const currentBlock = simnet.blockHeight;
             const startTime = currentBlock + 10;
-            const endTime = startTime + MIN_CAMPAIGN_DURATION + 100;
+            const endTime = startTime + MIN_MISSION_DURATION + 100;
 
             simnet.callPublicFn(
                 'mission-manager',
@@ -576,14 +576,14 @@ describe('Mission Manager Contract', () => {
             expect(response.result).toBeOk(Cl.bool(true));
 
             // Verify mission is finalized
-            const campaignInfo = simnet.callReadOnlyFn(
+            const missionInfo = simnet.callReadOnlyFn(
                 'mission-manager',
                 'get-mission-info',
                 [Cl.uint(1)],
                 deployer
             );
 
-            expect(campaignInfo.result).not.toBeNone();
+            expect(missionInfo.result).not.toBeNone();
         });
 
         it('should allow distributor to finalize mission', () => {
@@ -625,7 +625,7 @@ describe('Mission Manager Contract', () => {
                 deployer
             );
 
-            expect(response.result).toBeErr(Cl.uint(110)); // ERR_CAMPAIGN_FINALIZED
+            expect(response.result).toBeErr(Cl.uint(110)); // ERR_MISSION_FINALIZED
         });
     });
 
@@ -634,9 +634,9 @@ describe('Mission Manager Contract', () => {
             // Create multiple missions for testing
             const currentBlock = simnet.blockHeight;
             const startTime1 = currentBlock + 10;
-            const endTime1 = startTime1 + MIN_CAMPAIGN_DURATION + 100;
+            const endTime1 = startTime1 + MIN_MISSION_DURATION + 100;
             const startTime2 = currentBlock + 20;
-            const endTime2 = startTime2 + MIN_CAMPAIGN_DURATION + 200;
+            const endTime2 = startTime2 + MIN_MISSION_DURATION + 200;
 
             simnet.callPublicFn(
                 'mission-manager',
@@ -677,25 +677,25 @@ describe('Mission Manager Contract', () => {
         });
 
         it('should return mission info correctly', () => {
-            const campaignInfo = simnet.callReadOnlyFn(
+            const missionInfo = simnet.callReadOnlyFn(
                 'mission-manager',
                 'get-mission-info',
                 [Cl.uint(1)],
                 deployer
             );
 
-            expect(campaignInfo.result).not.toBeNone();
+            expect(missionInfo.result).not.toBeNone();
         });
 
         it('should return none for non-existent mission', () => {
-            const campaignInfo = simnet.callReadOnlyFn(
+            const missionInfo = simnet.callReadOnlyFn(
                 'mission-manager',
                 'get-mission-info',
                 [Cl.uint(999)],
                 deployer
             );
 
-            expect(campaignInfo.result).toBeNone();
+            expect(missionInfo.result).toBeNone();
         });
 
         it('should correctly identify active missions', () => {

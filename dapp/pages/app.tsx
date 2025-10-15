@@ -41,23 +41,23 @@ interface Mission {
 
 const AppPage: NextPage = () => {
   const { isSignedIn, openAuthRequest } = useAuth();
-  const [missions, setCampaigns] = useState<Mission[]>([]);
+  const [missions, setMissions] = useState<Mission[]>([]);
   const [stats, setStats] = useState({
-    totalCampaigns: 0,
+    totalMissions: 0,
     totalUsers: 0,
     totalRewards: 0,
   });
 
   useEffect(() => {
-    fetchFeaturedCampaigns();
+    fetchFeaturedMissions();
     fetchStats();
   }, []);
 
-  const fetchFeaturedCampaigns = async () => {
+  const fetchFeaturedMissions = async () => {
     try {
       const response = await fetch('/api/missions?limit=6');
       const data = await response.json();
-      setCampaigns(data.missions || []);
+      setMissions(data.missions || []);
     } catch (error) {
       console.error('Error fetching missions:', error);
     }
@@ -67,7 +67,7 @@ const AppPage: NextPage = () => {
     try {
       // This would be a dedicated stats endpoint
       setStats({
-        totalCampaigns: 150,
+        totalMissions: 150,
         totalUsers: 2500,
         totalRewards: 50000,
       });
@@ -101,7 +101,7 @@ const AppPage: NextPage = () => {
 
   if (!isSignedIn) {
     return (
-      <Layout title="Stacken Rewards App">
+      <Layout title="Stacken App">
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
           <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
             <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -130,7 +130,7 @@ const AppPage: NextPage = () => {
   }
 
   return (
-    <Layout title="Stacken Rewards App">
+    <Layout title="Stacken App">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
@@ -156,7 +156,7 @@ const AppPage: NextPage = () => {
                 <Trophy className="text-primary-600" size={24} />
               </div>
               <div className="ml-4">
-                <h3 className="text-2xl font-bold text-gray-900">{stats.totalCampaigns}+</h3>
+                <h3 className="text-2xl font-bold text-gray-900">{stats.totalMissions}+</h3>
                 <p className="text-gray-600">Active Missions</p>
               </div>
             </div>

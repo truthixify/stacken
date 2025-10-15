@@ -23,7 +23,7 @@ export const getStacksNetwork = () => {
 };
 
 // Contract interaction functions
-export const createCampaign = async (
+export const createMission = async (
   senderKey: string,
   title: string,
   description: string,
@@ -36,8 +36,8 @@ export const createCampaign = async (
   const network = getStacksNetwork();
 
   const txOptions = {
-    contractAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
-    contractName: CONTRACTS.CAMPAIGN_MANAGER.split('.')[1],
+    contractAddress: CONTRACTS.MISSION_MANAGER.split('.')[0],
+    contractName: CONTRACTS.MISSION_MANAGER.split('.')[1],
     functionName: 'create-mission',
     functionArgs: [
       stringUtf8CV(title),
@@ -87,7 +87,7 @@ export const awardPoints = async (
 
 export const distributeRewards = async (
   senderKey: string,
-  campaignId: number,
+  missionId: number,
   tokenContract: string | null,
   distributions: Array<{ recipient: string; amount: number; points: number }>
 ) => {
@@ -104,11 +104,11 @@ export const distributeRewards = async (
   );
 
   const txOptions = {
-    contractAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
-    contractName: CONTRACTS.CAMPAIGN_MANAGER.split('.')[1],
+    contractAddress: CONTRACTS.MISSION_MANAGER.split('.')[0],
+    contractName: CONTRACTS.MISSION_MANAGER.split('.')[1],
     functionName: 'distribute-rewards',
     functionArgs: [
-      uintCV(campaignId),
+      uintCV(missionId),
       tokenContract
         ? someCV(contractPrincipalCV(tokenContract.split('.')[0], tokenContract.split('.')[1]))
         : noneCV(),
@@ -125,14 +125,14 @@ export const distributeRewards = async (
   return await broadcastTransaction(transaction, network);
 };
 
-export const finalizeCampaign = async (senderKey: string, campaignId: number) => {
+export const finalizeMission = async (senderKey: string, missionId: number) => {
   const network = getStacksNetwork();
 
   const txOptions = {
-    contractAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
-    contractName: CONTRACTS.CAMPAIGN_MANAGER.split('.')[1],
+    contractAddress: CONTRACTS.MISSION_MANAGER.split('.')[0],
+    contractName: CONTRACTS.MISSION_MANAGER.split('.')[1],
     functionName: 'finalize-mission',
-    functionArgs: [uintCV(campaignId)],
+    functionArgs: [uintCV(missionId)],
     senderKey,
     validateWithAbi: true,
     network,
@@ -145,16 +145,16 @@ export const finalizeCampaign = async (senderKey: string, campaignId: number) =>
 };
 
 // Read-only contract calls
-export const getCampaignInfo = async (campaignId: number) => {
+export const getMissionInfo = async (missionId: number) => {
   const network = getStacksNetwork();
 
   const result = await callReadOnlyFunction({
-    contractAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
-    contractName: CONTRACTS.CAMPAIGN_MANAGER.split('.')[1],
+    contractAddress: CONTRACTS.MISSION_MANAGER.split('.')[0],
+    contractName: CONTRACTS.MISSION_MANAGER.split('.')[1],
     functionName: 'get-mission-info',
-    functionArgs: [uintCV(campaignId)],
+    functionArgs: [uintCV(missionId)],
     network,
-    senderAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
+    senderAddress: CONTRACTS.MISSION_MANAGER.split('.')[0],
   });
 
   return cvToJSON(result);
@@ -175,31 +175,31 @@ export const getUserPoints = async (userAddress: string) => {
   return cvToJSON(result);
 };
 
-export const getCampaignCount = async () => {
+export const getMissionCount = async () => {
   const network = getStacksNetwork();
 
   const result = await callReadOnlyFunction({
-    contractAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
-    contractName: CONTRACTS.CAMPAIGN_MANAGER.split('.')[1],
+    contractAddress: CONTRACTS.MISSION_MANAGER.split('.')[0],
+    contractName: CONTRACTS.MISSION_MANAGER.split('.')[1],
     functionName: 'get-mission-count',
     functionArgs: [],
     network,
-    senderAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
+    senderAddress: CONTRACTS.MISSION_MANAGER.split('.')[0],
   });
 
   return cvToJSON(result);
 };
 
-export const isCampaignActive = async (campaignId: number) => {
+export const isMissionActive = async (missionId: number) => {
   const network = getStacksNetwork();
 
   const result = await callReadOnlyFunction({
-    contractAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
-    contractName: CONTRACTS.CAMPAIGN_MANAGER.split('.')[1],
+    contractAddress: CONTRACTS.MISSION_MANAGER.split('.')[0],
+    contractName: CONTRACTS.MISSION_MANAGER.split('.')[1],
     functionName: 'is-mission-active',
-    functionArgs: [uintCV(campaignId)],
+    functionArgs: [uintCV(missionId)],
     network,
-    senderAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
+    senderAddress: CONTRACTS.MISSION_MANAGER.split('.')[0],
   });
 
   return cvToJSON(result);
@@ -224,12 +224,12 @@ export const isTokenAllowed = async (tokenAddress: string) => {
   const network = getStacksNetwork();
 
   const result = await callReadOnlyFunction({
-    contractAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
-    contractName: CONTRACTS.CAMPAIGN_MANAGER.split('.')[1],
+    contractAddress: CONTRACTS.MISSION_MANAGER.split('.')[0],
+    contractName: CONTRACTS.MISSION_MANAGER.split('.')[1],
     functionName: 'is-token-allowed',
     functionArgs: [principalCV(tokenAddress)],
     network,
-    senderAddress: CONTRACTS.CAMPAIGN_MANAGER.split('.')[0],
+    senderAddress: CONTRACTS.MISSION_MANAGER.split('.')[0],
   });
 
   return cvToJSON(result);
