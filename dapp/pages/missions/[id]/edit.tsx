@@ -164,6 +164,8 @@ const EditMission: NextPage = () => {
     const file = event.target.files?.[0];
     if (file) {
       setImageFile(file);
+      // Clear any existing imageUrl from form to prevent base64 storage
+      setValue('imageUrl', '');
       const reader = new FileReader();
       reader.onload = e => {
         setImagePreview(e.target?.result as string);
@@ -245,7 +247,7 @@ const EditMission: NextPage = () => {
     const loadingToast = toast.loading('Updating mission...');
 
     try {
-      let imageUrl = data.imageUrl || imagePreview;
+      let imageUrl = '';
 
       // Upload image if file is selected
       if (imageFile) {
@@ -253,10 +255,15 @@ const EditMission: NextPage = () => {
         try {
           imageUrl = await uploadImage(imageFile);
         } catch (error) {
-          toast.error('Failed to upload image. Continuing with existing image.', {
+          toast.error('Failed to upload image. Please try again.', {
             id: loadingToast,
           });
+          setLoading(false);
+          return;
         }
+      } else {
+        // Keep existing image if no new file selected and it's not base64
+        imageUrl = imagePreview && !imagePreview.startsWith('data:') ? imagePreview : '';
       }
 
       toast.loading('Updating mission...', { id: loadingToast });

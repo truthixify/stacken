@@ -146,7 +146,7 @@ const EditProfile: NextPage = () => {
     const loadingToast = toast.loading('Updating profile...');
 
     try {
-      let avatarUrl = avatarPreview;
+      let avatarUrl = '';
 
       // Upload avatar if file is selected
       if (avatarFile) {
@@ -154,10 +154,15 @@ const EditProfile: NextPage = () => {
         try {
           avatarUrl = await uploadAvatar(avatarFile);
         } catch (error) {
-          toast.error('Failed to upload avatar. Continuing with existing avatar.', {
+          toast.error('Failed to upload avatar. Please try again.', {
             id: loadingToast,
           });
+          setLoading(false);
+          return;
         }
+      } else {
+        // Keep existing avatar if no new file selected and it's not base64
+        avatarUrl = avatarPreview && !avatarPreview.startsWith('data:') ? avatarPreview : '';
       }
 
       toast.loading('Updating profile...', { id: loadingToast });

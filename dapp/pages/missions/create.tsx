@@ -239,6 +239,8 @@ const CreateMission: NextPage = () => {
     const file = event.target.files?.[0];
     if (file) {
       setImageFile(file);
+      // Clear any existing imageUrl from form to prevent base64 storage
+      setValue('imageUrl', '');
       const reader = new FileReader();
       reader.onload = e => {
         setImagePreview(e.target?.result as string);
@@ -331,7 +333,7 @@ const CreateMission: NextPage = () => {
     const loadingToast = toast.loading('Launching your bounty mission...');
 
     try {
-      let imageUrl = data.imageUrl;
+      let imageUrl = '';
 
       // Upload image if file is selected
       if (imageFile) {

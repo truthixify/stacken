@@ -43,7 +43,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     case 'GET':
       return getmissions(req, res);
     case 'POST':
-      return createmission(req, res);
+      return createMission(req, res);
     default:
       return res.status(405).json({ message: 'Method not allowed' });
   }
@@ -133,7 +133,7 @@ async function getmissions(req: NextApiRequest, res: NextApiResponse) {
   }
 }
 
-async function createmission(req: NextApiRequest, res: NextApiResponse) {
+async function createMission(req: NextApiRequest, res: NextApiResponse) {
   try {
     const {
       creatorAddress,
@@ -168,18 +168,17 @@ async function createmission(req: NextApiRequest, res: NextApiResponse) {
     }
 
     // Validate token address if provided
-    // TODO: Re-enable when AllowedToken schema is fixed
-    // if (tokenAddress) {
-    //   const allowedToken = await AllowedToken.findOne({
-    //     contractAddress: tokenAddress,
-    //     isActive: true
-    //   });
-    //   if (!allowedToken) {
-    //     return res.status(400).json({
-    //       message: 'Selected token is not in the allowed tokens list'
-    //     });
-    //   }
-    // }
+    if (tokenAddress) {
+      const allowedToken = await AllowedToken.findOne({
+        contractAddress: tokenAddress,
+        isActive: true,
+      });
+      if (!allowedToken) {
+        return res.status(400).json({
+          message: 'Selected token is not in the allowed tokens list',
+        });
+      }
+    }
 
     // Validate deployer vs regular user permissions
     const isDeployer = isDeployerAddress(creatorAddress);
