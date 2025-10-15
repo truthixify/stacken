@@ -1,7 +1,14 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import formidable from 'formidable';
+import { v2 as cloudinary } from 'cloudinary';
 import fs from 'fs';
-import path from 'path';
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export const config = {
   api: {
@@ -15,15 +22,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads');
-
-    // Create uploads directory if it doesn't exist
-    if (!fs.existsSync(uploadDir)) {
-      fs.mkdirSync(uploadDir, { recursive: true });
-    }
-
+    // Parse the form data
     const form = formidable({
-      uploadDir,
       keepExtensions: true,
       maxFileSize: 5 * 1024 * 1024, // 5MB limit
     });
@@ -35,25 +35,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return res.status(400).json({ message: 'No file uploaded' });
     }
 
-    // Generate unique filename
-    const timestamp = Date.now();
-    const originalName = file.originalFilename || 'upload';
-    const extension = path.extname(originalName);
-    const filename = `${timestamp}${extension}`;
-    const newPath = path.join(uploadDir, filename);
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(file.filepath, {
+      folder: 'stacken', // Organize uploads in a folder
+      resource_type: 'auto', // Automatically detect file type
+      transformation: [
+        { width: 1200, height: 630, crop: 'limit' }, // Optimize for Open Graph
+        { quality: 'auto' }, // Auto quality optimization
+        { format: 'auto' }, // Auto format optimization (WebP when supported)
+      ],
+    });
 
-    // Move file to final location
-    fs.renameSync(file.filepath, newPath);
+    // Clean up temporary file
+    fs.unlinkSync(file.filepath);
 
-    // Return public URL
-    const publicUrl = `/uploads/${filename}`;
-
+    // Return Cloudinary URL
     res.status(200).json({
       message: 'File uploaded successfully',
-      url: publicUrl,
+      url: result.secure_url,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Upload error:', error);
-    res.status(500).json({ message: 'Upload failed' });
+    res.status(500).json({
+      message: 'Upload failed',
+      error: process.env.NODE_ENV === 'development' ? error.message : 'Internal server error',
+    });
   }
 }
