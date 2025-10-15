@@ -1,9 +1,9 @@
 // Contract addresses and constants (auto-generated)
-// Generated on: 2025-10-15T01:24:50.524Z
+// Generated on: 2025-10-15T21:23:53.002Z
 // Network: TESTNET
 
 // Deployer address - can create point-only missions
-export const DEPLOYER_ADDRESS = 'ST1NT7B5W1DD8XR19XQATTS7H0MSBTSC7ECMY5FNF';
+export const DEPLOYER_ADDRESS = 'ST27BRNTD1X5699QZMHDTBH77D42XNY8SNMM9KND5';
 
 // Helper function to check if an address is the deployer
 export const isDeployerAddress = (address: string | undefined): boolean => {
@@ -12,9 +12,9 @@ export const isDeployerAddress = (address: string | undefined): boolean => {
 
 // Contract addresses
 export const CONTRACTS = {
-  POINTS: 'ST1NT7B5W1DD8XR19XQATTS7H0MSBTSC7ECMY5FNF.points',
-  MISSION_MANAGER: 'ST1NT7B5W1DD8XR19XQATTS7H0MSBTSC7ECMY5FNF.mission-manager',
-  MOCK_TOKEN: 'ST1NT7B5W1DD8XR19XQATTS7H0MSBTSC7ECMY5FNF.mock-token',
+  POINTS: 'ST27BRNTD1X5699QZMHDTBH77D42XNY8SNMM9KND5.points',
+  MISSION_MANAGER: 'ST27BRNTD1X5699QZMHDTBH77D42XNY8SNMM9KND5.mission-manager',
+  MOCK_TOKEN: 'ST27BRNTD1X5699QZMHDTBH77D42XNY8SNMM9KND5.mock-token',
 };
 
 // Network configuration

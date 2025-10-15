@@ -10,21 +10,21 @@ plan:
       transactions:
         - contract-publish:
             contract-name: points
-            expected-sender: ST1NT7B5W1DD8XR19XQATTS7H0MSBTSC7ECMY5FNF
+            expected-sender: ST27BRNTD1X5699QZMHDTBH77D42XNY8SNMM9KND5
             cost: 56930
             path: contracts/points.clar
             anchor-block-only: true
             clarity-version: 3
         - contract-publish:
             contract-name: mission-manager
-            expected-sender: ST1NT7B5W1DD8XR19XQATTS7H0MSBTSC7ECMY5FNF
-            cost: 201770
+            expected-sender: ST27BRNTD1X5699QZMHDTBH77D42XNY8SNMM9KND5
+            cost: 202760
             path: contracts/mission-manager.clar
             anchor-block-only: true
             clarity-version: 3
         - contract-publish:
             contract-name: mock-token
-            expected-sender: ST1NT7B5W1DD8XR19XQATTS7H0MSBTSC7ECMY5FNF
+            expected-sender: ST27BRNTD1X5699QZMHDTBH77D42XNY8SNMM9KND5
             cost: 7660
             path: contracts/mock-token.clar
             anchor-block-only: true

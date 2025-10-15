@@ -124,8 +124,9 @@
             )
 
             ;; For missions with tokens, assert total points equals total amount
+            ;; token-amount is already scaled by 10^6, so scale total-points to match
             (if (> token-amount u0)
-                (asserts! (is-eq total-points token-amount) ERR_INVALID_AMOUNT)
+                (asserts! (is-eq (* total-points u1000000) token-amount) ERR_INVALID_AMOUNT)
                 true
             )
 
