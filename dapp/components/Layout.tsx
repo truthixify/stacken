@@ -9,12 +9,18 @@ interface LayoutProps {
   children: React.ReactNode;
   title?: string;
   description?: string;
+  ogImage?: string;
+  ogUrl?: string;
+  ogType?: string;
 }
 
 const Layout: React.FC<LayoutProps> = ({
   children,
   title = 'Stacken — Build, Earn, Repeat',
   description = 'Join bounty missions on Stacks. Build amazing projects, earn crypto rewards, and grow with the community.',
+  ogImage,
+  ogUrl,
+  ogType = 'website',
 }) => {
   return (
     <>
@@ -23,6 +29,29 @@ const Layout: React.FC<LayoutProps> = ({
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
+
+        {/* Open Graph / Facebook */}
+        <meta property="og:type" content={ogType} />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        {ogUrl && <meta property="og:url" content={ogUrl} />}
+        {ogImage && <meta property="og:image" content={ogImage} />}
+        <meta property="og:site_name" content="Stacken" />
+
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+        {/* Additional meta tags for better sharing */}
+        {ogImage && (
+          <>
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="630" />
+            <meta property="og:image:type" content="image/png" />
+          </>
+        )}
       </Head>
 
       <div className="min-h-screen bg-background flex flex-col bg-gray-950/95">

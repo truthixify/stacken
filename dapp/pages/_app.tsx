@@ -11,37 +11,37 @@ import type { ClientConfig } from '@micro-stacks/client';
 
 // Component to handle auto-registration and theme inside ClientProvider
 function AppWithAutoRegister({ Component, pageProps }: { Component: any; pageProps: any }) {
-  useAutoRegister(); // Auto-register users when they connect wallet
+    useAutoRegister(); // Auto-register users when they connect wallet
 
-  // Apply dark theme on client side to avoid hydration mismatch
-  useEffect(() => {
-    document.documentElement.classList.add('dark');
-  }, []);
+    // Apply dark theme on client side to avoid hydration mismatch
+    useEffect(() => {
+        document.documentElement.classList.add('dark');
+    }, []);
 
-  return <Component {...pageProps} />;
+    return <Component {...pageProps} />;
 }
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const onPersistState: ClientConfig['onPersistState'] = useCallback(
-    async (dehydratedState: string) => {
-      await saveSession(dehydratedState);
-    },
-    []
-  );
+    const onPersistState: ClientConfig['onPersistState'] = useCallback(
+        async (dehydratedState: string) => {
+            await saveSession(dehydratedState);
+        },
+        []
+    );
 
-  const onSignOut: ClientConfig['onSignOut'] = useCallback(async () => {
-    await destroySession();
-  }, []);
+    const onSignOut: ClientConfig['onSignOut'] = useCallback(async () => {
+        await destroySession();
+    }, []);
 
-  return (
-    <ClientProvider
-      {...walletConfig}
-      network={STACKS_NETWORK}
-      dehydratedState={pageProps?.dehydratedState}
-      onPersistState={onPersistState}
-      onSignOut={onSignOut}
-    >
-      <AppWithAutoRegister Component={Component} pageProps={pageProps} />
-    </ClientProvider>
-  );
+    return (
+        <ClientProvider
+            {...walletConfig}
+            network={STACKS_NETWORK}
+            dehydratedState={pageProps?.dehydratedState}
+            onPersistState={onPersistState}
+            onSignOut={onSignOut}
+        >
+            <AppWithAutoRegister Component={Component} pageProps={pageProps} />
+        </ClientProvider>
+    );
 }

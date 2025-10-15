@@ -246,8 +246,24 @@ const MissionDetail: NextPage = () => {
 
   const progress = getMissionProgress();
 
+  // Prepare Open Graph data
+  const ogTitle = `${mission.title} - Stacken`;
+  const ogDescription =
+    mission.summary || createExcerpt(mission.description || mission.details || '', 160);
+  const ogImage =
+    mission.imageUrl ||
+    (typeof window !== 'undefined' ? `${window.location.origin}/stacken.svg` : '');
+  const ogUrl =
+    typeof window !== 'undefined' ? `${window.location.origin}/missions/${mission._id}` : '';
+
   return (
-    <Layout title={`${mission.title} - Stacken Rewards`}>
+    <Layout
+      title={ogTitle}
+      description={ogDescription}
+      ogImage={ogImage}
+      ogUrl={ogUrl}
+      ogType="article"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Main Content */}
