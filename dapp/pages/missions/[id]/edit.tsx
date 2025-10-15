@@ -7,7 +7,7 @@ import { Calendar, Plus, X, Upload, Save, ArrowLeft } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import dynamic from 'next/dynamic';
-import { DEPLOYER_ADDRESS, isDeployerAddress } from '../../../lib/constants';
+import { DEPLOYER_ADDRESS, isDeployerAddress } from '../../../lib/contracts';
 import { useAllowedTokens } from '../../../hooks/useAllowedTokens';
 
 // Dynamically import ReactQuill to avoid SSR issues

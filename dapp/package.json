@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "contracts:generate": "cd ../contracts && npm run extract-addresses testnet",
+    "contracts:generate:mainnet": "cd ../contracts && npm run extract-addresses mainnet"
   },
   "dependencies": {
     "@micro-stacks/client": "1.0.0",

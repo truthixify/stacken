@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '../../../lib/mongodb';
 import Mission from '../../../models/Mission';
 import User from '../../../models/User';
-import { DEPLOYER_ADDRESS, isDeployerAddress } from '../../../lib/constants';
+import { DEPLOYER_ADDRESS, isDeployerAddress } from '../../../lib/contracts';
 import AllowedToken from '../../../models/AllowedToken';
 
 // Helper function to update mission status based on current time

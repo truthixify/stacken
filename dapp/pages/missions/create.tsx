@@ -9,7 +9,7 @@ import toast from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import { useOpenContractCall } from '@micro-stacks/react';
 import { uintCV, stringUtf8CV, noneCV, someCV, contractPrincipalCV } from 'micro-stacks/clarity';
-import { DEPLOYER_ADDRESS, isDeployerAddress } from '../../lib/constants';
+import { DEPLOYER_ADDRESS, isDeployerAddress, CONTRACTS } from '../../lib/contracts';
 import { useAllowedTokens } from '../../hooks/useAllowedTokens';
 import { stxToMicroStx, scaleTokenAmount } from '../../lib/stx-utils';
 
@@ -365,7 +365,7 @@ const CreateMission: NextPage = () => {
       };
 
       try {
-        const contractFullAddress = process.env.NEXT_PUBLIC_MISSION_MANAGER_CONTRACT;
+        const contractFullAddress = CONTRACTS.MISSION_MANAGER;
 
         if (!contractFullAddress) {
           throw new Error('Contract address not found in environment variables');

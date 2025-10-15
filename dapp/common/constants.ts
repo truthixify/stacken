@@ -9,17 +9,8 @@ export const STACKS_NETWORK = (process.env.NEXT_PUBLIC_STACKS_NETWORK || 'testne
   | 'testnet'
   | 'mainnet';
 
-// Contract Addresses
-export const CONTRACTS = {
-  MISSION_MANAGER:
-    process.env.NEXT_PUBLIC_MISSION_MANAGER_CONTRACT ||
-    'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.mission-manager',
-  POINTS:
-    process.env.NEXT_PUBLIC_POINTS_CONTRACT || 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.points',
-  MOCK_TOKEN:
-    process.env.NEXT_PUBLIC_MOCK_TOKEN_CONTRACT ||
-    'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.mock-token',
-};
+// Contract Addresses (imported from auto-generated contracts.ts)
+export { CONTRACTS, STACKS_NETWORK as GENERATED_STACKS_NETWORK } from '../lib/contracts';
 
 // Error Codes from contracts
 export const ERROR_CODES = {

@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import dbConnect from '../../../lib/mongodb';
 import AllowedToken from '../../../models/AllowedToken';
-import { DEPLOYER_ADDRESS, isDeployerAddress } from '../../../lib/constants';
+import { DEPLOYER_ADDRESS, isDeployerAddress } from '../../../lib/contracts';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   await dbConnect();
