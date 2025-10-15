@@ -22,6 +22,10 @@ const Layout: React.FC<LayoutProps> = ({
   ogUrl,
   ogType = 'website',
 }) => {
+  // Ensure ogImage is an absolute URL for social media crawlers
+  const absoluteOgImage = ogImage.startsWith('http')
+    ? ogImage
+    : `${process.env.NEXTAUTH_URL || 'https://stacken.vercel.app'}${ogImage}`;
   return (
     <>
       <Head>
@@ -35,21 +39,21 @@ const Layout: React.FC<LayoutProps> = ({
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         {ogUrl && <meta property="og:url" content={ogUrl} />}
-        <meta property="og:image" content={ogImage} />
+        <meta property="og:image" content={absoluteOgImage} />
         <meta property="og:site_name" content="Stacken" />
 
         {/* Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content={ogImage} />
+        <meta name="twitter:image" content={absoluteOgImage} />
 
         {/* Additional meta tags for better sharing */}
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta
           property="og:image:type"
-          content={ogImage.endsWith('.svg') ? 'image/svg+xml' : 'image/png'}
+          content={absoluteOgImage.endsWith('.svg') ? 'image/svg+xml' : 'image/png'}
         />
       </Head>
 

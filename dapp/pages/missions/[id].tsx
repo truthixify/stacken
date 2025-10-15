@@ -324,8 +324,14 @@ const MissionDetail: NextPage<MissionDetailProps> = ({ mission: initialMission }
   const ogTitle = `${mission.title} - Stacken`;
   const ogDescription =
     mission.summary || createExcerpt(mission.description || mission.details || '', 160);
-  const ogImage = mission.imageUrl; // Let Layout handle the default fallback
-  const ogUrl = `${process.env.NEXTAUTH_URL || 'https://stacken-rewards.vercel.app'}/missions/${
+  // Ensure we have absolute URLs for Open Graph images
+  const baseUrl = process.env.NEXTAUTH_URL || 'https://stacken.vercel.app';
+  const ogImage = mission.imageUrl
+    ? mission.imageUrl.startsWith('http')
+      ? mission.imageUrl
+      : `${baseUrl}${mission.imageUrl}`
+    : `${baseUrl}/stacken.png`;
+  const ogUrl = `${process.env.NEXTAUTH_URL || 'https://stacken.vercel.app'}/missions/${
     mission._id
   }`;
 
