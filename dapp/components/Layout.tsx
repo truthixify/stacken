@@ -18,7 +18,7 @@ const Layout: React.FC<LayoutProps> = ({
   children,
   title = 'Stacken — Build, Earn, Repeat',
   description = 'Join bounty missions on Stacks. Build amazing projects, earn crypto rewards, and grow with the community.',
-  ogImage = '/stacken.svg',
+  ogImage = '/stacken.png',
   ogUrl,
   ogType = 'website',
 }) => {
