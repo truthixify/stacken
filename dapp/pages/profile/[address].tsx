@@ -160,7 +160,7 @@ const ProfilePage: NextPage = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Profile Header */}
         <div className="bg-gray-700/20 rounded-lg shadow-sm border border-gray-600/20 p-6 mb-6">
-          <div className="flex items-start justify-between">
+          <div className="flex flex-col sm:flex-row items-start justify-between gap-4">
             <div className="flex items-center space-x-4">
               <div className="relative">
                 <UserAvatar
