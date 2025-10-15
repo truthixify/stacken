@@ -24,11 +24,80 @@ import { createExcerpt } from '../../lib/textUtils';
 import type { NextPage, GetServerSidePropsContext } from 'next';
 
 export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  return {
-    props: {
-      dehydratedState: await getDehydratedStateFromSession(ctx),
-    },
-  };
+  const { id } = ctx.params!;
+
+  try {
+    // Import database connection and model on server side
+    const dbConnect = (await import('../../lib/mongodb')).default;
+    const Mission = (await import('../../models/Mission')).default;
+
+    await dbConnect();
+
+    // Fetch mission directly from database for better performance
+    const mission = await Mission.aggregate([
+      { $match: { _id: new (await import('mongoose')).Types.ObjectId(id as string) } },
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'creatorAddress',
+          foreignField: 'stacksAddress',
+          as: 'creator',
+        },
+      },
+      {
+        $addFields: {
+          creator: { $arrayElemAt: ['$creator', 0] },
+        },
+      },
+      {
+        $project: {
+          title: 1,
+          summary: 1,
+          description: 1,
+          details: 1,
+          category: 1,
+          status: 1,
+          totalParticipants: 1,
+          totalPoints: 1,
+          startTime: 1,
+          endTime: 1,
+          creatorAddress: 1,
+          imageUrl: 1,
+          tags: 1,
+          taskLinks: 1,
+          socialLinks: 1,
+          tokenAddress: 1,
+          tokenAmount: 1,
+          createdAt: 1,
+          updatedAt: 1,
+          'creator.username': 1,
+          'creator.displayName': 1,
+          'creator.avatar': 1,
+        },
+      },
+    ]);
+
+    if (!mission || mission.length === 0) {
+      return {
+        notFound: true,
+      };
+    }
+
+    // Convert MongoDB ObjectId and dates to strings for serialization
+    const serializedMission = JSON.parse(JSON.stringify(mission[0]));
+
+    return {
+      props: {
+        dehydratedState: await getDehydratedStateFromSession(ctx),
+        mission: serializedMission,
+      },
+    };
+  } catch (error) {
+    console.error('Error fetching mission:', error);
+    return {
+      notFound: true,
+    };
+  }
 }
 
 interface Mission {
@@ -83,21 +152,26 @@ interface Mission {
   };
 }
 
-const MissionDetail: NextPage = () => {
+interface MissionDetailProps {
+  mission: Mission;
+}
+
+const MissionDetail: NextPage<MissionDetailProps> = ({ mission: initialMission }) => {
   const router = useRouter();
   const { id } = router.query;
   const { isSignedIn } = useAuth();
   const { stxAddress } = useAccount();
-  const [mission, setMission] = useState<Mission | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [mission, setMission] = useState<Mission | null>(initialMission);
+  const [loading, setLoading] = useState(false);
   const [completingActivity, setCompletingActivity] = useState<string | null>(null);
   const [completedActivities, setCompletedActivities] = useState<string[]>([]);
 
   useEffect(() => {
-    if (id) {
+    // Only fetch if we don't have initial mission data (fallback for client-side navigation)
+    if (id && !initialMission) {
       fetchMission();
     }
-  }, [id]);
+  }, [id, initialMission]);
 
   const fetchMission = async () => {
     try {
@@ -251,8 +325,9 @@ const MissionDetail: NextPage = () => {
   const ogDescription =
     mission.summary || createExcerpt(mission.description || mission.details || '', 160);
   const ogImage = mission.imageUrl; // Let Layout handle the default fallback
-  const ogUrl =
-    typeof window !== 'undefined' ? `${window.location.origin}/missions/${mission._id}` : '';
+  const ogUrl = `${process.env.NEXTAUTH_URL || 'https://stacken-rewards.vercel.app'}/missions/${
+    mission._id
+  }`;
 
   return (
     <Layout
