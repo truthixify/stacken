@@ -430,7 +430,7 @@ const SubmitToMission: NextPage = () => {
                     key={type.value}
                     className={`flex items-start p-3 border-2 rounded-lg cursor-pointer transition-colors ${
                       submissionType === type.value
-                        ? 'border-primary-500 bg-primary-50'
+                        ? 'border-primary-500'
                         : 'border-gray-600/20 hover:border-gray-500/20'
                     }`}
                   >

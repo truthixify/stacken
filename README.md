@@ -173,7 +173,7 @@ A Bitcoin-native bounty platform that combines:
 🌐 **[Try Stacken Live](https://stacken.vercel.app)** — Create missions, browse bounties, connect your wallet
 
 ### **Video Demo**
-🎥 **[Watch Demo Video](https://youtu.be/demo-link)** — See Stacken in action (2-minute walkthrough)
+🎥 **[Watch Demo Video](https://drive.google.com/file/d/1eNzNm2eAy-6t9WSee_ZvCcmgkT_9TiDe/view?usp=sharing)** — See Stacken in action (5-minute walkthrough)
 
 ### **Smart Contracts**
 - **Mission Manager**: `ST1FZXTTFT9J4YPJ17Z9T914PGZH2WJ6F8JGBNM0T.mission-manager`
