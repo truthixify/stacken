@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Menu, X, LogOut } from 'lucide-react';
-import { useAuth, useAccount } from '@micro-stacks/react';
+import { useStacks } from '../hooks/useStacks';
 import useUserInfo from '../hooks/useUserInfo';
 import UserAvatar from './UserAvatar';
 import Logo from '../assets/stacken.svg';
@@ -13,8 +13,7 @@ const truncateAddress = (address: string) =>
   address ? `${address.slice(0, 5)}...${address.slice(-4)}` : '';
 
 const Navbar: React.FC = () => {
-  const { openAuthRequest, isSignedIn, signOut } = useAuth();
-  const { stxAddress } = useAccount();
+  const { connectWallet, disconnectWallet, isSignedIn, stxAddress } = useStacks();
   const { displayName, userInfo } = useUserInfo();
 
   const [mounted, setMounted] = useState(false);
@@ -24,13 +23,12 @@ const Navbar: React.FC = () => {
   useEffect(() => setMounted(true), []);
 
   const handleConnect = () => {
-    openAuthRequest({
-      onFinish: payload => console.log('Auth finished:', payload),
-      onCancel: () => console.log('Auth cancelled'),
-    });
+    connectWallet();
   };
 
-  const handleSignOut = () => signOut();
+  const handleSignOut = () => {
+    disconnectWallet();
+  };
 
   const userLabel = displayName || (stxAddress ? truncateAddress(stxAddress) : 'Wallet');
 

@@ -1,6 +1,5 @@
 import React from 'react';
 import Head from 'next/head';
-import { useAuth } from '@micro-stacks/react';
 import { Toaster } from 'react-hot-toast';
 import Navbar from './Navbar';
 import Footer from './Footer';

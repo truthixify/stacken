@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useAuth, useAccount } from '@micro-stacks/react';
 import Layout from '../../components/Layout';
-import { getDehydratedStateFromSession } from '../../common/session-helpers';
 import { Calendar, Plus, X, Image, Link as LinkIcon, ExternalLink, Upload } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 import dynamic from 'next/dynamic';
-import { useOpenContractCall } from '@micro-stacks/react';
-import { uintCV, stringUtf8CV, noneCV, someCV, contractPrincipalCV } from 'micro-stacks/clarity';
+import { useStacks } from '../../hooks/useStacks';
 import {
-  makeStandardSTXPostCondition,
-  makeStandardFungiblePostCondition,
-  createAssetInfo,
+  uintCV,
+  stringUtf8CV,
+  noneCV,
+  someCV,
+  contractPrincipalCV,
+  Pc,
   FungibleConditionCode,
   PostCondition,
-} from 'micro-stacks/transactions';
+} from '@stacks/transactions';
+import { openContractCall } from '@stacks/connect';
 import { DEPLOYER_ADDRESS, isDeployerAddress, CONTRACTS } from '../../lib/contracts';
 import { useAllowedTokens } from '../../hooks/useAllowedTokens';
 import { stxToMicroStx, scaleTokenAmount } from '../../lib/stx-utils';
@@ -28,13 +29,7 @@ import 'react-quill/dist/quill.snow.css';
 
 import type { NextPage, GetServerSidePropsContext } from 'next';
 
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  return {
-    props: {
-      dehydratedState: await getDehydratedStateFromSession(ctx),
-    },
-  };
-}
+// No server-side props needed with Stacks.js
 
 interface MissionFormData {
   title: string;
@@ -74,11 +69,10 @@ interface MissionFormData {
 }
 
 const CreateMission: NextPage = () => {
-  const { isSignedIn } = useAuth();
-  const { stxAddress } = useAccount();
+  const { isSignedIn, stxAddress } = useStacks();
   const router = useRouter();
-  const { openContractCall } = useOpenContractCall();
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   // Check if current user is the deployer (can create point-only missions)
   const isDeployer = isDeployerAddress(stxAddress);
@@ -163,11 +157,17 @@ const CreateMission: NextPage = () => {
     { value: 'TOP_PERFORMERS', label: 'Top Performers', description: 'Top X% get rewards' },
   ];
 
+  // Set mounted state
   React.useEffect(() => {
-    if (!isSignedIn) {
+    setMounted(true);
+  }, []);
+
+  // Only redirect after component is mounted and we're sure user is not signed in
+  React.useEffect(() => {
+    if (mounted && !isSignedIn) {
       router.push('/');
     }
-  }, [isSignedIn, router]);
+  }, [mounted, isSignedIn, router]);
 
   const updateRewardDistribution = (field: string, value: any) => {
     const current = watch('rewardDistribution');
@@ -450,30 +450,19 @@ const CreateMission: NextPage = () => {
             if (selectedTokenData) {
               const [tokenContractAddress, tokenContractName] =
                 selectedTokenData.contractAddress.split('.');
-              const asset = createAssetInfo(
-                tokenContractAddress,
-                tokenContractName,
-                selectedTokenData.symbol.toLowerCase()
-              );
 
               postConditions.push(
-                makeStandardFungiblePostCondition(
-                  stxAddress!,
-                  FungibleConditionCode.Equal,
-                  BigInt(scaledTokenAmount),
-                  asset
-                )
+                Pc.principal(stxAddress!)
+                  .willSendEq(scaledTokenAmount)
+                  .ft(
+                    `${tokenContractAddress}.${tokenContractName}`,
+                    selectedTokenData.symbol.toLowerCase()
+                  )
               );
             }
           } else {
             // STX post-condition
-            postConditions.push(
-              makeStandardSTXPostCondition(
-                stxAddress!,
-                FungibleConditionCode.Equal,
-                BigInt(scaledTokenAmount)
-              )
-            );
+            postConditions.push(Pc.principal(stxAddress!).willSendEq(scaledTokenAmount).ustx());
           }
         }
 
@@ -580,7 +569,8 @@ const CreateMission: NextPage = () => {
     }
   };
 
-  if (!isSignedIn) {
+  // Show nothing while checking authentication
+  if (!mounted || !isSignedIn) {
     return null;
   }
 

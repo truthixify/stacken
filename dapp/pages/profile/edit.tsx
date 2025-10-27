@@ -1,23 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useAuth, useAccount } from '@micro-stacks/react';
+import { useStacks } from '../../hooks/useStacks';
 import Layout from '../../components/Layout';
-import { getDehydratedStateFromSession } from '../../common/session-helpers';
 import { Save, User, Upload, ArrowLeft } from 'lucide-react';
 import UserAvatar from '../../components/UserAvatar';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
 
-import type { NextPage, GetServerSidePropsContext } from 'next';
+import type { NextPage } from 'next';
 import Image from 'next/image';
-
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  return {
-    props: {
-      dehydratedState: await getDehydratedStateFromSession(ctx),
-    },
-  };
-}
 
 interface ProfileFormData {
   username: string;
@@ -34,8 +25,7 @@ interface ProfileFormData {
 }
 
 const EditProfile: NextPage = () => {
-  const { isSignedIn } = useAuth();
-  const { stxAddress } = useAccount();
+  const { isSignedIn, stxAddress } = useStacks();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);

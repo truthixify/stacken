@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth, useAccount } from '@micro-stacks/react';
+import { useStacks } from './useStacks';
 import toast from 'react-hot-toast';
 
 interface LikeData {
@@ -9,8 +9,7 @@ interface LikeData {
 }
 
 export const useLikes = (targetType: 'MISSION' | 'SUBMISSION', targetId: string) => {
-  const { isSignedIn } = useAuth();
-  const { stxAddress } = useAccount();
+  const { isSignedIn, stxAddress } = useStacks();
   const [likeData, setLikeData] = useState<LikeData>({
     likeCount: 0,
     userHasLiked: false,

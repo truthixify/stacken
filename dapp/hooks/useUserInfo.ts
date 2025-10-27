@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth, useAccount } from '@micro-stacks/react';
+import { useStacks } from './useStacks';
 
 interface UserInfo {
   username?: string;
@@ -8,8 +8,7 @@ interface UserInfo {
 }
 
 export const useUserInfo = () => {
-  const { isSignedIn } = useAuth();
-  const { stxAddress } = useAccount();
+  const { isSignedIn, stxAddress } = useStacks();
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [loading, setLoading] = useState(false);
 

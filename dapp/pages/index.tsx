@@ -3,12 +3,12 @@ import Layout from '../components/Layout';
 import { Button } from '../components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { useRouter } from 'next/router';
-import { useAuth } from '@micro-stacks/react';
+import { useStacks } from '../hooks/useStacks';
 import { Trophy, Users, Zap, Target, ArrowRight, TrendingUp, Award, Coins } from 'lucide-react';
 
 const HomePage = () => {
   const router = useRouter();
-  const { isSignedIn, openAuthRequest } = useAuth();
+  const { isSignedIn, connectWallet } = useStacks();
   const [mounted, setMounted] = useState(false);
 
   // Prevent hydration mismatch by only showing auth-dependent content after mount
@@ -20,7 +20,7 @@ const HomePage = () => {
     if (isSignedIn) {
       router.push('/missions');
     } else {
-      openAuthRequest();
+      connectWallet();
     }
   };
 

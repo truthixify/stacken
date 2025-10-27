@@ -1,17 +1,8 @@
 import React from 'react';
 import Layout from '../components/Layout';
-import { getDehydratedStateFromSession } from '../common/session-helpers';
 import { Book, Code, ExternalLink, ArrowRight } from 'lucide-react';
 
-import type { NextPage, GetServerSidePropsContext } from 'next';
-
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  return {
-    props: {
-      dehydratedState: await getDehydratedStateFromSession(ctx),
-    },
-  };
-}
+import type { NextPage } from 'next';
 
 const Docs: NextPage = () => {
   const sections = [

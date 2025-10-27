@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useAuth, useAccount } from '@micro-stacks/react';
+import { useStacks } from '../../../hooks/useStacks';
 import Layout from '../../../components/Layout';
-import { getDehydratedStateFromSession } from '../../../common/session-helpers';
 import toast from 'react-hot-toast';
 import {
   ArrowLeft,
@@ -16,15 +15,7 @@ import {
 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 
-import type { NextPage, GetServerSidePropsContext } from 'next';
-
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  return {
-    props: {
-      dehydratedState: await getDehydratedStateFromSession(ctx),
-    },
-  };
-}
+import type { NextPage } from 'next';
 
 interface Mission {
   _id: string;
@@ -59,8 +50,7 @@ interface SubmissionFormData {
 const SubmitToMission: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { isSignedIn } = useAuth();
-  const { stxAddress } = useAccount();
+  const { isSignedIn, stxAddress } = useStacks();
   const [mission, setMission] = useState<Mission | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);

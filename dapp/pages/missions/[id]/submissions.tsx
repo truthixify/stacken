@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useAuth, useAccount } from '@micro-stacks/react';
+import { useStacks } from '../../../hooks/useStacks';
 import Layout from '../../../components/Layout';
-import { getDehydratedStateFromSession } from '../../../common/session-helpers';
 import {
   ArrowLeft,
   Link as LinkIcon,
@@ -19,15 +18,7 @@ import {
 import UserAvatar from '../../../components/UserAvatar';
 import LikeButton from '../../../components/LikeButton';
 
-import type { NextPage, GetServerSidePropsContext } from 'next';
-
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  return {
-    props: {
-      dehydratedState: await getDehydratedStateFromSession(ctx),
-    },
-  };
-}
+import type { NextPage } from 'next';
 
 interface Submission {
   _id: string;
@@ -60,8 +51,7 @@ interface Mission {
 const MissionSubmissions: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { isSignedIn } = useAuth();
-  const { stxAddress } = useAccount();
+  const { isSignedIn, stxAddress } = useStacks();
   const [mission, setMission] = useState<Mission | null>(null);
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [loading, setLoading] = useState(true);

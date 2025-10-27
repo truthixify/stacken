@@ -1,24 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useAuth, useAccount } from '@micro-stacks/react';
+import { useStacks } from '../hooks/useStacks';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
-import { getDehydratedStateFromSession } from '../common/session-helpers';
 import { Plus, Trophy, Users, Star, Calendar, ArrowRight } from 'lucide-react';
 
-import type { NextPage, GetServerSidePropsContext } from 'next';
-
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  return {
-    props: {
-      dehydratedState: await getDehydratedStateFromSession(ctx),
-    },
-  };
-}
+import type { NextPage } from 'next';
 
 const Dashboard: NextPage = () => {
-  const { isSignedIn } = useAuth();
-  const { stxAddress } = useAccount();
+  const { isSignedIn, stxAddress } = useStacks();
   const router = useRouter();
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
