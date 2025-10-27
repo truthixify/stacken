@@ -45,74 +45,53 @@ Leverages **Bitcoin's security** + **Stacks' programmability** = first truly Bit
 
 ---
 
-## 🔧 **Build — Technical Architecture**
+## 🔧 **How It Works**
 
-**Built during the Stacks Vibe Coding Hackathon 2025 to showcase how AI accelerates Web3 development.**
-
-### **Smart Contract Layer**
-```clarity
-;; Mission Manager Contract (Stacks/Clarity)
-- Trustless escrow for STX and SIP-010 tokens
-- Automated reward distribution based on completion criteria
-- Multi-signature validation for complex bounties
-- Gas-optimized for cost-effective operations
-```
-
-**Contract Address:** `ST1FZXTTFT9J4YPJ17Z9T914PGZH2WJ6F8JGBNM0T.mission-manager`
+**Built during the Stacks Vibe Coding Hackathon 2025 — a Bitcoin-native bounty platform that makes building rewarding.**
 
 ### **Core Features:**
 
 #### **🎯 Mission Creation**
 - **Token-Agnostic Rewards**: STX, custom SIP-010 tokens, or points-only missions
 - **Flexible Timeframes**: From 1-week sprints to multi-month projects
-- **Rich Content**: Markdown support, file attachments, social links
+- **Rich Content**: Markdown support, image uploads via Cloudinary, social links
 - **Transparent Escrow**: Funds locked in smart contracts until completion
+- **Smart Status Management**: Automatic transitions from DRAFT → ACTIVE → COMPLETED
+- **Post-Condition Protection**: Built-in safeguards against unexpected asset transfers
 
 #### **⚡ Reward Distribution**
 - **Automated Payouts**: Smart contract handles distribution based on predefined criteria
 - **Multiple Models**: Linear, tiered, winner-takes-all, or top-performer rewards
 - **Instant Settlement**: No manual approval delays or payment processing
 - **Transparent Tracking**: All transactions visible on Stacks Explorer
+- **Scaled Token Support**: Proper handling of token decimals (STX microSTX, custom tokens)
 
 #### **🔐 Security & Trust**
 - **Smart Contract Escrow**: Funds secured by Bitcoin's hash power
+- **Post-Condition Validation**: Prevents unexpected asset transfers during mission creation
 - **Multi-Signature Support**: Complex validation for high-value bounties
 - **Reputation System**: Track builder performance and project quality
-- **Dispute Resolution**: Community-driven arbitration for edge cases
+- **Server-Side Rendering**: Proper Open Graph support for social media sharing
 
-### **Technical Stack:**
+#### **🎨 User Experience**
+- **Real-Time Status Updates**: Smart date displays ("Starts in 2 days", "Ends in 5 hours")
+- **Cloudinary Integration**: Professional image hosting and optimization
+- **Mobile Responsive**: Perfect experience across all devices
+- **Social Media Ready**: Rich link previews with mission images and descriptions
 
-#### **Frontend (Next.js 14)**
-- **Framework**: React 18 with TypeScript for type safety
-- **Styling**: Tailwind CSS with custom design system
-- **State Management**: React hooks with optimistic updates
-- **Wallet Integration**: Stacks.js for seamless Stacks wallet connection
+### **Platform Highlights:**
 
-#### **Backend (Node.js)**
-- **Database**: MongoDB with Mongoose ODM
-- **Authentication**: Iron Session with encrypted cookies
-- **File Storage**: Cloudinary for image/document uploads
-- **API Design**: RESTful endpoints with comprehensive error handling
-
-#### **Blockchain Integration**
-- **Network**: Stacks Testnet (production-ready for Mainnet)
-- **Smart Contracts**: Clarity language for security and predictability
-- **Wallet Support**: Xverse, Leather, Hiro Wallet compatibility
-- **Token Standards**: Native STX and SIP-010 token support
-
-### **Architecture Highlights:**
-
-#### **🔄 Seamless UX**
-- **One-Click Mission Creation**: Intuitive form with smart defaults
+#### **🔄 Seamless Experience**
+- **One-Click Mission Creation**: Intuitive interface for creating bounties
 - **Real-Time Updates**: Live mission status and reward tracking
 - **Mobile Responsive**: Works perfectly on all devices
-- **Fast Loading**: Optimized for sub-2s page loads
+- **Fast & Reliable**: Optimized for speed and reliability
 
-#### **⚙️ Developer Experience**
-- **TypeScript**: Full type safety across frontend and backend
-- **Comprehensive Testing**: Unit tests for smart contracts and API endpoints
-- **CI/CD Pipeline**: Automated testing and deployment
-- **Documentation**: Clear setup instructions and API documentation
+#### **🛡️ Built for Trust**
+- **Smart Contract Security**: Funds protected by Bitcoin's security
+- **Transparent Operations**: All transactions visible on blockchain
+- **User Protection**: Built-in safeguards against unexpected transfers
+- **Professional Quality**: Enterprise-grade reliability and performance
 
 ---
 
@@ -175,9 +154,9 @@ A Bitcoin-native bounty platform that combines:
 ### **Video Demo**
 🎥 **[Watch Demo Video](https://drive.google.com/file/d/1eNzNm2eAy-6t9WSee_ZvCcmgkT_9TiDe/view?usp=sharing)** — See Stacken in action (5-minute walkthrough)
 
-### **Smart Contracts**
-- **Mission Manager**: `ST1FZXTTFT9J4YPJ17Z9T914PGZH2WJ6F8JGBNM0T.mission-manager`
-- **Points System**: `ST1FZXTTFT9J4YPJ17Z9T914PGZH2WJ6F8JGBNM0T.points`
+### **Blockchain Verification**
+- **Fully Transparent**: All transactions visible on Stacks blockchain
+- **Secure Escrow**: Funds protected by Bitcoin's security model
 - **Explorer**: [View on Stacks Explorer](https://explorer.stacks.co/address/ST1FZXTTFT9J4YPJ17Z9T914PGZH2WJ6F8JGBNM0T?chain=testnet)
 
 ### **Repository**
