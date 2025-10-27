@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { useAuth, useAccount } from '@micro-stacks/react';
+import { useStacks } from './useStacks';
 
 export const useAutoRegister = () => {
-  const { isSignedIn } = useAuth();
-  const { stxAddress } = useAccount();
+  const { isSignedIn, stxAddress } = useStacks();
   const [status, setStatus] = useState<'idle' | 'registering' | 'success' | 'error'>('idle');
   const attempted = useRef<Set<string>>(new Set());
   const retries = useRef<Map<string, NodeJS.Timeout>>(new Map());

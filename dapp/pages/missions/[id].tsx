@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useAuth, useAccount } from '@micro-stacks/react';
 import Layout from '../../components/Layout';
-import { getDehydratedStateFromSession } from '../../common/session-helpers';
+import { useStacks } from '../../hooks/useStacks';
 import toast from 'react-hot-toast';
 import {
   Calendar,
@@ -89,7 +88,6 @@ export async function getServerSideProps(ctx: GetServerSidePropsContext) {
 
     return {
       props: {
-        dehydratedState: await getDehydratedStateFromSession(ctx),
         mission: serializedMission,
       },
     };
@@ -160,12 +158,13 @@ interface MissionDetailProps {
 const MissionDetail: NextPage<MissionDetailProps> = ({ mission: initialMission }) => {
   const router = useRouter();
   const { id } = router.query;
-  const { isSignedIn } = useAuth();
-  const { stxAddress } = useAccount();
+  const { isSignedIn, stxAddress } = useStacks();
   const [mission, setMission] = useState<Mission | null>(initialMission);
   const [loading, setLoading] = useState(false);
   const [completingActivity, setCompletingActivity] = useState<string | null>(null);
   const [completedActivities, setCompletedActivities] = useState<string[]>([]);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+  const [checkingSubmission, setCheckingSubmission] = useState(true);
 
   useEffect(() => {
     // Only fetch if we don't have initial mission data (fallback for client-side navigation)
@@ -173,6 +172,38 @@ const MissionDetail: NextPage<MissionDetailProps> = ({ mission: initialMission }
       fetchMission();
     }
   }, [id, initialMission]);
+
+  // Check if user has already submitted
+  useEffect(() => {
+    const checkUserSubmission = async () => {
+      if (!isSignedIn || !stxAddress || !id) {
+        setCheckingSubmission(false);
+        setHasSubmitted(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `/api/submissions/check?missionId=${id}&userAddress=${stxAddress}`
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          setHasSubmitted(data.hasSubmitted);
+        } else {
+          console.error('Error checking submission:', response.status);
+          setHasSubmitted(false);
+        }
+      } catch (error) {
+        console.error('Error checking submission:', error);
+        setHasSubmitted(false);
+      } finally {
+        setCheckingSubmission(false);
+      }
+    };
+
+    checkUserSubmission();
+  }, [id, isSignedIn, stxAddress]);
 
   const fetchMission = async () => {
     try {
@@ -702,27 +733,39 @@ const MissionDetail: NextPage<MissionDetailProps> = ({ mission: initialMission }
               </div>
             )}
 
-            {/* Participate CTA */}
-            {isSignedIn && stxAddress !== mission.creatorAddress && (
+            {/* Participate CTA for regular users */}
+            {isSignedIn && stxAddress !== mission.creatorAddress && !checkingSubmission && (
               <div className="bg-primary-50 border border-primary-200 rounded-lg p-6">
-                <h3 className="text-lg font-semibold text-primary-900 mb-2">Ready to Build?</h3>
+                <h3 className="text-lg font-semibold text-primary-900 mb-2">
+                  {hasSubmitted ? 'Your Submission' : 'Ready to Build?'}
+                </h3>
                 <p className="text-primary-700 mb-4">
-                  Submit your work and claim up to {mission.totalPoints} reward points!
+                  {hasSubmitted
+                    ? 'You have already submitted your work. You can edit your submission anytime.'
+                    : `Submit your work and claim up to ${mission.totalPoints} reward points!`}
                 </p>
-                <div className="space-y-3">
-                  <button
-                    onClick={() => router.push(`/missions/${id}/submit`)}
-                    className="w-full bg-primary-600 text-white py-2 px-4 rounded-lg hover:bg-primary-700 transition-colors font-medium"
-                  >
-                    Submit Your Work
-                  </button>
-                  <button
-                    onClick={() => router.push(`/missions/${id}/submissions`)}
-                    className="w-full border border-primary-600 text-primary-600 py-2 px-4 rounded-lg hover:bg-primary-50 transition-colors font-medium"
-                  >
-                    See All Submissions
-                  </button>
-                </div>
+                <button
+                  onClick={() => router.push(`/missions/${id}/submit`)}
+                  className="w-full bg-primary-600 text-white py-2 px-4 rounded-lg hover:bg-primary-700 transition-colors font-medium"
+                >
+                  {hasSubmitted ? 'Edit Your Submission' : 'Submit Your Work'}
+                </button>
+              </div>
+            )}
+
+            {/* Creator/Admin CTA */}
+            {isSignedIn && stxAddress === mission.creatorAddress && (
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
+                <h3 className="text-lg font-semibold text-blue-900 mb-2">Mission Management</h3>
+                <p className="text-blue-700 mb-4">
+                  Review and manage all submissions for this mission.
+                </p>
+                <button
+                  onClick={() => router.push(`/missions/${id}/submissions`)}
+                  className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                >
+                  See All Submissions
+                </button>
               </div>
             )}
 

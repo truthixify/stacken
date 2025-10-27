@@ -1,22 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@micro-stacks/react';
+import { useStacks } from '../../hooks/useStacks';
 import Layout from '../../components/Layout';
 import { Search, Calendar, Users, Star, ArrowRight } from 'lucide-react';
 import UserAvatar from '../../components/UserAvatar';
 import LikeButton from '../../components/LikeButton';
-import { getDehydratedStateFromSession } from '../../common/session-helpers';
 import { stripHtml } from '../../lib/textUtils';
 
-import type { NextPage, GetServerSidePropsContext } from 'next';
-
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  return {
-    props: {
-      dehydratedState: await getDehydratedStateFromSession(ctx),
-    },
-  };
-}
+import type { NextPage } from 'next';
 
 interface Mission {
   _id: string;
@@ -39,7 +30,7 @@ interface Mission {
 }
 
 const MissionsPage: NextPage = () => {
-  const { isSignedIn } = useAuth();
+  const { isSignedIn } = useStacks();
   const [missions, setMissions] = useState<Mission[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');

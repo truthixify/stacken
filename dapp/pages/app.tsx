@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useAuth } from '@micro-stacks/react';
+import { useStacks } from '../hooks/useStacks';
 import Layout from '../components/Layout';
-import { getDehydratedStateFromSession } from '../common/session-helpers';
 import { ArrowRight, Trophy, Users, Zap, Star, Plus } from 'lucide-react';
 
 // Utility function to strip HTML tags
@@ -14,15 +13,7 @@ const stripHtml = (html: string) => {
     .trim();
 };
 
-import type { NextPage, GetServerSidePropsContext } from 'next';
-
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  return {
-    props: {
-      dehydratedState: await getDehydratedStateFromSession(ctx),
-    },
-  };
-}
+import type { NextPage } from 'next';
 
 interface Mission {
   _id: string;
@@ -40,7 +31,7 @@ interface Mission {
 }
 
 const AppPage: NextPage = () => {
-  const { isSignedIn, openAuthRequest } = useAuth();
+  const { isSignedIn, connectWallet } = useStacks();
   const [missions, setMissions] = useState<Mission[]>([]);
   const [stats, setStats] = useState({
     totalMissions: 0,
@@ -113,7 +104,7 @@ const AppPage: NextPage = () => {
               community.
             </p>
             <button
-              onClick={() => openAuthRequest()}
+              onClick={() => connectWallet()}
               className="w-full bg-primary-600 text-white py-3 px-4 rounded-lg hover:bg-primary-700 transition-colors font-semibold"
             >
               Connect Wallet

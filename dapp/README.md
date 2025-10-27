@@ -1,24 +1,17 @@
-# micro-stacks + next.js
+# Stacken + Next.js
 
-This is an example Next.js application that implements `@micro-stacks/react` to add Stacks-based web3 authentication.
-The example also details how to share session state between client and server
-using [`iron-session`](https://github.com/vvo/iron-session.
-
-This example is part of a guide found on
-micro-stacks.dev: [Building a Stacks app with Next.js](https://micro-stacks.dev/guides/with-nextjs)
-
-Online demo: [nextjs-example.micro-stacks.dev](https://nextjs-example.micro-stacks.dev)
+This is a Next.js application that implements `@stacks/connect` for Stacks-based web3 authentication.
+The application provides a seamless wallet connection experience with support for multiple Stacks wallets.
 
 ## Overview
 
 In this example:
 
-- micro-stacks related dependencies are installed
-- Stacks auth is implemented
-- iron-session as a dependency
-- API routes for saving/destroying session
-- `_app.tsx` has the `ClientProvider` for micro-stacks context
-- Fetching the user session and passing it to `ClientProvider`
+- Stacks.js related dependencies are installed
+- Stacks wallet authentication is implemented
+- Custom `useStacks` hook for wallet management
+- `_app.tsx` handles auto-registration of users
+- Client-side authentication with wallet selection popup
 
 ## Getting Started
 
@@ -63,16 +56,13 @@ as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of Reac
 
 ## Learn More
 
-To learn more about `micro-stacks`:
+To learn more about Stacks.js:
 
-- [Overview](https://micro-stacks.dev/docs/overview)
-- [Getting started](https://micro-stacks.dev/docs/getting-started)
-- [Authentication](https://micro-stacks.dev/docs/authentication)
-- [Transaction Signing](https://micro-stacks.dev/docs/transactions)
-- [Working with post conditions](https://micro-stacks.dev/docs/transactions/working-with-post-conditions)
-- [Message Signing](https://micro-stacks.dev/docs/message-signing)
-- [Building a Remix app](https://micro-stacks.dev/guides/with-remix)
-- [Building a Next.js app](https://micro-stacks.dev/guides/with-nextjs)
+- [Stacks.js Documentation](https://docs.stacks.co/stacks.js)
+- [Connect Package](https://github.com/hirosystems/stacks.js/tree/main/packages/connect)
+- [Authentication Guide](https://docs.stacks.co/build-apps/authentication)
+- [Transaction Signing](https://docs.stacks.co/build-apps/transaction-signing)
+- [Working with post conditions](https://docs.stacks.co/build-apps/transaction-signing#post-conditions)
 
 To learn more about Next.js, take a look at the following resources:
 
@@ -84,16 +74,9 @@ are welcome!
 
 ## Community
 
-<p style="display: flex; align-items: center; justify-content: flex-start; gap: 10px">
-  <img alt="stars" src="https://badgen.net/github/stars/fungible-systems/micro-stacks" className="inline-block mr-2"/>
-  <img alt="downloads" src="https://badgen.net/npm/dt/micro-stacks" className="inline-block mr-2"/>
-  <img alt="license" src="https://badgen.net/npm/license/micro-stacks" className="inline-block mr-2"/>
-</p>
+Stacken is built on Stacks, a Bitcoin layer that enables smart contracts and decentralized applications.
 
-`micro-stacks` is created and maintained by [Fungible Systems](https://fungible.systems), a web3-focused design and
-engineering studio.
-
-Follow [@FungibleSystems](https://twitter.com/FungibleSystems) on Twitter for updates and memes :~)
+Learn more about Stacks at [stacks.co](https://www.stacks.co)
 
 ## Deploy on Vercel
 

@@ -86,7 +86,7 @@ Leverages **Bitcoin's security** + **Stacks' programmability** = first truly Bit
 - **Framework**: React 18 with TypeScript for type safety
 - **Styling**: Tailwind CSS with custom design system
 - **State Management**: React hooks with optimistic updates
-- **Wallet Integration**: Micro-stacks for seamless Stacks wallet connection
+- **Wallet Integration**: Stacks.js for seamless Stacks wallet connection
 
 #### **Backend (Node.js)**
 - **Database**: MongoDB with Mongoose ODM

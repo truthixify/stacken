@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useAuth, useAccount } from '@micro-stacks/react';
+import { useStacks } from '../../../hooks/useStacks';
 import Layout from '../../../components/Layout';
-import { getDehydratedStateFromSession } from '../../../common/session-helpers';
 import { Calendar, Plus, X, Upload, Save, ArrowLeft } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import toast from 'react-hot-toast';
@@ -16,15 +15,7 @@ const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 // Import Quill styles
 import 'react-quill/dist/quill.snow.css';
 
-import type { NextPage, GetServerSidePropsContext } from 'next';
-
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  return {
-    props: {
-      dehydratedState: await getDehydratedStateFromSession(ctx),
-    },
-  };
-}
+import type { NextPage } from 'next';
 
 interface MissionFormData {
   title: string;
@@ -54,8 +45,7 @@ interface MissionFormData {
 }
 
 const EditMission: NextPage = () => {
-  const { isSignedIn } = useAuth();
-  const { stxAddress } = useAccount();
+  const { isSignedIn, stxAddress } = useStacks();
   const router = useRouter();
   const { id } = router.query;
   const [loading, setLoading] = useState(false);

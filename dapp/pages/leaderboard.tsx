@@ -1,19 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Layout from '../components/Layout';
-import { getDehydratedStateFromSession } from '../common/session-helpers';
 import { Trophy, Medal, Award, TrendingUp, Users, Star, Crown } from 'lucide-react';
 import UserAvatar from '../components/UserAvatar';
 
-import type { NextPage, GetServerSidePropsContext } from 'next';
-
-export async function getServerSideProps(ctx: GetServerSidePropsContext) {
-  return {
-    props: {
-      dehydratedState: await getDehydratedStateFromSession(ctx),
-    },
-  };
-}
+import type { NextPage } from 'next';
 
 interface LeaderboardUser {
   _id: string;
